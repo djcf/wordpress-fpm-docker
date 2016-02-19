@@ -23,7 +23,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN curl -Ls https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > /usr/bin/wp && \
     chmod 755 /usr/bin/wp && \
     curl -sS https://getcomposer.org/installer | php
-COPY www.config /etc/php5/fpm/pools/www.config
+COPY www.conf /etc/php5/fpm/pool.d/www.conf
 RUN cd /var/lib && \
     wget http://wordpress.org/latest.zip && \
     unzip latest.zip && \
@@ -32,6 +32,6 @@ RUN cd /var/lib && \
 VOLUME /var/lib/wordpress/wp-content
 VOLUME /var/lib/wordpress/wp-config.php
 
-EXPOSE 9003
+EXPOSE 9005
 
 ENTRYPOINT /usr/sbin/php5-fpm --nodaemonize

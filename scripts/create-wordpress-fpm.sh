@@ -23,6 +23,5 @@ docker create -d \
 	-v /var/www/$1/public_html/wp-config.php:/var/www/wp-config.php:ro \
 	-v /var/www/$1/public_html:/var/www/wp-content \
 	--ipc="container:switchboard.noflag.org.uk" \
-	--network sql \
-#	--network web \
+	--network vagrant_sql \
 	wordpress

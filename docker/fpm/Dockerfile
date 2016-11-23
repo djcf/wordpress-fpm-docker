@@ -21,9 +21,10 @@ RUN apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists
 
 COPY www.conf /etc/php5/fpm/pool.d/www.conf
+COPY php-fpm.conf /etc/php5/fpm
 
 VOLUME /etc/ssmtp
 
 EXPOSE 9005
 
-CMD ["/usr/sbin/php5-fpm --nodaemonize"]
+CMD ["/usr/sbin/php5-fpm", "--nodaemonize"]

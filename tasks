@@ -1,0 +1,11 @@
+* Can the nginx and mysql services be controlled using systemd?
+	YES.
+* Can nginx communicate with a manually-started fpm service using TCP?
+	* using ICP?
+	* Can we map volumes such that both containers see the same data?
+* Can we use systemd to start an fpm container on-demand?
+* Can we use vhosts with nginx's config?
+* Can we modify nginx's config to make a static cache?
+* Can we modify nginx's config to map in letsencrypt's daemon's filesystem?
+	* Can we modify ansible script or docker-compose to install letsencrypt daemon into the system? Using docker?
+* Can we modify dockergen with the above config? Easily?

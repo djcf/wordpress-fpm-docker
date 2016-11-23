@@ -1,8 +1,10 @@
 [Unit]
 Description=vhost fpm container
+PartOf=switchboard.service
+#Documentation=https://github.com/djcf/
 
 [Service]
 ExecStart=/usr/bin/docker start -a vhost
 ExecStartPost=/bin/sleep 1
 
-ExecStop=/usr/bin/docker stop fpm
+ExecStop=/usr/bin/docker stop vhost

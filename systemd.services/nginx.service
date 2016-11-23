@@ -1,14 +1,19 @@
 [Unit]
 Description=nginx Vhost Controller
+Requires=docker.service
 After=docker.service
+#Documentation=https://github.com/djcf/
 
 [Service]
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker stop switchboard.noflag.org.uk
 ExecStartPre=-/usr/bin/docker rm switchboard.noflag.org.uk
-ExecStart=-/usr/bin/docker run --restart=always --name=switchboard.noflag.org.uk -p 80:80 -p 443:443 -v /var/run/docker-apps:/var/run/docker-apps sqldata:/var/lib/mysql --net=sql nginx
-ExecStop=-usr/bin/docker stop switchboard.noflag.org.uk
-Restart=always
+ExecStart=-/usr/bin/docker run --name=switchboard.noflag.org.uk -p 80:80 -p 443:443 -v /var/run/docker-apps:/var/run/docker-apps nginx
+ExecStop=-/usr/bin/docker stop switchboard.noflag.org.uk
+ExecReload=-/usr/bin/docker exec -it switchboard.noflag.org.uk nginx -s reload
+Restart=on-failure
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
+Alias=switchboard.service
+Alias=httpd.service

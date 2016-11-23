@@ -1,8 +1,0 @@
-[Unit]
-Requires=vhost-fpm.service
-After=vhost-fpm.service
-
-[Service]
-ExecStart=/lib/systemd/systemd-socket-proxyd /var/run/docker-apps/vhost-fpm.sock
-PrivateTmp=yes
-#PrivateNetwork=yes

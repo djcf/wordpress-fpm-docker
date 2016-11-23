@@ -1,6 +1,0 @@
-[Unit]
-Requires=vhost.fpm-proxy.service
-#After=vhost.fpm-proxy.service
-
-[Service]
-ExecStart=/lib/systemd/systemd-socket-proxyd 127.0.0.1:9000

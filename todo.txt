@@ -1,0 +1,11 @@
+* Dockergen installs automatically in VM
+* fpm shut down when no vhost connections
+* Ansible plays
+	* Script imports new wordpress site
+	* Ansible play makes new wordpress site & sets up DNS binding
+	* Ansible play resets WP admin password
+	* Ansible play makes new WP admin
+	* Ansible play logs a Noflag admin in transparently
+	* LetsEncrypt
+* DNS master
+* New VM with DNS slaves set up by ansible play

@@ -1,2 +1,55 @@
-wordpress:
-    build: wordpress-fpm
+version: '2'
+
+# Runs the main LEMP container assembly minus php.
+# Nginx used as a "switchboard" vhost controller
+# Pre-builds wordpress-php for all sites globally to speed up runtime
+# Last part is optional for this process.
+# If using a separate mysql server, mysql part is not recomended
+# @author daniel
+
+services:
+  # Pre-builds the fpm service for when its needed
+  fpm:
+    build: fpm
+    image: fpm
+    command: /bin/true
+  # Pre-builds a wordpress image for when its needed
+  # Add wordpress as a child container using fpm
+  wordpress:
+    build: apps/wordpress
+    image: wordpress
+    depends_on:
+      - fpm
+    command: /bin/true
+  # switchboard manages vhosts
+  switchboard:
+      image: nginx
+      restart: always # unless-stopped?
+     #networks:
+      #  - web
+      container_name: switchboard.noflag.org.uk
+      ports:
+        - 80:80
+        - 443:443
+      volumes:
+        - /var/run/docker-apps:/var/run/docker-apps
+  database:
+      image: mariadb
+      restart: always
+      container_name: sqldb.noflag.org.uk
+      volumes:
+        - sqldata:/var/lib/mysql
+      networks:
+        - sql
+      environment:
+        #MYSQL_ONETIME_PASSWORD: yes
+        #MYSQL_RANDOM_ROOT_PASSWORD: yes
+        MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+
+volumes:
+  sqldata:
+    driver: local
+
+networks:
+#  web:
+  sql:

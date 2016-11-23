@@ -1,0 +1,14 @@
+[Unit]
+Description=MariaDB SQL Container
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker stop sqldb.noflag.org.uk
+ExecStartPre=-/usr/bin/docker rm sqldb.noflag.org.uk
+ExecStart=/usr/bin/docker run --restart=always --name=sqldb.noflag.org.uk -v sqldata:/var/lib/mysql --net=sql mariadb
+ExecStop=/usr/bin/docker stop sqldb.noflag.org.uk
+Restart=always
+
+[Install]
+WantedBy=default.target

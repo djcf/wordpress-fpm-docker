@@ -1,0 +1,4 @@
+- hosts: all
+  sudo: yes
+  roles:
+     - { role: djcf.fish, fish_users: ['vagrant'] }

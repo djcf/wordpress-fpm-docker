@@ -1,0 +1,8 @@
+[Unit]
+Description=vhost fpm container
+
+[Service]
+ExecStart=/usr/bin/docker start -a vhost
+ExecStartPost=/bin/sleep 1
+
+ExecStop=/usr/bin/docker stop fpm

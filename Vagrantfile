@@ -22,6 +22,12 @@ $COPY_SVC_UNITS = <<SH
   cp /vagrant/systemd.services/vhost.fpm.service /etc/systemd/system
   cp /vagrant/systemd.services/vhost.fpm-waker.service /etc/systemd/system
   cp /vagrant/systemd.services/vhost.fpm-waker.socket /etc/systemd/system
+
+  docker create \
+	--name vhost \
+	-v docker_web:/usr/share/nginx \
+	-v /var/run/docker-apps:/var/run/docker-apps \
+	fpm
 SH
 
   config.vm.provision "shell", inline: $COPY_SVC_UNITS

@@ -17,7 +17,6 @@ fi
 
 docker create \
 	--name $1 \
-	--ipc="container:switchboard.noflag.org.uk" \
 	--network vagrant_sql \
 	-v docker_web:/usr/share/nginx \
 	-v /var/run/docker-apps:/var/run/docker-apps \

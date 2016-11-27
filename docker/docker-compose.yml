@@ -25,11 +25,12 @@ services:
     command: /bin/true
   # switchboard manages vhosts
   switchboard:
-      image: nginx
+      build: switchboard
+      image: switchboard
       restart: always # unless-stopped?
      #networks:
       #  - web
-      container_name: switchboard.noflag.org.uk
+      container_name: switchboard
       ports:
         - 80:80
         - 443:443

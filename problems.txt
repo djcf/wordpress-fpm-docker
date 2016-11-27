@@ -1,0 +1,44 @@
+Problem: nginx cant access socket
+
+Sympton: nginx returns null data when php is activated and socket write error in systemctl/docker error log
+
+* Make sure nginx is in www-data group
+	sudo usermod -aG www-data nginx
+* Change nginx user to www-data
+* Make sure socket is mounted using docker and visible by both sides
+* Make sure nginx and fpm are talking to the same socket (file loc, host, etc.
+
+	** STATUS: NOT FIXED
+
+Problem: nginx 500 -- sockets not created
+
+Sympton: nginx returns error 500 when php is activated, and no wake socket is created by systemd in /var/run/docker-apps on host
+
+Fix: systemd needs to enable the waker service (which symlinks the socket service description into wants-socket.target) and start the waker (which creates the socket):
+
+	systemctl enable vhost.fpm-waker.socket
+	systemctl start vhost.fpm-waker.socket
+
+	** STATUS: NOT FIXED
+
+Problem: nginx 500, waker socket not created and systemd refuses to create it:
+
+	Nov 24 11:26:05 jessie systemd[1]: Starting vhost.fpm-waker.socket.
+	Nov 24 11:26:05 jessie systemd[1]: Socket service vhost.fpm-waker.service already active, refusing.
+	Nov 24 11:26:05 jessie systemd[1]: Failed to listen on vhost.fpm-waker.socket.
+
+Fix: Run the following:
+
+	systemctl stop vhost.fpm-waker.socket 
+	systemctl disable vhost.fpm-waker.socket 
+	Removed symlink /etc/systemd/system/sockets.target.wants/vhost.fpm-waker.socket.
+	systemctl stop vhost.fpm-waker.service 
+	systemctl disable vhost.fpm-waker.service 
+
+	** STATUS: Unknown what causes this issue.
+
+Problem: containers may take some time to activate and the socket may not be ready for them
+
+Fix: ensure sockets are handed to waitport.sh which wraps netcat to wait for the container to be ready.
+
+	** Status: NOT TESTED

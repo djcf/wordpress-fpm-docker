@@ -15,4 +15,14 @@ Vagrant.configure("2") do |config|
     ansible.verbose = "v"
     ansible.playbook = "ansible/configure-host/playbook.yml"
   end
+
+$COPY_SVC_UNITS = <<SH
+  cp /vagrant/systemd.services/mysql.service /etc/systemd/system/multi-user.target.wants
+  cp /vagrant/systemd.services/switchboard.service /etc/systemd/system/multi-user.target.wants
+  cp /vagrant/systemd.services/vhost.fpm.service /etc/systemd/system
+  cp /vagrant/systemd.services/vhost.fpm-waker.service /etc/systemd/system
+  cp /vagrant/systemd.services/vhost.fpm-waker.socket /etc/systemd/system
+SH
+
+  config.vm.provision "shell", inline: $COPY_SVC_UNITS
 end

@@ -8,7 +8,7 @@ After=docker.service
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker stop sqldb.noflag.org.uk
 ExecStartPre=-/usr/bin/docker rm sqldb.noflag.org.uk
-ExecStart=-/usr/bin/docker run --restart=always --name=sqldb.noflag.org.uk -net docker_sql -v docker_sqldata:/var/lib/mysql mariadb
+ExecStart=-/usr/bin/docker run --restart=always --name=sqldb.noflag.org.uk -v docker_sqldata:/var/lib/mysql mariadb
 ExecStop=-/usr/bin/docker stop sqldb.noflag.org.uk
 Restart=on-failure
 

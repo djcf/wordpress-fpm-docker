@@ -9,3 +9,4 @@
 * Can we modify nginx's config to map in letsencrypt's daemon's filesystem?
 	* Can we modify ansible script or docker-compose to install letsencrypt daemon into the system? Using docker?
 * Can we modify dockergen with the above config? Easily?
+* For each problem, have we configured the build, play, init and conf scripts to fix them premptively?

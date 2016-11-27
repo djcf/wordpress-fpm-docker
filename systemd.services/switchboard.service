@@ -15,5 +15,5 @@ Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
-Alias=switchboard.service
+Alias=nginx.service
 Alias=httpd.service

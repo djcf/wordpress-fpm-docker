@@ -1,0 +1,1 @@
+Uses https://github.com/jwilder/docker-gen in separate container. See https://index.docker.io/u/jwilder/nginx-proxy/ for more details.

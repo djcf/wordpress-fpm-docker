@@ -42,3 +42,14 @@ Problem: containers may take some time to activate and the socket may not be rea
 Fix: ensure sockets are handed to waitport.sh which wraps netcat to wait for the container to be ready.
 
 	** Status: NOT TESTED
+
+	https://easyengine.io/tutorials/linux/sysctl-conf/
+
+	sudo systemctl enable docker
+
+Problem: Too many services
+
+Fix: Use a template:
+
+	http://serverfault.com/questions/730239/start-n-processes-with-one-systemd-service-file
+	https://www.freedesktop.org/software/systemd/man/systemd.unit.html#Specifiers

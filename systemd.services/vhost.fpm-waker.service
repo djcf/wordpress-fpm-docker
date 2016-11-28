@@ -6,6 +6,3 @@ PartOf=switchboard.service
 
 [Service]
 ExecStart=/lib/systemd/systemd-socket-proxyd /var/run/docker-apps/vhost.fpm.sock
-#ExecStart=/var/run/docker-apps/vhost.fpm.sock
-#PrivateTmp=yes
-#PrivateNetwork=yes

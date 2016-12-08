@@ -1,0 +1,78 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+- hosts: all
+  vars:
+    - image: "wordpress"
+    - database: "sqldb.noflag.org.uk"
+    - ssl_host: yes
+    - ssl_method: redirect
+    - subdomain: ""
+    - lets_encrypt: yes
+    - use_php: yes
+    - container_always_active: no
+    - default_cert: "default"
+
+  #connection: docker
+  sudo: yes
+  tasks:
+  - include: tasks-add-vhost.yml
+
+  - name: Create Wordpress container for new site
+    docker_container:
+      name: "{{ domain }}.fpm"
+      image: "{{ image }}"
+      state: started
+      networks:
+        - name: docker_default
+      links:
+        - "{{ database }}"
+      volumes:
+        - "/var/run/docker-apps/{{ domain }}:/var/run"
+        - "/var/www/{{ domain }}/wp-content:/var/lib/wordpress/wp-content"
+        - "/var/www/{{ domain }}/wp-config.php:/var/lib/wordpress/wp-config.php:ro"
+
+  - name: Check to see if Wordpress is installed
+    docker_container:
+      command: "/usr/local/bin/wp wp core is-installed --allow-root --path=/var/lib/wordpress"
+      name: "{{ domain }}-check.fpm"
+      image: "{{ image }}"
+      state: started
+      networks:
+        - name: docker_default
+      links:
+        - "{{ database }} "
+      volumes_from:
+        - "{{ domain }}.fpm"
+      register: wp_was_installed
+
+  - name: Install Wordpress database
+    docker_container:
+      command: "/usr/local/bin/wp core install --allow-root --path=/var/lib/wordpress --url={{ http }}://{{ domain }} --admin_email={{ admin_email }}"
+      name: "{{ domain }}-installer.fpm"
+      image: "{{ image }}"
+      state: started
+      networks:
+        - name: docker_default
+      links:
+        - "{{ database }} "
+      volumes_from:
+        - "{{ domain }}.fpm"
+    when: wp_was_installed.rc != 0
+
+  - name: Wordpress installation container isn't needed
+    docker_container:
+      name: "{{ domain }}-installer.fpm"
+      image: "{{ image }}"
+      state: absent
+
+  - name: Wordpress installation check container isn't needed
+    docker_container:
+      name: "{{ domain }}-check.fpm"
+      image: "{{ image }}"
+      state: absent
+
+  - name: Wordpress container should be stopped until use
+    docker_container:
+      name: "{{ domain }}.fpm"
+      state: stopped
+    when: not container_always_active

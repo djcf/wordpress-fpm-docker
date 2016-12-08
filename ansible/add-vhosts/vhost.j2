@@ -1,0 +1,78 @@
+{% if container_always_active == true %}
+    {% set socket_name = "fpm.sock" %}
+{% else %}
+    {% set socket_name = "fpm-waker.sock" %}
+{% endif %}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+    access_log /var/log/nginx/access.log vhost;
+
+    {% if ssl_method == "redirect" %}
+        return 302 https://$host$request_uri;
+    {% else %}
+        root /var/www/{{ domain }}/public_html;
+        index index.html index.htm;
+        location / {
+            try_files $uri $uri/ =404;
+        }
+
+        {% if use_php == true %}
+            location ~ \.php$ {
+                index index.php index.htm index.html;
+                try_files $uri $uri/ =404;
+                root /var/www/{{ domain }}/public_html;
+                fastcgi_pass unix:/var/run/docker-apps/{{ domain }}.{{ socket_name }}
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME /var/lib/wordpress/$fastcgi_script_name;
+                include fastcgi_params;
+            }
+        {% endif %}
+    {% endif %}
+}
+
+{% if ssl_host == true %}
+    server {
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        listen 443 ssl http2;
+        access_log /var/log/nginx/access.log vhost;
+
+        indlude inc/ssl.conf;
+
+        {% if lets_encrypt == true %}
+
+        {% else %}
+            {% if local_ssl_cert.stat.exists and local_ssl_key.stat.exists %}
+                ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
+                ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
+            {% else %}
+                ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
+                ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
+            {% endif %}
+            {% if dhparam_exists %}
+                ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
+            {% endif %}
+        {% endif %}
+
+        root /var/www/{{ domain }}/public_html;
+        index index.html index.htm;
+        location / {
+            try_files $uri $uri/ =404;
+        }
+
+        {% if use_php == true %}
+            location ~ \.php$ {
+                try_files $uri $uri/ =404;
+                index index.php index.htm index.html;
+                root /var/www/{{ domain }}/public_html;
+                fastcgi_pass unix:/var/run/docker-apps/{{ domain }}.{{ socket_name }}
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME /var/lib/wordpress/$fastcgi_script_name;
+                include fastcgi_params;
+            }
+        {% endif %}
+    }
+{% endif %}

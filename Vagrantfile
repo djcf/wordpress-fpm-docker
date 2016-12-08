@@ -1,8 +1,20 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/jessie64"
+  # jessie's 3.16 kernel has an outstanding bug with systemd-socket-proxyd
+  #config.vm.box = "debian/jessie64"
+
+  # xenial has outstanding bugs work with libvirt
+  #config.vm.box = "peru/ubuntu-16.04-server-amd64"
+  #config.vm.box = "ubuntu/ubuntu-16.04-server"
+
+  config.vm.box = "nrclark/xenial64-minimal-libvirt"
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
     rsync__exclude: ".git/"
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.verbose = "v"
+    ansible.playbook = "ansible/configure-host/playbook.yml"
+  end
 
   config.vm.provision :docker
   config.vm.provision :docker_compose,
@@ -10,11 +22,6 @@ Vagrant.configure("2") do |config|
       "/vagrant/docker/docker-compose.yml"
     ],
     run: "always"
-
-  config.vm.provision "ansible" do |ansible|
-    ansible.verbose = "v"
-    ansible.playbook = "ansible/configure-host/playbook.yml"
-  end
 
 $COPY_SVC_UNITS = <<SH
   cp /vagrant/systemd.services/mysql.service /etc/systemd/system/multi-user.target.wants

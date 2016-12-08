@@ -1,0 +1,30 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org,subdomain=mysubdomain.noflag.org.uk,image=wordpress" add-vhost.yml
+- hosts: all
+  vars:
+    - ssl_host: yes
+    - ssl_method: redirect
+    - subdomain: ""
+    - lets_encrypt: yes
+    - use_php: yes
+    - container_always_active: no
+    - default_cert: "default"
+    - socket_name: fpm-waker.sock
+
+  #connection: docker
+  sudo: yes
+  tasks:
+  - include: tasks-add-vhost.yml
+
+  - name: Create container for new site
+    docker:
+      name: "{{ domain }}.fpm"
+      image: "{{ image }}"
+      state: started
+      domain: "{{ domain }}"
+      links:
+        - "sqldb.noflag.org.uk"
+      volumes:
+        - docker_web:/usr/share/nginx
+        - /var/run/docker-apps:/var/run/docker-apps
+    become: yes

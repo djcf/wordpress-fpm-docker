@@ -6,14 +6,10 @@ After=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker stop switchboard.noflag.org.uk
-ExecStartPre=-/usr/bin/docker rm switchboard.noflag.org.uk
-ExecStart=-/usr/bin/docker run --name=switchboard.noflag.org.uk -p 80:80 -p 443:443 -v /var/run/docker-apps:/var/run/docker-apps nginx
-ExecStop=-/usr/bin/docker stop switchboard.noflag.org.uk
-ExecReload=-/usr/bin/docker exec -it switchboard.noflag.org.uk nginx -s reload
-Restart=on-failure
+ExecStart=-/usr/bin/docker start switchboard
+ExecStop=-/usr/bin/docker stop switchboard
+ExecReload=-/usr/bin/docker exec -it switchboard nginx -s reload
 
 [Install]
 WantedBy=multi-user.target
 Alias=nginx.service
-Alias=httpd.service

@@ -17,7 +17,7 @@ RUN apt-get install -y --no-install-recommends \
     php5-fpm \
     php5-gd \
     php-pear && \
-    apt-get clean && \ 
+    apt-get clean && \
     rm -rf /var/lib/apt/lists && \
     mkdir -p /usr/share/nginx/html
 
@@ -26,7 +26,5 @@ COPY php-fpm.conf /etc/php5/fpm
 COPY index.php /usr/share/nginx/html/index.php
 
 VOLUME /etc/ssmtp
-
-EXPOSE 9005
 
 CMD ["/usr/sbin/php5-fpm", "--nodaemonize"]

@@ -1,0 +1,32 @@
+- name: Remove oldest WP image
+  become: yes
+  docker_image:
+    state: absent
+    name: wordpress
+    tag: old
+
+- name: Rename current (old) WP image
+  become: yes
+  docker_image:
+    name: wordpress
+    repository: wordpress:latest
+    tag: old
+    state: present
+
+- name: Build new WP image
+  become: yes
+  docker_image:
+    name: wordpress
+    path: "{{ path }}/wordpress"
+    state: present
+    tag: latest
+
+- name: Find all WP docker images which are outdated
+  become: yes
+  command: "docker ps -q --filter ancestor=wordpress:latest"
+  register: container_list
+
+- name: Execute database updates
+  become: yes
+  command: "docker run --rm --volumes-from {{ item }} --link  sqldb.noflag.org.uk wordpress:latest sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core update'"
+  with_items: "{{ container_list.stdout_lines }}"

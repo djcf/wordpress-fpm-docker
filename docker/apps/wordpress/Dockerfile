@@ -5,6 +5,7 @@ RUN curl -Ok https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cl
 RUN curl -OsLk http://wordpress.org/latest.zip && \
     unzip latest.zip && \
     rm -f latest.zip
+COPY wp-cli.yml /
 
 VOLUME /var/lib/wordpress/wp-content
 VOLUME /var/lib/wordpress/wp-config.php

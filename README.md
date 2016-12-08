@@ -27,6 +27,8 @@ https://torusware.com/blog/2015/04/optimizing-communications-between-html/
 NGINX DYNAMIC CONFIG GENERATION
 ------
 See also: https://github.com/jwilder/nginx-proxy
+and https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+Overview: http://jasonwilder.com/blog/2014/03/25/automated-nginx-reverse-proxy-for-docker/
 
 DYNAMIC CONFIG GENERATION DNS
 ------
@@ -71,7 +73,7 @@ TODO
 -----
 
 	* System init should kill fpm processes when not in use
-	* Ansible scripts should install new web app containers and 
+	* Ansible scripts should install new web app containers and
 	* nginx/dockergen should be used instead of pure nginx
 	* Ansible scripts should install and renew letsencrypt certs
 	* nginx should also cache generated php files

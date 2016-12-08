@@ -17,7 +17,8 @@ fi
 
 docker create \
 	--name $1 \
-	--network vagrant_sql \
+	--network docker_sql \
 	-v docker_web:/usr/share/nginx \
 	-v /var/run/docker-apps:/var/run/docker-apps \
+	-e "VIRTUAL_HOST=$1" \
 	fpm

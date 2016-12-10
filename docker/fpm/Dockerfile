@@ -18,12 +18,10 @@ RUN apt-get install -y --no-install-recommends \
     php5-gd \
     php-pear && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists && \
-    mkdir -p /usr/share/nginx/html
+    rm -rf /var/lib/apt/lists
 
 COPY www.conf /etc/php5/fpm/pool.d/www.conf
 COPY php-fpm.conf /etc/php5/fpm
-COPY index.php /usr/share/nginx/html/index.php
 
 VOLUME /etc/ssmtp
 

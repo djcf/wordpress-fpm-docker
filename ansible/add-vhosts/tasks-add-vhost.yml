@@ -1,3 +1,13 @@
+- name: Facts about this vhost 1
+  set_fact:
+    transport: http
+  when: not ssl_host
+
+- name: Facts about this vhost 2
+  set_fact:
+    transport: https
+  when: ssl_host
+
 - name: Check whether a unique diffie-helman key exists for this vhost
   command: "docker exec -it switchboard test -e /etc/nginx/certs/{{ domain }}.dhparam.pem"
   become: yes

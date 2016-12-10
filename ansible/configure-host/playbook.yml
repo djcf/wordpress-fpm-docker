@@ -29,18 +29,20 @@
 #    - name: host should have latest version of docker-compose
 #      shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-($uname -m) > /usr/local/bin/docker-compose
 
-    - name: Install pip
-      apt:
-        pkg: "{{ item }}"
-        state: installed
-      with_items:
-        - python-dev
-        - python-pip
+#    - name: Install pip
+#      apt:
+#        pkg: "{{ item }}"
+#        state: installed
+#      with_items:
+#        - python-dev
+#        - python-pip
 
-    - name: Install Docker-py
-      pip:
-        name: docker-py
-        version: 1.1.0
+#    - name: Install Docker-py
+#      pip:
+#        name: docker-py
+#        version: 1.1.0
+
+#    - name: 
 #    - name: Host should have docker.py
 #      become: true
 #      pip: state=present name="{{ item }}"

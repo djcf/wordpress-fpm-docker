@@ -8,4 +8,3 @@ RUN curl -OsLk http://wordpress.org/latest.zip && \
 COPY wp-cli.yml /
 
 VOLUME /var/lib/wordpress/wp-content
-VOLUME /var/lib/wordpress/wp-config.php

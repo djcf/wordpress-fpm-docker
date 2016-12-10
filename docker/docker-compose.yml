@@ -70,10 +70,12 @@ services:
     container_name: sqldb.noflag.org.uk
     volumes:
       - sqldata:/var/lib/mysql
-    environment:
+      - secrets:/var/secrets:ro
+    #environment:
       #MYSQL_ONETIME_PASSWORD: "yes"
-      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      #MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      #MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    networks:
+      - sqlnet
 
 volumes:
   # This is where the MariaDB database files are kept
@@ -98,3 +100,8 @@ volumes:
     driver: local
   sites-enabled:
     driver: local
+  secrets:
+    driver: local
+
+networks:
+  sqlnet:

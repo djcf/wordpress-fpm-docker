@@ -1,0 +1,10 @@
+[Unit]
+Description=%i fpm container
+PartOf=switchboard.service
+#Documentation=https://github.com/djcf/
+
+[Service]
+ExecStart=/usr/bin/docker start -a %i.fpm
+ExecStartPost=/bin/sleep 1
+
+ExecStop=/usr/bin/docker stop %i.fpm

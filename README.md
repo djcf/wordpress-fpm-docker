@@ -20,6 +20,13 @@ The web host uses systemd's socket activation to kill off fpm processes which ar
 
 SOCKET ACTIVATION
 -------
+
+Run
+
+systemctl enable fpm-waker@domain.org.socket
+systemctl start fpm-waker@domain.org.socket
+systemctl enable fpm-waker@domain.org.service
+
 http://www.dest-unreach.org/socat/doc/README
 http://danwalsh.livejournal.com/74421.html
 https://torusware.com/blog/2015/04/optimizing-communications-between-html/
@@ -49,7 +56,7 @@ And expect that these services will perform appropriately.
 
 You can also refer to each vhost by its domain, e.g.:
 
-	service tld.mydomain.org stop
+	service fpm@mydomain.org stop
 
 See also this useful list of systemd commands: https://www.dynacont.net/documentation/linux/Useful_SystemD_commands/ (more detail: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units). For more information about running docker containers as systemd processes, check here http://container-solutions.com/running-docker-containers-with-systemd/, here https://goldmann.pl/blog/2014/07/30/running-docker-containers-as-systemd-services/ and here http://developers.redhat.com/blog/2014/05/05/running-systemd-within-docker-container/.
 
@@ -72,8 +79,11 @@ You can obtain an exact copy of the production environment for local testing and
 TODO
 -----
 
-	* System init should kill fpm processes when not in use
-	* Ansible scripts should install new web app containers and
-	* nginx/dockergen should be used instead of pure nginx
+	* Finish WP updates playbook
+	* Finish create vhost playbooks
+	* Make wordpress import playbook
+	* System init should kill fpm processes when not in use and start more gracefully
 	* Ansible scripts should install and renew letsencrypt certs
 	* nginx should also cache generated php files
+	* nginx could install pagespeed
+	* DNS management

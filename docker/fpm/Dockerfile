@@ -10,6 +10,7 @@ RUN apt-get install -y --no-install-recommends \
     ssmtp \
     zip \
     unzip \
+    mysql-client \
     php5-cli \
     php5-mysql \
     php5-intl \

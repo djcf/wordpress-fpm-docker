@@ -79,6 +79,7 @@ You can obtain an exact copy of the production environment for local testing and
 TODO
 -----
 
+	* FPM should use tinyinit (?)
 	* Finish WP updates playbook
 	* Finish create vhost playbooks
 	* Make wordpress import playbook
@@ -87,3 +88,8 @@ TODO
 	* nginx should also cache generated php files
 	* nginx could install pagespeed
 	* DNS management
+
+BUGS
+------
+
+	* WP install process errors with mysql-client not found

@@ -6,5 +6,8 @@ RUN curl -OsLk http://wordpress.org/latest.zip && \
     unzip latest.zip && \
     rm -f latest.zip
 COPY wp-cli.yml /
+COPY wp-config.php /var/lib/wordpress/wp-config.php
+
+WORKDIR /var/lib/wordpress
 
 VOLUME /var/lib/wordpress/wp-content

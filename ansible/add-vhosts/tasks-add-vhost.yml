@@ -16,7 +16,18 @@
   when:
     - ssl_host
     - not lets_encrypt
-  #ignore_errors: yes
+  ignore_errors: yes
+  failed_when: false
+
+- name: Check whether vhost already exists
+  command: "docker exec -it switchboard test -e /etc/nginx/sites-enabled/{{ domain }}"
+  become: yes
+  ignore_errors: yes
+  register: vhost_exists
+  when:
+    - ssl_host
+    - not lets_encrypt
+  ignore_errors: yes
   failed_when: false
 
 - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
@@ -88,7 +99,14 @@
 - name: Copy vhost template to host
   template: src=vhost.j2 dest=/tmp/vhost
   become: yes
+  when: not vhost_exists
 
 - name: Copy vhost template to docker
   command: "docker cp /tmp/vhost switchboard:/etc/nginx/sites-enabled/{{ domain }}"
   become: yes
+  when: not vhost_exists
+
+- name: Reload nginx configuration
+  command: "docker exec -it switchboard nginx -s reload"
+  become: yes
+  when: not vhost_exists

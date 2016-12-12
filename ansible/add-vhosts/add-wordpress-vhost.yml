@@ -3,7 +3,6 @@
 - hosts: all
   vars:
     - image: "wordpress"
-    - database: "sqldb.noflag.org.uk"
     - ssl_host: yes
     - ssl_method: redirect
     - subdomain: ""
@@ -11,10 +10,18 @@
     - use_php: yes
     - container_always_active: no
     - default_cert: "default"
-
+    - escaped_domain: "{{ domain | regex_replace('\\.', '_') }}"
+    - db_user: "{{ escaped_domain }}_user"
+    - db_name: "{{ escaped_domain }}_sql"
+    - db_password: password
+    - db_port: 3306
+    - db_host: sqldb.noflag.org.uk
+    - admin_user: admin
+    - site_title: "{{ domain }}"
   #connection: docker
   sudo: yes
   tasks:
+
   - include: tasks-add-vhost.yml
 
   - name: Facts about this container 1
@@ -27,12 +34,13 @@
       state: present
     when: not container_always_active
 
-  - name: Facts about this database 1
-    set_fact:
-      db_user: "{{ domain }}_user"
-      db_name: "{{ domain }}_sql"
+  - name: Project directory should exist
+    file:
+      path: "/var/www/{{ domain }}/conf"
+      state: directory
+      recurse: yes
 
-  - name: Copy vhost template to host
+  - name: Copy env vars for container to host
     template: src=env.j2 dest="/var/www/{{ domain }}/.env"
     become: yes
 
@@ -45,7 +53,7 @@
       state: "{{ state }}"
       networks:
         - name: docker_sqlnet
-          link: sqldb.noflag.org.uk:sqldb.noflag.org.uk
+          link: "{{ db_host }}"
       volumes:
         - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
         - "/var/www/{{ domain }}/public_html/wp-content:/var/lib/wordpress/wp-content"
@@ -80,50 +88,53 @@
   # Shell equivilent
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'
   - name: Check to see if WP database exists
-    command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'"
+    command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'"
     ignore_errors: yes
     failed_when: db_exists.rc != 0
     register: db_exists
     become: yes
 
   # Shell equivilent:
-  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from {{ domain }}.fpm --rm mariadb exec mysql -hsqldb.noflag.org.uk -P3306 -uroot -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD -e "CREATE USER '$db_user'@'%' IDENTIFIED BY 'password'; CREATE DATABASE '$db_name; ASSIGN ALL ON '$db_name'.* to '$db_user'@'%'"
+  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP USER {{ db_user }}; DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\"'
   - name: Create database
     docker_container:
-      name: "{{ domain }}.db-user-exists"
+      name: "{{ domain }}.createdb"
       image: mariadb
       networks:
         - name: docker_sqlnet
-          link: sqldb.noflag.org.uk:sqldb.noflag.org.uk
-      command: mysql -hsqldb.noflag.org.uk -P3306 -uroot -p$MYSQL_ENV_MYSQL_ROOT_PASSWORD -e "CREATE USER '{{ db_user }}'@'%' IDENTIFIED BY 'password'; CREATE DATABASE '{{ db_name }}'; ASSIGN ALL ON '{{ db_name }}'.* to '{{ db_user }}'@'%'"
+          link: "{{ db_host }}"
+      #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
+      command: "mysql -f -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
+      env:
+        MYSQL_PWD: 1234
       cleanup: yes
       detach: yes
     when: db_exists.rc != 0
     become: yes
 
   # Shell equvilent:
-  # docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
+  # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
   - name: Check to see if WP is installed already
-    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp core install is-installed --allow-root --path=/var/lib/wordpress'"
+    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp core is-installed --allow-root --path=/var/lib/wordpress'"
     ignore_errors: yes
     failed_when: wp_was_installed.rc != 0
     register: wp_was_installed
     become: yes
 
   # Shell equivilent
-  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from {{ domain }}.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress' core install --url={{ transport }}://{{ domain }} --admin_email={{ admin_email }}'
+  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --env-file /var/www/$domain/.env --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core install --url=http://$domain --admin_email=test@test.org'\
   - name: Install Wordpress database if not
     docker_container:
-      command: "/usr/local/bin/wp core install --allow-root --path=/var/lib/wordpress --url={{ transport }}://{{ domain }} --admin_email={{ admin_email }}"
-      name: "{{ domain }}-installer.fpm"
+      command: "/usr/local/bin/wp core install --allow-root --path=/var/lib/wordpress --url={{ transport }}://{{ domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email={{ admin_email }}"
+      name: "{{ domain }}-installer"
       image: "{{ image }}"
       networks:
         - name: docker_sqlnet
-          link: sqldb.noflag.org.uk:sqldb.noflag.org.uk
+          link: "{{ db_host }}"
       volumes_from:
         - "{{ domain }}.fpm"
+      env_file: "/var/www/{{ domain }}/.env"
       cleanup: yes
       detach: yes
-      env_file: "/var/www/{{ domain }}/.env"
     when: wp_was_installed.rc != 0
     become: yes

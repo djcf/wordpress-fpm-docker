@@ -1,0 +1,42 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+- hosts: all
+  vars:
+    - db_port: 3306
+    - db_password: "random"
+    - db_host: sqldb.noflag.org.uk
+    - database_should_be_created: true
+  vars_prompt:
+    - name: "db_user"
+      prompt: "Enter a database user"
+      default: "{{ db_user }}"
+    - name: "db_name"
+      prompt: "Enter a database name"
+      default: "{{ db_name }}"
+    - name: "db_password"
+      default: "{{ db_password }}"
+      prompt: "Enter a database password"
+
+  #connection: docker
+  tasks:
+
+- name: Generate random database password
+  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
+  register: generated_password
+  when: db_password is "random"
+
+- name: Store generated database password
+  set_fact:
+    db_password: generated_password.stdout
+  when: db_password is "random"
+
+- name: Print out new database password
+  debug:
+    msg: "New database password for database named '{{ db_name }}' is '{{ db_password }}'"
+
+- name: Ask for database password
+  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
+  register: generated_password
+  when: db_password is "ask"
+
+- include: tasks-create-database.yml

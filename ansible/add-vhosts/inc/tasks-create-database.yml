@@ -14,5 +14,4 @@
       MYSQL_PWD: 1234
     cleanup: yes
     detach: yes
-  when: database_should_be_created
   become: yes

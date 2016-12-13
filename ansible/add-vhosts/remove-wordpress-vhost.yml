@@ -22,7 +22,7 @@
   - include: inc/tasks-dump-database.yml
 
   - name: Compress backup files
-    command: zip -r /var/www/{{ domain }}/{{ domain }}.zip /var/www/{{ domain }}/public_html /var/www/{{ domain }}/{{ db_name }}.sql.gz
+    command: "zip -r /var/www/{{ domain }}/{{ domain }}.zip /var/www/{{ domain }}/public_html /var/www/{{ domain }}/{{ db_name }}.sql.gz"
     become: yes
 
   - include: inc/tasks-remove-database.yml

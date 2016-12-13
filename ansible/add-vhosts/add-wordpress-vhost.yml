@@ -70,6 +70,11 @@
     become: yes
     when: not salts_file_exists
 
+  - name: Check to see if a site dump exists locally
+    local_action: "stat path={{ domain }}.zip"
+    register: dbdump_exists
+    ignore_errors: yes
+
   # Shell equivilent
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'
   - name: Check to see if WP database exists
@@ -79,17 +84,11 @@
     register: db_exists
     become: yes
 
-  - name: Assert that we should probably install the database
-    set_fact:
-      database_should_be_created: true
+  - include: inc/tasks-create-database.yml
     when: db_exists.rc != 0
 
-  - name: Assert that we should probably not install the database
-    set_fact:
-      database_should_be_created: false
-    when: db_exists.rc == 0
-
-  - include: inc/tasks-create-database.yml
+  - include: inc/tasks-import-site.yml
+    when: dbdump_exists
 
   # Shell equvilent:
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
@@ -115,5 +114,7 @@
       env_file: "/var/www/{{ domain }}/.env"
       cleanup: yes
       detach: yes
-    when: wp_was_installed.rc != 0
+    when:
+      - wp_was_installed.rc != 0
+      - not dbdump_exists
     become: yes

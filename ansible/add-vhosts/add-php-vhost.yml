@@ -19,7 +19,7 @@
   sudo: yes
   tasks:
 
-  - include: tasks-add-vhost.yml
+  - include: inc/tasks-add-vhost.yml
 
   - name: Facts about this container 1
     set_fact:

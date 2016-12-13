@@ -1,0 +1,29 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" remove-wordpress-vhost.yml
+- hosts: all
+  vars:
+    - image: "wordpress"
+    - escaped_domain: "{{ domain | regex_replace('\\.', '_') }}"
+    - db_user: "{{ escaped_domain }}_user"
+    - db_name: "{{ escaped_domain }}_sql"
+    - db_port: 3306
+    - db_host: sqldb.noflag.org.uk
+  #connection: docker
+  tasks:
+
+  # Shell equivilent:
+  # docker rm -f $domain.fpm
+  - name: Remove Wordpress container
+    docker_container:
+      name: "{{ domain }}.fpm"
+      state: absent
+    become: yes
+
+  - include: inc/tasks-dump-database.yml
+
+  - name: Compress backup files
+    command: zip -r /var/www/{{ domain }}/{{ domain }}.zip /var/www/{{ domain }}/public_html /var/www/{{ domain }}/{{ db_name }}.sql.gz
+    become: yes
+
+  - include: inc/tasks-remove-database.yml
+  - include: inc/tasks-remove-vhost.yml

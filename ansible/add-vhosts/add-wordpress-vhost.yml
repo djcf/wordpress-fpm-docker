@@ -17,12 +17,17 @@
     - db_host: sqldb.noflag.org.uk
     - admin_user: admin
     - site_title: "{{ domain }}"
-  #connection: docker
-  sudo: yes
-  tasks:
+    - volumes:
+      - "docker_sites_enabled"
+      - "docker_htpasswd"
+      - "docker_nginx_config"
+      - "docker_nginx_config_inc"
+      - "docker_vhost_config"
+      - "docker_ssl_certs"
 
-  - include: tasks-add-vhost.yml
-  - include: tasks-add-php-container.yml
+  tasks:
+  - include: inc/tasks-add-vhost.yml
+  - include: inc/tasks-add-php-container.yml
 
   # Shell equivilent:
   # docker create --name $domain.fpm wordpress --net=docker_sqlnet --volumes {} wordpress
@@ -84,7 +89,7 @@
       database_should_be_created: false
     when: db_exists.rc == 0
 
-  - include: tasks-create-database.yml
+  - include: inc/tasks-create-database.yml
 
   # Shell equvilent:
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'

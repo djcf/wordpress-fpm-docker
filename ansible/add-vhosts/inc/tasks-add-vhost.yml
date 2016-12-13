@@ -1,0 +1,63 @@
+- include: tasks-register-docker-data.yml
+
+- block:
+    - name: Facts about this vhost 1
+      set_fact:
+        transport: http
+      when: not ssl_host
+
+    - name: Facts about this vhost 2
+      set_fact:
+        transport: https
+      when: ssl_host
+
+    - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
+      command: "openssl dhparam -out {{ docker_ssl_certs }}/{{ domain }}.dhparam.pem"
+      args:
+        creates: "{{ docker_ssl_certs }}/{{ domain }}.dhparam.pem"
+      when:
+        - ssl_host
+        - not lets_encrypt
+
+    - name: Check if an SSL certificate exists locally (NB careful not to check into version control if so)
+      local_action: "stat path={{ domain }}.crt"
+      register: local_ssl_cert
+      ignore_errors: yes
+      when:
+        - ssl_host
+        - not lets_encrypt
+
+    - name: Check if an SSL key exists locally (NB careful not to check into version control if so)
+      local_action: "stat path={{ domain }}.key"
+      register: local_ssl_key
+      ignore_errors: yes
+      when:
+        - ssl_host
+        - not lets_encrypt
+
+    - name: Upload SSL certificate into vhost when using SSL but not letsencrypt
+      copy: src="{{ domain }}.crt" dest="{{ docker_ssl_certs }}/{{ domain }}.crt"
+      become: yes
+      when:
+        - ssl_host
+        - not lets_encrypt
+        - local_ssl_key.stat.exists
+        - local_ssl_cert.stat.exists
+
+    - name: Upload SSL key into vhost when using SSL but not letsencrypt
+      copy: src={{ domain }}.key dest={{ docker_ssl_certs }}/{{ domain }}.key
+      become: yes
+      when:
+        - ssl_host
+        - not lets_encrypt
+        - local_ssl_key.stat.exists
+        - local_ssl_cert.stat.exists
+
+    - name: Copy vhost template to host
+      template: src=resources/vhost.j2 dest="{{ docker_sites_enabled }}/{{ domain }}.conf"
+      become: yes
+
+  always:
+    - name: Reload nginx configuration
+      command: "docker exec switchboard nginx -s reload"
+      become: yes

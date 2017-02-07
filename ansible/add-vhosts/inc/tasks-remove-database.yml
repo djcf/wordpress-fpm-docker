@@ -1,16 +1,18 @@
 ---
+- import: tasks-find-mysql-root-password.yml
+
 # Shell equivilent:
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP DATABASE IF EXISTS $db_name; DROP USER '$db_user'@'%';
 - name: Remove database
   docker_container:
-    name: "{{ domain }}.createdb"
+    name: "{{ domain }}.removedb"
     image: mariadb
     networks:
       - name: docker_sqlnet
         link: "{{ db_host }}"
     command: "mysql -f -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; DROP USER '{{ db_user }}'@'%';"
     env:
-      MYSQL_PWD: 1234
+      MYSQL_PWD: "{{mysql_root_password}}"
     cleanup: yes
     detach: yes
   become: yes

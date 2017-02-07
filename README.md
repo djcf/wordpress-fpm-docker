@@ -72,9 +72,13 @@ LOCAL DEVELOPMENT (INSTALL USING VAGRANT)
 
 You can obtain an exact copy of the production environment for local testing and dev work using vagrant. First, you need vagrant (obviously) and the vagrant plugin docker-compose. Vagrant will automatically use the ansible scripts and docker-compose file to get the container assembly up and running.
 
-    $ vagrant plugin install docker-compose
+    $ vagrant plugin install docker-compose docker vagrant-docker-compose
     $ vagrant up
     $ vagrant ssh
+
+To run playbooks against the local vagrant host, export INVENTORY=$(pwd)/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+
+Or in fish: set $inventory (pwd)/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
 
 TODO
 -----
@@ -88,6 +92,8 @@ TODO
 	* nginx should also cache generated php files
 	* nginx could install pagespeed
 	* DNS management
+	* Import from Alba
+	* Use wordpress (alpine) official docker image
 
 BUGS
 ------

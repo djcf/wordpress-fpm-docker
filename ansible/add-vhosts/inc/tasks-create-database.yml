@@ -1,6 +1,66 @@
 ---
+- include: tasks-find-mysql-root-password.yml
+
+# Shell: if [ -e /var/www/$domain/.env ]
+- name: ENV file should exist
+  stat: path="/var/www/{{ domain }}/.env"
+  register: environment_exists
+  failed_when: not environment_exists.stat.exists
+  ignore_errors: yes
+
+- name: Generate random database password if ENV does not exist
+  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
+  register: generated_password
+  when:
+    - environment_exists|failed
+    - db_password is undefined
+
+- name: Store generated password if ENV does not exist
+  set_fact:
+    db_password: "{{ generated_password.stdout }}"
+  when:
+    - environment_exists|failed
+    - db_password is undefined
+
+- name: Read password from environment if it exists
+  shell: "source /var/www/{{ domain }}/.env; echo $DB_PASSWORD"
+  register: read_password
+  when:
+    - environment_exists|succeeded
+    - db_password is undefined
+  args:
+    executable: /bin/bash
+
+- name: Store read password
+  set_fact:
+    db_password: "{{ read_password.stdout }}"
+  when:
+    - environment_exists|succeeded
+    - db_password is undefined
+
+# Shell: scp env $host:/var/www/$domain/.env
+- name: Copy env vars for container to host
+  template:
+    src: resources/env.j2
+    dest: "/var/www/{{ domain }}/.env"
+    owner: root
+    group: root
+    mode: 0660
+  become: yes
+  when: environment_exists|failed
+
+- name: Print details of new database
+  debug:
+    var: "{{ item }}"
+  with_items:
+    - db_host
+    - db_port
+    - db_name
+    - db_user
+    - db_password
+
 # Shell equivilent:
-# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP USER {{ db_user }}; DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\"'
+# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP USER db_user; DROP DATABASE IF EXISTS db_name; CREATE DATABASE db_name; GRANT ALL ON db_name.* TO 'db_user'@'%' IDENTIFIED BY 'db_password';\"'
 - name: Create database
   docker_container:
     name: "{{ domain }}.createdb"
@@ -11,7 +71,7 @@
     #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
     command: "mysql -f -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
     env:
-      MYSQL_PWD: 1234
+      MYSQL_PWD: "{{mysql_root_password}}"
     cleanup: yes
     detach: yes
   become: yes

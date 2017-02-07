@@ -2,18 +2,15 @@
 # Usage: ansible-playbook --extra-vars "db_user=myuser db_password=xxx db_name=sqldb" create-database.yml
 - hosts: all
   vars:
-    - db_password: "random"
     - db_port: 3306
-    - db_password: "random"
     - db_host: sqldb.noflag.org.uk
-    - database_should_be_created: true
-#  vars_prompt:
-#    - name: "db_user"
-#      prompt: "Enter a database user"
-#    - name: "db_name"
-#      prompt: "Enter a database name"
-#    - name: "db_password"
-#      prompt: "Enter a database password (or type 'random')"
+  vars_prompt:
+    - name: "db_user"
+      prompt: "Enter a database user"
+    - name: "db_name"
+      prompt: "Enter a database name"
+    - name: "db_password"
+      prompt: "Enter a database password (or type 'random')"
 
   #connection: docker
   tasks:
@@ -21,15 +18,13 @@
   - name: Generate random database password
     local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
     register: generated_password
-    when: db_password is "random"
+    when:
+      - db_password == "random"
 
-  - name: Store generated database password
+  - name: Store generated password
     set_fact:
-      db_password: generated_password.stdout
-    when: db_password is "random"
-
-  - name: Print out new database password
-    debug:
-      msg: "New database password for database named '{{ db_name }}' is '{{ db_password }}'"
+      db_password: "{{ generated_password.stdout }}"
+    when:
+      - db_password == "random"
 
   - include: inc/tasks-create-database.yml

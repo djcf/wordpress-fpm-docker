@@ -59,8 +59,8 @@ else:
      *
      * @since 2.6.0
      */
-    if (file_exists(dirname(__FILE__) . '/wp-content/salts.php')) {
-    	include(dirname(__FILE__) . '/wp-content/salts.php');
+    if (file_exists(dirname(__FILE__) . '/salts.php')) {
+    	include(dirname(__FILE__) . '/salts.php');
     } else {
 	    define('AUTH_KEY',         $_ENV['AUTH_KEY']);
 	    define('SECURE_AUTH_KEY',  $_ENV['SECURE_AUTH_KEY']);

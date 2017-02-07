@@ -2,11 +2,13 @@
   command: "docker volume inspect {{ item }}"
   register: output
   with_items: "{{ volumes }}"
+  changed_when: false
 
 - name: Process JSON output
   set_fact:
     volumes_list: "{{ item.stdout|from_json }}"
   with_items: "{{ output.results }}"
+  no_log: true
 
 - name: Register docker_sites_enabled
   set_fact:
@@ -14,6 +16,7 @@
   with_nested:
     - "{{ volumes }}"
     - "{{ volumes_list }}"
+  no_log: true
 
 - name: The following facts are now set
   debug:

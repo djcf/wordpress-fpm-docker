@@ -64,15 +64,15 @@ services:
       - switchboard
     command: -notify-sighup switchboard -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
   database:
-    env_file: env
+    #env_file: env
     image: mariadb
     restart: always
     container_name: sqldb.noflag.org.uk
     volumes:
       - sqldata:/var/lib/mysql
-    #environment:
+    environment:
       #MYSQL_ONETIME_PASSWORD: "yes"
-      #MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     networks:
       - sqlnet
 

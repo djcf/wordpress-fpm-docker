@@ -21,8 +21,14 @@
 
   - include: inc/tasks-dump-database.yml
 
+  # shell equiv: zip -r /var/www/{{ domain }}/{{ domain }}.zip /var/www/{{ domain }}/public_html /var/www/{{ domain }}/{{ db_name }}.sql.gz
   - name: Compress backup files
-    command: "zip -r /var/www/{{ domain }}/{{ domain }}.zip /var/www/{{ domain }}/public_html /var/www/{{ domain }}/{{ db_name }}.sql.gz"
+    archive:
+      path:
+        - "/var/www/{{ domain }}/public_html"
+        - "/var/www/{{ domain }}/{{ db_name }}.sql.gz"
+      dest: "/var/www/{{ domain }}/{{ domain }}.zip"
+      format: zip
     become: yes
 
   - include: inc/tasks-remove-database.yml

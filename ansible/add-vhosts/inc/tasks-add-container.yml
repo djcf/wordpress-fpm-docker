@@ -1,0 +1,16 @@
+---
+- name: Facts about this container 1
+  set_fact:
+    state: started
+  when: container_always_active
+
+- name: Facts about this container 2
+  set_fact:
+    state: present
+  when: not container_always_active
+
+- name: Project directory should exist
+  file:
+    path: "/var/www/{{ domain }}"
+    state: directory
+    recurse: yes

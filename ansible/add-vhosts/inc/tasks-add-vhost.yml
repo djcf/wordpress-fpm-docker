@@ -22,6 +22,7 @@
     - name: Check if an SSL certificate exists locally (NB careful not to check into version control if so)
       local_action: "stat path={{ domain }}.crt"
       register: local_ssl_cert
+      failed_when: not local_ssl_cert.stat.exists
       ignore_errors: yes
       when:
         - ssl_host
@@ -30,6 +31,7 @@
     - name: Check if an SSL key exists locally (NB careful not to check into version control if so)
       local_action: "stat path={{ domain }}.key"
       register: local_ssl_key
+      failed_when: not local_ssl_key.stat.exists
       ignore_errors: yes
       when:
         - ssl_host
@@ -41,8 +43,8 @@
       when:
         - ssl_host
         - not lets_encrypt
-        - local_ssl_key.stat.exists
-        - local_ssl_cert.stat.exists
+        - local_ssl_key|succeeded
+        - local_ssl_cert|succeeded
 
     - name: Upload SSL key into vhost when using SSL but not letsencrypt
       copy: src={{ domain }}.key dest={{ docker_ssl_certs }}/{{ domain }}.key
@@ -50,8 +52,8 @@
       when:
         - ssl_host
         - not lets_encrypt
-        - local_ssl_key.stat.exists
-        - local_ssl_cert.stat.exists
+        - local_ssl_key|succeeded
+        - local_ssl_cert|succeeded
 
     - name: Copy vhost template to host
       template: src=resources/vhost.j2 dest="{{ docker_sites_enabled }}/{{ domain }}.conf"

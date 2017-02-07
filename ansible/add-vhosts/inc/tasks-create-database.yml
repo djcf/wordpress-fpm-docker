@@ -73,5 +73,5 @@
     env:
       MYSQL_PWD: "{{mysql_root_password}}"
     cleanup: yes
-    detach: yes
+    detach: no
   become: yes

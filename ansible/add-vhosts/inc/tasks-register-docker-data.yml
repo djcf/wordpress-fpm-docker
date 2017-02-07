@@ -1,26 +1,9 @@
 - name: Get docker volume information
-  command: "docker volume inspect {{ item }}"
-  register: output
-  with_items: "{{ volumes }}"
-  changed_when: false
+  shell: docker volume inspect {{ volumes | join(' ') }}
+  register: vlm_res
 
-- name: Process JSON output
-  set_fact:
-    volumes_list: "{{ item.stdout|from_json }}"
-  with_items: "{{ output.results }}"
-  no_log: true
+- name: Set fact about the docker volumes
+  set_fact: mountpoints={{ dict(vlm_res.stdout | from_json | json_query('[].[Name,Mountpoint]')) }}
 
-- name: Register docker_sites_enabled
-  set_fact:
-    "{{ item[0] }}": "{{ item[1].Mountpoint }}"
-  with_nested:
-    - "{{ volumes }}"
-    - "{{ volumes_list }}"
-  no_log: true
-
-- name: The following facts are now set
-  debug:
-    msg: "{{ item[0] }}: {{ item[1].Mountpoint }}"
-  with_nested:
-    - "{{ volumes }}"
-    - "{{ volumes_list }}"
+- name: The following mountpoints are now available
+  debug: var=mountpoints

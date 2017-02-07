@@ -3,46 +3,30 @@
 - hosts: all
   vars:
     - docker_image: "fpm"
-    - ssl_host: yes
-    - ssl_method: redirect
-    - subdomain: ""
-    - lets_encrypt: yes
-    - use_php: yes
-    - container_always_active: no
-    - default_cert: "default"
-    - escaped_domain: "{{ domain | regex_replace('\\.', '_') }}"
-    - db_user: "{{ escaped_domain }}_user"
-    - db_name: "{{ escaped_domain }}_sql"
-    - db_port: 3306
-    - db_host: sqldb.noflag.org.uk
-    - volumes:
-      - "docker_sites_enabled"
-      - "docker_htpasswd"
-      - "docker_nginx_config"
-      - "docker_nginx_config_inc"
-      - "docker_vhost_config"
-      - "docker_ssl_certs"
+  vars_files:
+    - /resources/vars_docker_conf.yml
+    - /resources/vars_db.yml
+    - /resources/vars_php.yml
   #connection: docker
   sudo: yes
   tasks:
+    - include: inc/tasks-add-vhost.yml
+    - include: inc/tasks-add-container.yml
+    - include: inc/tasks-create-database.yml
 
-  - include: inc/tasks-add-vhost.yml
-  - include: inc/tasks-add-container.yml
-  - include: inc/tasks-create-database.yml
-
-  # Shell equivilent:
-  # docker create --name $domain.fpm wordpress --net=docker_sqlnet --volumes {} wordpress
-  - name: Create php container for new site
-    docker_container:
-      name: "{{ domain }}.fpm"
-      image: "{{ docker_image }}"
-      state: "{{ state }}"
-      networks:
-        - name: docker_sqlnet
-          link: "{{ db_host }}"
-      volumes:
-        - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
-        - "/var/www/{{ domain }}/public_html/wp-content:/var/lib/wordpress/wp-content"
-        - "/etc/ssmtp:/etc/ssmtp:ro"
-      env_file: "/var/www/{{ domain }}/.env"
-    become: yes
+    # Shell equivilent:
+    # docker create --name $domain.fpm wordpress --net=docker_sqlnet --volumes {} wordpress
+    - name: Create php container for new site
+      docker_container:
+        name: "{{ domain }}.fpm"
+        image: "{{ docker_image }}"
+        state: "{{ state }}"
+        networks:
+          - name: docker_sqlnet
+            link: "{{ db_host }}"
+        volumes:
+          - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
+          - "/var/www/{{ domain }}/public_html/wp-content:/var/lib/wordpress/wp-content"
+          - "/etc/ssmtp:/etc/ssmtp:ro"
+        env_file: "/var/www/{{ domain }}/.env"
+      become: yes

@@ -1,0 +1,9 @@
+---
+switchboard: switchboard
+volumes:
+  - "docker_sites_enabled"
+  - "docker_htpasswd"
+  - "docker_nginx_config"
+  - "docker_nginx_config_inc"
+  - "docker_vhost_config"
+  - "docker_ssl_certs"

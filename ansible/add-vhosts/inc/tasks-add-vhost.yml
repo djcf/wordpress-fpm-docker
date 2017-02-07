@@ -5,16 +5,18 @@
       set_fact:
         transport: http
       when: not ssl_host
+      no_log: true
 
     - name: Facts about this vhost 2
       set_fact:
         transport: https
       when: ssl_host
+      no_log: true
 
     - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
-      command: "openssl dhparam -out {{ docker_ssl_certs }}/{{ domain }}.dhparam.pem"
+      command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
       args:
-        creates: "{{ docker_ssl_certs }}/{{ domain }}.dhparam.pem"
+        creates: "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
       when:
         - ssl_host
         - not lets_encrypt
@@ -38,7 +40,7 @@
         - not lets_encrypt
 
     - name: Upload SSL certificate into vhost when using SSL but not letsencrypt
-      copy: src="{{ domain }}.crt" dest="{{ docker_ssl_certs }}/{{ domain }}.crt"
+      copy: src="{{ domain }}.crt" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"
       become: yes
       when:
         - ssl_host
@@ -47,7 +49,7 @@
         - local_ssl_cert|succeeded
 
     - name: Upload SSL key into vhost when using SSL but not letsencrypt
-      copy: src={{ domain }}.key dest={{ docker_ssl_certs }}/{{ domain }}.key
+      copy: src={{ domain }}.key dest={{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.key
       become: yes
       when:
         - ssl_host
@@ -56,7 +58,7 @@
         - local_ssl_cert|succeeded
 
     - name: Copy vhost template to host
-      template: src=resources/vhost.j2 dest="{{ docker_sites_enabled }}/{{ domain }}.conf"
+      template: src=resources/vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ domain }}.conf"
       become: yes
 
   always:

@@ -3,13 +3,13 @@
     path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ docker_sites_enabled }}/{{ domain }}.conf"
-    - "{{ docker_ssl_certs }}/{{ domain }}.pem"
-    - "{{ docker_ssl_certs }}/{{ domain }}.key"
-    - "{{ docker_ssl_certs }}/{{ domain }}.crt"
-    - "{{ docker_ssl_certs }}/{{ domain }}.cert"
-    - "{{ docker_ssl_certs }}/{{ domain }}.dhparam.pem"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.pem"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.key"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.cert"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
 
 - name: Reload nginx configuration
-  command: "docker exec switchboard nginx -s reload"
+  command: "docker exec {{ switchboard }} nginx -s reload"
   become: yes

@@ -3,29 +3,13 @@
 - hosts: all
   vars:
     - docker_image: "wordpress"
-    - ssl_host: yes
-    - ssl_method: redirect
-    - subdomain: ""
-    - lets_encrypt: yes
-    - use_php: yes
-    - container_always_active: no
-    - default_cert: "default"
-    - escaped_domain: "{{ domain | regex_replace('\\.', '_') }}"
-    - db_user: "{{ escaped_domain }}_user"
-    - db_name: "{{ escaped_domain }}_sql"
-    - db_port: 3306
-    - db_host: sqldb.noflag.org.uk
-    - db_password: random
     - admin_user: admin
     - site_title: "{{ domain }}"
     - salts_file: "/var/www/{{ domain }}/public_html/salts.php"
-    - volumes:
-      - "docker_sites_enabled"
-      - "docker_htpasswd"
-      - "docker_nginx_config"
-      - "docker_nginx_config_inc"
-      - "docker_vhost_config"
-      - "docker_ssl_certs"
+  vars_files:
+    - /resources/vars_docker_conf.yml
+    - /resources/vars_db.yml
+    - /resources/vars_php.yml
 
   tasks:
   - include: inc/tasks-add-vhost.yml
@@ -72,6 +56,7 @@
         - "/etc/ssmtp:/etc/ssmtp:ro"
         - "{{ salts_file }}:/var/lib/wordpress/salts.php:ro"
       env_file: "/var/www/{{ domain }}/.env"
+      detach: yes
     become: yes
 
   - name: Check to see if a site dump exists locally
@@ -120,8 +105,8 @@
         - "{{ domain }}.fpm"
       env_file: "/var/www/{{ domain }}/.env"
       cleanup: yes
-      detach: yes
+      detach: no
     when:
-      - wp_was_installed|failed
+#      - wp_was_installed|failed
       - dbdump_exists|failed
     become: yes

@@ -11,6 +11,8 @@
     - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"
     - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.cert"
     - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
+    - "/etc/systemd/system/socket.target.wants/fpm-waker@{{ domain }}.socket"
+    - "/var/run/docker-apps/{{ domain }}/"
 
 - name: Reload nginx configuration
   command: "docker exec {{ switchboard }} nginx -s reload"

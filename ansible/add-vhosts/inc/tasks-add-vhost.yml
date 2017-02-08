@@ -7,12 +7,14 @@
         ssl_method: none
       when: not ssl_host
       no_log: true
+      changed_when: false
 
     - name: Facts about this vhost 2
       set_fact:
         transport: https
       when: ssl_host
       no_log: true
+      changed_when: false
 
     - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
       command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
@@ -30,6 +32,7 @@
       when:
         - ssl_host
         - not lets_encrypt
+      changed_when: false
 
     - name: Check if an SSL key exists locally (NB careful not to check into version control if so)
       local_action: "stat path={{ domain }}.key"
@@ -39,6 +42,7 @@
       when:
         - ssl_host
         - not lets_encrypt
+      changed_when: false
 
     - name: Upload SSL certificate into vhost when using SSL but not letsencrypt
       copy: src="{{ domain }}.crt" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"

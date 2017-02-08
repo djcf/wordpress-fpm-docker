@@ -5,37 +5,45 @@
 {% endif %}
 
 server {
-            listen 80;
-            listen [::]:80;
+                listen 80;
+                listen [::]:80;
 
-            server_name {{ domain }} www.{{ domain }} {{ subdomain }};
-            access_log /dev/stdout vhost;
-            error_log /dev/stderr error;
+                server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+                access_log /dev/stdout vhost;
+                error_log stderr error;
 
-    {% if ssl_method == "redirect" %}
-            return 302 https://$host$request_uri;
-    {% else %}
-            root /var/www/{{ domain }}/public_html;
-            index index.html index.htm;
-            location / {
-                try_files $uri $uri/ /index.php?q=$uri&$args;
-            }
+        {% if ssl_method == "redirect" %}
+                return 302 https://$host$request_uri;
+        {% else %}
+                root /var/www/{{ domain }}/public_html;
+                location / {
+                    try_files $uri $uri/ /index.php?q=$uri&$args;
+                }
 
-        {% if use_php == true %}
+            {% if use_php == true %}
+                index index.php index.html index.htm;
 
               # Pass all .php files onto a php-fpm/php-fcgi server.
-              location ~ [^/]\.php(/|$) {
-                fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-                # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
+                location ~ \.php$ {
+                    root /var/lib/wordpress;
 
-                include fastcgi_params;
-                fastcgi_index index.php;
-                fastcgi_param SCRIPT_FILENAME /var/lib/wordpress$fastcgi_script_name;
-              # fastcgi_intercept_errors on;
-                fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
-              }
+                    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+                    # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
 
-        {% endif %}
+    #                    if (!-f $document_root$fastcgi_script_name) {
+    #                        return 404;
+    #                    }
+    #                   fastcgi_param HTTP_PROXY "";
+
+                    include fastcgi_params;
+                    fastcgi_index index.php;
+                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                    # fastcgi_intercept_errors on;
+                    fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
+                }
+            {% else %}
+                    index index.html index.htm;
+            {% endif %}
     {% endif %}
 }
 
@@ -46,7 +54,7 @@ server {
                 listen [::]:443;
 
                 access_log /dev/stdout vhost;
-                error_log /dev/stderr error;
+                error_log stderr error;
 
         {% if lets_encrypt == true %}
 

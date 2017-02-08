@@ -30,6 +30,7 @@
     - db_password is undefined
   args:
     executable: /bin/bash
+  become: yes
 
 - name: Store read password
   set_fact:
@@ -63,7 +64,7 @@
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP USER db_user; DROP DATABASE IF EXISTS db_name; CREATE DATABASE db_name; GRANT ALL ON db_name.* TO 'db_user'@'%' IDENTIFIED BY 'db_password';\"'
 - name: Create database
   docker_container:
-    name: "{{ domain }}.createdb"
+    name: "{{ domain }}-createdb"
     image: mariadb
     networks:
       - name: docker_sqlnet

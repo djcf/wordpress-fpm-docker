@@ -1,3 +1,5 @@
+- include: tasks-register-docker-data.yml
+
 - name: Remove relevant files
   file:
     path: "{{ item }}"

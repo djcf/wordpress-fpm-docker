@@ -7,9 +7,9 @@
     - site_title: "{{ domain }}"
     - salts_file: "/var/www/{{ domain }}/public_html/salts.php"
   vars_files:
-    - /resources/vars_docker_conf.yml
-    - /resources/vars_db.yml
-    - /resources/vars_php.yml
+    - resources/vars_docker_conf.yml
+    - resources/vars_db.yml
+    - resources/vars_php.yml
 
   tasks:
   - include: inc/tasks-add-vhost.yml
@@ -83,13 +83,13 @@
 
   # Shell equvilent:
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
-#  - name: Check to see if WP is installed already
-#    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path=/var/lib/wordpress'"
-#    ignore_errors: yes
-#    failed_when: wp_was_installed.rc != 0
-#    register: wp_was_installed
-#    become: yes
-#    changed_when: false
+  - name: Check to see if WP is installed already
+    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path=/var/lib/wordpress'"
+    ignore_errors: yes
+    failed_when: wp_was_installed.rc != 0
+    register: wp_was_installed
+    become: yes
+    changed_when: false
 
   # Shell equivilent
   # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --env-file /var/www/$domain/.env --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core install --url=http://$domain --admin_email=test@test.org'
@@ -107,6 +107,6 @@
       cleanup: yes
       detach: no
     when:
-#      - wp_was_installed|failed
+      - wp_was_installed|failed
       - dbdump_exists|failed
     become: yes

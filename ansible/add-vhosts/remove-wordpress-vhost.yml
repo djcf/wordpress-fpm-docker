@@ -7,7 +7,7 @@
     - name: "domain"
       prompt: "Enter the domain you would like to remove"
   vars_files:
-    - /resources/vars_db.yml
+    - resources/vars_db.yml
 
   tasks:
   # Shell equivilent:
@@ -30,5 +30,5 @@
       format: zip
     become: yes
 
-  - include: inc/tasks-remove-database.yml
   - include: inc/tasks-remove-vhost.yml
+  - include: inc/tasks-remove-database.yml

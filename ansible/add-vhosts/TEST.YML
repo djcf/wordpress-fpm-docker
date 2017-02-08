@@ -1,7 +1,0 @@
----
-- hosts: all
-
-  vars_files:
-    - resources/vars_docker_conf.yml
-  tasks:
-    - include: inc/tasks-register-docker-data.yml

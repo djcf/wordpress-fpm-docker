@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "peru/ubuntu-16.04-server-amd64"
   #config.vm.box = "ubuntu/ubuntu-16.04-server"
 
+  # This Xenial box seems to work however
   config.vm.box = "nrclark/xenial64-minimal-libvirt"
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync",
@@ -29,12 +30,6 @@ $COPY_SVC_UNITS = <<SH
   cp /vagrant/systemd.services/vhost.fpm.service /etc/systemd/system
   cp /vagrant/systemd.services/vhost.fpm-waker.service /etc/systemd/system
   cp /vagrant/systemd.services/vhost.fpm-waker.socket /etc/systemd/system
-
-  docker create \
-	--name vhost \
-	-v docker_web:/usr/share/nginx \
-	-v /var/run/docker-apps:/var/run/docker-apps \
-	fpm
 SH
 
   config.vm.provision "shell", inline: $COPY_SVC_UNITS

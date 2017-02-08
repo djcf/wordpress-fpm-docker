@@ -1,7 +1,7 @@
 [Unit]
 Description=%i fpm container
 PartOf=switchboard.service
-#Documentation=https://github.com/djcf/
+Documentation=https://github.com/djcf/wordpress-fpm-docker
 
 [Service]
 ExecStart=/usr/bin/docker start -a %i.fpm

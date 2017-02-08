@@ -4,6 +4,7 @@
     - name: Facts about this vhost 1
       set_fact:
         transport: http
+        ssl_method: none
       when: not ssl_host
       no_log: true
 
@@ -57,11 +58,20 @@
         - local_ssl_key|succeeded
         - local_ssl_cert|succeeded
 
+    - name: A default SSL certificate-pair should exist for all vhosts when using SSL but not letsencrypt and no user certificates were provided
+      command: "openssl req -new -nodes -x509 -subj /C=GB/ST=London/L=London/O=IT/CN={{ domain }} -days 365 -keyout {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.key -out {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt -extensions v3_ca creates={{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt"
+      become: yes
+      when:
+        - ssl_host
+        - not lets_encrypt
+        - local_ssl_key|failed
+        - local_ssl_cert|failed
+
     - name: Copy vhost template to host
       template: src=resources/vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ domain }}.conf"
       become: yes
 
   always:
     - name: Reload nginx configuration
-      command: "docker exec switchboard nginx -s reload"
+      command: "docker exec {{ switchboard }} nginx -s reload"
       become: yes

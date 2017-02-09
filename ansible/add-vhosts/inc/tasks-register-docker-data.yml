@@ -1,6 +1,7 @@
 - name: Get docker volume information
   shell: docker volume inspect {{ docker_volume_lbls | join(' ') }}
   register: vlm_res
+  changed_when: false
 
 - name: Set fact about the docker volumes
   set_fact: docker_volumes={{ dict(vlm_res.stdout | from_json | json_query('[].[Name,Mountpoint]')) }}

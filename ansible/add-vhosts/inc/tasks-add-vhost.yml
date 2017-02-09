@@ -18,8 +18,7 @@
 
     - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
       command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
-      args:
-        creates: "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
+      args: creates="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
       when:
         - ssl_host
         - not lets_encrypt

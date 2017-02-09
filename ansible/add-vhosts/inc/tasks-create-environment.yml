@@ -1,0 +1,53 @@
+---
+# Shell: if [ -e /var/www/$domain/.env ]
+- name: ENV file should exist
+  stat: path="/var/www/{{ domain }}/.env"
+  register: environment_exists
+  failed_when: not environment_exists.stat.exists
+  ignore_errors: yes
+
+- name: Generate random database password if ENV does not exist
+  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
+  register: generated_password
+  when:
+    - environment_exists|failed
+    - db_password is undefined
+
+- name: Store generated password if ENV does not exist
+  set_fact:
+    db_password: "{{ generated_password.stdout }}"
+  when:
+    - environment_exists|failed
+    - db_password is undefined
+
+- name: Read password from environment if it exists
+  shell: "source /var/www/{{ domain }}/.env; echo $DB_PASSWORD"
+  register: read_password
+  when:
+    - environment_exists|succeeded
+    - db_password is undefined
+  args:
+    executable: /bin/bash
+  become: yes
+
+- name: Store read password
+  set_fact:
+    db_password: "{{ read_password.stdout }}"
+  when:
+    - environment_exists|succeeded
+    - db_password is undefined
+
+# Shell: scp env $host:/var/www/$domain/.env
+- name: Copy env vars for container to host
+  template:
+    src: resources/env.j2
+    dest: "/var/www/{{ domain }}/.env"
+    owner: root
+    group: root
+    mode: 0660
+  become: yes
+  when: environment_exists|failed
+  # Is it more important to respect the existing file, or rewrite it from the default template?
+  # Remove when: directive to always rewrite existing file when template changes
+  # If so, May cause bug with generated_password ?
+  # If template changes, remove .env file manually

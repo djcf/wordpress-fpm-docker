@@ -5,45 +5,52 @@
 {% endif %}
 
 server {
-                listen 80;
-                listen [::]:80;
+            listen 80;
+            listen [::]:80;
 
-                server_name {{ domain }} www.{{ domain }} {{ subdomain }};
-                access_log /dev/stdout vhost;
-                error_log stderr error;
+            server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+            access_log /dev/stdout vhost;
+            error_log stderr error;
 
-        {% if ssl_method == "redirect" %}
-                return 302 https://$host$request_uri;
+    {% if ssl_method == "redirect" %}
+
+            return 302 https://$host$request_uri;
+
+    {% else %}
+
+            root /var/www/{{ domain }}/public_html;
+            location / {
+                try_files $uri $uri/ /index.php?q=$uri&$args;
+            }
+
+        {% if use_php == true %}
+
+            index index.php index.html index.htm;
+
+            # Pass all .php files onto a php-fpm/php-fcgi server.
+            location ~ \.php$ {
+                root /var/lib/wordpress;
+
+                fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+                # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
+
+#                    if (!-f $document_root$fastcgi_script_name) {
+#                        return 404;
+#                    }
+#                   fastcgi_param HTTP_PROXY "";
+
+                include fastcgi_params;
+                fastcgi_index index.php;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                # fastcgi_intercept_errors on;
+                fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
+            }
+
         {% else %}
-                root /var/www/{{ domain }}/public_html;
-                location / {
-                    try_files $uri $uri/ /index.php?q=$uri&$args;
-                }
 
-            {% if use_php == true %}
-                index index.php index.html index.htm;
+                index index.html index.htm;
 
-              # Pass all .php files onto a php-fpm/php-fcgi server.
-                location ~ \.php$ {
-                    root /var/lib/wordpress;
-
-                    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-                    # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
-
-    #                    if (!-f $document_root$fastcgi_script_name) {
-    #                        return 404;
-    #                    }
-    #                   fastcgi_param HTTP_PROXY "";
-
-                    include fastcgi_params;
-                    fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                    # fastcgi_intercept_errors on;
-                    fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
-                }
-            {% else %}
-                    index index.html index.htm;
-            {% endif %}
+        {% endif %}
     {% endif %}
 }
 
@@ -59,16 +66,14 @@ server {
         {% if lets_encrypt == true %}
 
         {% else %}
-            {% if local_ssl_cert.stat.exists and local_ssl_key.stat.exists %}
+            {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
                 ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
                 ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
             {% else %}
                 ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
                 ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
             {% endif %}
-            {% if dhparam_exists %}
                 ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
-            {% endif %}
         {% endif %}
 
                 root /var/www/{{ domain }}/public_html;

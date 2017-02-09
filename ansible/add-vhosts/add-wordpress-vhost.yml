@@ -15,7 +15,7 @@
   - include: inc/tasks-add-vhost.yml
   - include: inc/tasks-add-container.yml
 
-    # Shell: if [ -e /var/www/$domain/public_html/salts.php ]
+  # Shell: if [ -e /var/www/$domain/public_html/salts.php ]
   - name: SALTS file should exist
     stat: path="{{ salts_file }}"
     register: salts_file_exists
@@ -30,7 +30,7 @@
     become: yes
     when: salts_file_exists|failed
 
-    # Shell: echo "<?php" | cat /var/www/$domain/public_html/wp-content/salts.php > /var/www/$domain/public_html/wp-content/salts.php
+  # Shell: echo "<?php" | cat /var/www/$domain/public_html/salts.php > /var/www/$domain/public_html/salts.php
   - name: Salts file hould be php file
     lineinfile:
       dest: "{{ salts_file }}"
@@ -40,8 +40,23 @@
     become: yes
     when: salts_file_exists|failed
 
+  - include: inc/tasks-create-environment.yml
+
+  - name: Check to see if a site dump exists locally
+    local_action: "stat path={{ domain }}.zip"
+    register: dbdump_exists
+    failed_when: not dbdump_exists.stat.exists
+    ignore_errors: yes
+
+  - name: sync wp-content directories
+    command: "rsync -a --stats /var/lib/wordpress/wp-content/ /var/www/{{ domain }}/public_html/wp-content"
+    changed_when: '"files transferred: 0" not in wp_content_rsync.stdout'
+    register: wp_content_rsync
+    when: dbdump_exists|failed
+    become: yes
+
   # Shell equivilent:
-  # docker create --name $domain.fpm wordpress --net=docker_sqlnet --volumes {} wordpress
+  # docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
   - name: Create Wordpress container for new site
     docker_container:
       name: "{{ domain }}.fpm"
@@ -59,14 +74,9 @@
       detach: yes
     become: yes
 
-  - name: Check to see if a site dump exists locally
-    local_action: "stat path={{ domain }}.zip"
-    register: dbdump_exists
-    failed_when: not dbdump_exists.stat.exists
-    ignore_errors: yes
-
   # Shell equivilent
-  # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'
+  # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
+  #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress db check'
   - name: Check to see if WP database exists
     command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'"
     ignore_errors: yes
@@ -82,7 +92,8 @@
     when: dbdump_exists|succeeded
 
   # Shell equvilent:
-  # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
+  # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
+  #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
   - name: Check to see if WP is installed already
     command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path=/var/lib/wordpress'"
     ignore_errors: yes
@@ -92,7 +103,8 @@
     changed_when: false
 
   # Shell equivilent
-  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --env-file /var/www/$domain/.env --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core install --url=http://$domain --admin_email=test@test.org'
+  # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --env-file /var/www/$domain/.env --volumes-from $domain.fpm --rm wordpress sh -c \
+  #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core install --url=http://$domain --admin_email=test@test.org'
   - name: Install Wordpress database if not
     docker_container:
       command: "/usr/local/bin/wp core install --allow-root --path=/var/lib/wordpress --url={{ transport }}://{{ domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email='{{ admin_email }}'"

@@ -71,10 +71,10 @@
         - name: docker_sqlnet
           link: "{{ db_host }}"
       volumes:
-        - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
+        - "/var/run/docker-apps/{{ domain }}:/var/run"
         - "/var/www/{{ domain }}/public_html/wp-content:{{ phproot }}/wp-content"
         - "/etc/ssmtp:/etc/ssmtp:ro"
-        - "{{ salts_file }}:/var/lib/wordpress/salts.php:ro"
+        - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
       env_file: "/var/www/{{ domain }}/.env"
       detach: yes
     become: yes

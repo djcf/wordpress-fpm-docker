@@ -9,6 +9,12 @@
         state: present
       become: true
 
+    - name: Install ssmtp
+      apt:
+        name: ssmtp
+        state: present
+      become: true
+
     - name: host should have ansible
       apt:
         name: ansible
@@ -23,6 +29,7 @@
     - name: reload systemd
       become: yes
       command: systemctl daemon-reload
+      changed_when: false
 
     - name: install a 'ghost' wordpress directory for nginx to test file existence against during requests
       become: yes
@@ -31,11 +38,6 @@
         dest: /var/lib
         remote_src: true
         creates: /var/lib/wordpress
-
-    - name: set fact -- number of CPUs
-      command: grep processor /proc/cpuinfo | wc -l
-      register: worker_processes
-      changed_when: false
 
     - name: set fact -- number of worker_connections
       command: ulimit -n

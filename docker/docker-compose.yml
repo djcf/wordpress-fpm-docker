@@ -11,10 +11,10 @@ version: '2'
 
 services:
  # Pre-builds the fpm service for when its needed
-  fpm:
-    build: fpm
-    image: fpm
-    command: /bin/true
+  #fpm:
+  #  build: fpm
+  #  image: fpm
+  #  command: /bin/true
   # Pre-builds a wordpress image for when its needed
   # Add wordpress as a child container using fpm
   wordpress:
@@ -28,7 +28,7 @@ services:
     # optionally build the image instead of pulling nginx from repo:
     #build: switchboard
     #image: nginx
-    image: nginx
+    image: nginx:1.11.9-alpine
     restart: always # unless-stopped?
     container_name: switchboard
     ports:
@@ -45,6 +45,7 @@ services:
       - sites_enabled:/etc/nginx/sites-enabled:ro
       - ssl_certs:/etc/nginx/certs:ro
       - /var/www:/var/www:ro
+      - /var/lib/wordpress:/usr/src/wordpress:ro
   # dockergen listens to the docker socket and automatically generates vhosts when containers are started
   # It is not used for the on-demand containerized vhosts like php/fpm apps
   # see https://index.docker.io/u/jwilder/nginx-proxy/
@@ -65,7 +66,8 @@ services:
     command: -notify-sighup switchboard -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
   database:
     #env_file: env
-    image: mariadb
+    # TODO: Alpine -- bianjp/mariadb-alpine
+    image: bianjp/mariadb-alpine
     restart: always
     container_name: sqldb.noflag.org.uk
     volumes:

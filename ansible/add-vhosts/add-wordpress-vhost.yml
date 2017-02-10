@@ -6,7 +6,7 @@
     - admin_user: admin
     - site_title: "{{ domain }}"
     - salts_file: "/var/www/{{ domain }}/public_html/salts.php"
-    - phproot: /var/lib/wordpress
+    - phproot: /usr/src/wordpress
     - extra_nginx_configs:
       - inc/wordpress.conf
   vars_files:
@@ -72,7 +72,7 @@
           link: "{{ db_host }}"
       volumes:
         - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
-        - "/var/www/{{ domain }}/public_html/wp-content:/usr/src/wordpress/wp-content"
+        - "/var/www/{{ domain }}/public_html/wp-content:{{ phproot }}/wp-content"
         - "/etc/ssmtp:/etc/ssmtp:ro"
         - "{{ salts_file }}:/var/lib/wordpress/salts.php:ro"
       env_file: "/var/www/{{ domain }}/.env"
@@ -83,7 +83,7 @@
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
   #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress db check'
   - name: Check to see if WP database exists
-    command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path=/var/lib/wordpress'"
+    command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
     ignore_errors: yes
     failed_when: db_exists.rc != 0
     register: db_exists
@@ -100,7 +100,7 @@
   # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
   #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core is-installed'
   - name: Check to see if WP is installed already
-    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path=/var/lib/wordpress'"
+    command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'"
     ignore_errors: yes
     failed_when: wp_was_installed.rc != 0
     register: wp_was_installed
@@ -112,7 +112,7 @@
   #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core install --url=http://$domain --admin_email=test@test.org'
   - name: Install Wordpress database if not
     docker_container:
-      command: "/usr/local/bin/wp core install --allow-root --path=/var/lib/wordpress --url={{ transport }}://{{ domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email='{{ admin_email }}'"
+      command: "/usr/local/bin/wp core install --allow-root --path={{ phproot }} --url={{ transport }}://{{ domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email='{{ admin_email }}'"
       name: "{{ domain }}-installer"
       image: "{{ docker_image }}"
       networks:

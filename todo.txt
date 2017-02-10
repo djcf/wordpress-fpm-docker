@@ -1,11 +1,25 @@
-* Dockergen installs automatically in VM
+Short-term
 * fpm shut down when no vhost connections
+* transition to buildless alpine containers
+* test current config
+* add global fpm instance
+* test SSL cert
+
+Medium-term
 * Ansible plays
-	* Script imports new wordpress site
-	* Ansible play makes new wordpress site & sets up DNS binding
-	* Ansible play resets WP admin password
-	* Ansible play makes new WP admin
-	* Ansible play logs a Noflag admin in transparently
-	* LetsEncrypt
+	* Transition sites between global fpm, always running, and not always running fpm instances
+	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
+
+	* Ansible play resets WP admin password ??
+	* Ansible play makes new WP admin ??
+	* Ansible play logs a Noflag admin in transparently ??
+	* More interactivity
+
+Long-term
+**
+* Script imports wordpress sites from alba
+* LetsEncrypt
 * DNS master
+* Stats & Logging
+* fail2ban
 * New VM with DNS slaves set up by ansible play

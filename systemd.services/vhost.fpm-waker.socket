@@ -1,7 +1,0 @@
-[Socket]
-ListenStream=/var/run/docker-apps/vhost.fpm-waker.sock
-SocketUser=www-data
-SocketGroup=www-data
-
-[Install]
-WantedBy=sockets.target

@@ -1,6 +1,8 @@
 [Unit]
 Requires=fpm@%i.service
 After=fpm@%i.service
+Requires=docker.service
+After=docker.service
 PartOf=switchboard.service
 Documentation=https://github.com/djcf/wordpress-fpm-docker
 

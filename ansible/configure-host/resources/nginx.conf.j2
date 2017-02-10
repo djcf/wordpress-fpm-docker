@@ -2,32 +2,13 @@
 # Changes made to this file automatically persist into the container as a result of the volume mount
 # configuration in docker-compose.yml
 
-# Directives in this file are templated out by ansible, depending on the server's auto-discovered capabilities
+# Directives in this file may be templated into that location by ansible, depending on the server's auto-discovered capabilities
 
 user  www-data www-data;
-worker_processes  {{ worker_processes.stdout }};
-
-server_names_hash_max_size 8192;
+worker_processes  auto;
 
 error_log  stderr warn;
 pid        /var/run/nginx.pid;
-
-# From: https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
-client_body_timeout 12;
-client_header_timeout 12;
-keepalive_timeout 15;
-send_timeout 10;
-
-# From https://www.linode.com/docs/websites/nginx/configure-nginx-for-optimized-performance
-client_max_body_size         32m;
-client_header_buffer_size    1k;
-large_client_header_buffers  4 4k;
-output_buffers               1 32k;
-postpone_output              1460;
-
-fastcgi_cache_path /var/run/nginx-cache levels=1:2 keys_zone=WORDPRESS:1000m inactive=520m;
-fastcgi_cache_key "$scheme$request_method$host$request_uri";
-fastcgi_cache_use_stale error timeout invalid_header http_500;
 
 events {
     worker_connections  {{ worker_connections.stdout }};
@@ -40,9 +21,15 @@ http {
     include       mime.types;
     default_type  application/octet-stream;
 
+    server_names_hash_max_size 8192;
+
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
+
+    fastcgi_cache_path /var/cache/nginx levels=1:2 keys_zone=WORDPRESS:1000m inactive=520m;
+    fastcgi_cache_key "$scheme$request_method$host$request_uri";
+    fastcgi_cache_use_stale error timeout invalid_header http_500;
 
     access_log /dev/stdout main;
 
@@ -52,13 +39,25 @@ http {
 
     keepalive_timeout  65;
 
+    # From: https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
+    client_body_timeout 12;
+    client_header_timeout 12;
+    send_timeout 10;
+
+    # From https://www.linode.com/docs/websites/nginx/configure-nginx-for-optimized-performance
+    client_max_body_size         32m;
+    client_header_buffer_size    1k;
+    large_client_header_buffers  4 4k;
+    output_buffers               1 32k;
+    postpone_output              1460;
+
     gzip  on;
     gzip_comp_level  2;
     gzip_min_length  1000;
     gzip_proxied     expired no-cache no-store private auth;
     gzip_types       text/plain text/html application/x-javascript text/xml text/javascript text/css application/xml
                      application/javascript application/json application/vnd.ms-fontobject application/x-font-opentype
-                     application/x-font-truetype application/x-font-ttf application/xml font/eot font/opentype font/otf
+                     application/x-font-truetype application/x-font-ttf font/eot font/opentype font/otf
                      image/svg+xml image/vnd.microsoft.icon;
     gzip_disable "MSIE [1-6]\.";
 

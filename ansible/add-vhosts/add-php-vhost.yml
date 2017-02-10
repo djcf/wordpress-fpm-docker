@@ -4,7 +4,7 @@
   vars:
     - docker_image: "fpm"
   vars_files:
-    - resources/vars_docker_conf.yml
+    - ../resources/vars_docker_conf.yml
     - resources/vars_db.yml
     - resources/vars_php.yml
   #connection: docker
@@ -39,5 +39,5 @@
       register: test_success
       when: subdomain != ""
 
-    - fail: msg='The new vhost does not appear to be working'
+    - fail: msg='The new vhost does not appear to be accessible'
       when: "'Wordpress' not in test_success.content"

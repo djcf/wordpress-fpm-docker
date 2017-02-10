@@ -9,7 +9,7 @@ server {
         listen [::]:80;
 
         server_name {{ domain }} www.{{ domain }} {{ subdomain }};
-        access_log /dev/stdout vhost;
+        access_log /dev/stdout;
         error_log stderr error;
 
     {% if ssl_method == "redirect" %}
@@ -17,7 +17,7 @@ server {
     {% else %}
         root /var/www/{{ domain }}/public_html;
     {% if use_php is defined and use_php == True %}
-        {% include php-vhost.j2 %}
+        {% include "php-vhost.j2" %}
     {% else %}
         location / {
             try_files $uri $uri/ =404;
@@ -42,7 +42,7 @@ server {
         listen 443 ssl http2;
         listen [::]:443;
 
-        access_log /dev/stdout vhost;
+        access_log /dev/stdout;
         error_log stderr error;
 
     {% if lets_encrypt == true %}

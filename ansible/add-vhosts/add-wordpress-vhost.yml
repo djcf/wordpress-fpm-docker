@@ -10,7 +10,7 @@
     - extra_nginx_configs:
       - inc/wordpress.conf
   vars_files:
-    - resources/vars_docker_conf.yml
+    - ../resources/vars_docker_conf.yml
     - resources/vars_db.yml
     - resources/vars_php.yml
 
@@ -128,15 +128,17 @@
       - dbdump_exists|failed
     become: yes
 
-  - name: Test the subdomain is loading wordpress correctly
+  - name: Test the global domain is loading wordpress correctly
     action: uri url={{ transport }}://{{ domain }} return_content=yes
     register: test_success
-    when: subdomain == ""
+    when:
+      - subdomain == ""
 
-  - name: Test the global domain is loading wordpress correctly
+  - name: Test the subdomain is loading wordpress correctly
     action: uri url={{ transport }}://{{ subdomain }} return_content=yes
     register: test_success
-    when: subdomain != ""
+    when:
+      - subdomain != ""
 
   - name: Assert that the new site is loading wordpress correctly
     fail: msg='The new vhost does not appear to be working'

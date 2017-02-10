@@ -1,8 +1,8 @@
 ---
 ssl_host: yes
 ssl_method: redirect
-subdomain: ""
 lets_encrypt: yes
 use_php: yes
 container_always_active: no
 default_cert: "default"
+subdomain: ""

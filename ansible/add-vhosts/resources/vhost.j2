@@ -5,93 +5,75 @@
 {% endif %}
 
 server {
-            listen 80;
-            listen [::]:80;
+        listen 80;
+        listen [::]:80;
 
-            server_name {{ domain }} www.{{ domain }} {{ subdomain }};
-            access_log /dev/stdout vhost;
-            error_log stderr error;
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        access_log /dev/stdout vhost;
+        error_log stderr error;
 
     {% if ssl_method == "redirect" %}
-
-            return 302 https://$host$request_uri;
-
+        return 302 https://$host$request_uri;
     {% else %}
+        root /var/www/{{ domain }}/public_html;
+    {% if use_php is defined and use_php == True %}
+        {% include php-vhost.j2 %}
+    {% else %}
+        location / {
+            try_files $uri $uri/ =404;
+        }
+        index index.html index.htm;
+    {% endif %}
 
-            root /var/www/{{ domain }}/public_html;
-            location / {
-                try_files $uri $uri/ /index.php?q=$uri&$args;
-            }
+        include inc/general.conf;
+    {% if extra_nginx_configs is defined %}
+        {% for nginx_config in extra_nginx_configs %}
+            include {{ nginx_config }};
+        {% endfor %}
+    {% endif %}
 
-        {% if use_php == true %}
-
-            index index.php index.html index.htm;
-
-            # Pass all .php files onto a php-fpm/php-fcgi server.
-            location ~ \.php$ {
-                root /var/lib/wordpress;
-
-                fastcgi_split_path_info ^(.+?\.php)(/.*)$;
-                # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
-
-#                    if (!-f $document_root$fastcgi_script_name) {
-#                        return 404;
-#                    }
-#                   fastcgi_param HTTP_PROXY "";
-
-                include fastcgi_params;
-                fastcgi_index index.php;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                # fastcgi_intercept_errors on;
-                fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
-            }
-
-        {% else %}
-
-                index index.html index.htm;
-
-        {% endif %}
     {% endif %}
 }
 
 {% if ssl_host == true %}
-    server {
-                server_name {{ domain }} www.{{ domain }} {{ subdomain }};
-                listen 443 ssl http2;
-                listen [::]:443;
 
-                access_log /dev/stdout vhost;
-                error_log stderr error;
+server {
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        listen 443 ssl http2;
+        listen [::]:443;
 
-        {% if lets_encrypt == true %}
+        access_log /dev/stdout vhost;
+        error_log stderr error;
 
-        {% else %}
-            {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
-                ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
-                ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
-            {% else %}
-                ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
-                ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
-            {% endif %}
-                ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
-        {% endif %}
+    {% if lets_encrypt == true %}
 
-                root /var/www/{{ domain }}/public_html;
-                index index.html index.htm;
-                location / {
-                    try_files $uri $uri/ /index.php?q=$uri&$args;
-                }
+    {% else %}
+    {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
+        ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
+    {% else %}
+        ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
+    {% endif %}
+        ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
+    {% endif %}
 
-        {% if use_php == true %}
-                location ~ \.php$ {
-                    try_files $uri $uri/ =404;
-                    index index.php index.htm index.html;
-                    root /var/www/{{ domain }}/public_html;
-                    fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/{{ socket_name }};
-                    fastcgi_index index.php;
-                    fastcgi_param SCRIPT_FILENAME /var/lib/wordpress/$fastcgi_script_name;
-                    include fastcgi_params;
-                }
-        {% endif %}
-    }
+        include inc/ssl.conf;
+
+        root /var/www/{{ domain }}/public_html;
+    {% if use_php is defined and use_php == True %}
+        {% include php-vhost.j2 %}
+    {% else %}
+        location / {
+            try_files $uri $uri/ =404;
+        }
+        index index.html index.htm;
+    {% endif %}
+        include inc/general.conf;
+    {% if extra_nginx_configs is defined %}
+        {% for nginx_config in extra_nginx_configs %}
+            include {{ nginx_config }};
+        {% endfor %}
+    {% endif %}
+}
 {% endif %}

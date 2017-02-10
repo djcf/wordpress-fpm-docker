@@ -1,0 +1,35 @@
+    location / {
+        try_files $uri $uri/ /index.php?q=$uri&$args;
+    }
+
+    index index.php index.html index.htm;
+
+    # Pass all .php files onto a php-fpm/php-fcgi server.
+    location ~ \.php$ {
+        expires 5m;
+
+        {% if phproot is defined %}
+            root {{ phproot }};
+        {% endif %}
+
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        # This is a robust solution for path info security issue and works with "cgi.fix_pathinfo = 1" in /etc/php.ini (default)
+
+        if (!-f $document_root$fastcgi_script_name) {
+            return 404;
+        }
+        fastcgi_param HTTP_PROXY "";
+
+        include fastcgi_params;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_intercept_errors on;
+        fastcgi_pass unix:/var/run/docker-apps/{{ domain }}/vhost.{{ socket_name }};
+
+        fastcgi_cache_bypass $no_cache;
+        fastcgi_no_cache $no_cache;
+
+        fastcgi_cache WORDPRESS;
+        fastcgi_cache_valid 200 60m;
+
+    }

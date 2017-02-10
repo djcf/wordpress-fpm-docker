@@ -1,4 +1,4 @@
-- include: tasks-register-docker-data.yml
+- include: ../../inc/tasks-register-docker-data.yml
 
 - name: Remove relevant files
   file:

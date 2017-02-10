@@ -1,0 +1,38 @@
+---
+- hosts: all
+  tasks:
+  - name: remove pre-built app containers (wp)
+    docker:
+      name: docker_wordpress_1
+      image: wordpress
+      state: absent
+    become: true
+
+  - name: remove pre-built app containers (fpm)
+    docker:
+      name: docker_fpm_1
+      image: fpm
+      state: absent
+    become: true
+
+  include: ../inc/tasks-register-docker-data.yml
+
+  - name: copy generic .conf files to docker volumes
+    copy:
+      src: "resources/{{ item }}"
+      dest: "{{ docker_volumes['docker_nginx_config_inc'] }}"
+    with_items:
+      - general.conf
+      - wordpress.conf
+      - cache.conf
+
+  - name: copy default vhost file to docker volumes
+    copy:
+      src: "resources/{{ item }}"
+      dest: "{{ docker_volumes['docker_nginx_config'] }}"
+    with_items:
+      - default.conf
+
+  - name: A default SSL certificate-pair should exist for all vhosts when using SSL but not letsencrypt and no user certificates were provided
+    command: "openssl req -new -nodes -x509 -subj /C=GB/ST=London/L=London/O=IT/CN={{ domain }} -days 365 -keyout {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.key -out {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt -extensions v3_ca creates={{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt"
+    become: yes

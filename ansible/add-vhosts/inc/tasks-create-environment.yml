@@ -40,7 +40,7 @@
 # Shell: scp env $host:/var/www/$domain/.env
 - name: Copy env vars for container to host
   template:
-    src: resources/env.j2
+    src: resources/container-environment.j2
     dest: "/var/www/{{ domain }}/.env"
     owner: root
     group: root

@@ -4,12 +4,64 @@
 		"selected_items":
 		[
 			[
-				"cou",
-				"country_code"
+				"test",
+				"test_success"
+			],
+			[
+				"docker",
+				"dockerservice"
+			],
+			[
+				"ng",
+				"nginx_config"
+			],
+			[
+				"work",
+				"worker_connections"
+			],
+			[
+				"db",
+				"dbdump_exists"
+			],
+			[
+				"conta",
+				"container_always_active"
+			],
+			[
+				"default",
+				"default_cert"
+			],
+			[
+				"cert",
+				"certificate"
+			],
+			[
+				"with_",
+				"with_items"
+			],
+			[
+				"u",
+				"undefined"
+			],
+			[
+				"loca",
+				"local_ssl_key"
 			],
 			[
 				"mysq",
-				"mysql_root_password"
+				"mysql_pw_file"
+			],
+			[
+				"failed",
+				"failed_when"
+			],
+			[
+				"salts",
+				"salts_file"
+			],
+			[
+				"cou",
+				"country_code"
 			],
 			[
 				"mys",
@@ -38,14 +90,6 @@
 			[
 				"sites",
 				"sites-enabled"
-			],
-			[
-				"docker",
-				"docker_sites-enabled"
-			],
-			[
-				"db",
-				"db_exists"
 			],
 			[
 				"read",
@@ -102,10 +146,6 @@
 			[
 				"lets",
 				"lets_encrypt"
-			],
-			[
-				"ng",
-				"nginx-config"
 			],
 			[
 				"cont",
@@ -427,6 +467,70 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "docker/docker-compose.yml",
+			"settings":
+			{
+				"buffer_size": 4161,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/configure-host/playbook.yml",
+			"settings":
+			{
+				"buffer_size": 1988,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "docker/apps/wordpress/Dockerfile",
+			"settings":
+			{
+				"buffer_size": 443,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/add-vhosts/add-wordpress-vhost.yml",
+			"settings":
+			{
+				"buffer_size": 5832,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "docker/apps/wordpress/php-fpm.ini",
+			"settings":
+			{
+				"buffer_size": 561,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "systemd.services/fpm-waker@.service",
+			"settings":
+			{
+				"buffer_size": 275,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "systemd.services/fpm-waker@.socket",
+			"settings":
+			{
+				"buffer_size": 142,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "docker/fpm/Dockerfile",
+			"settings":
+			{
+				"buffer_size": 61,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -468,22 +572,84 @@
 	},
 	"expanded_folders":
 	[
-		"/home/daniel/Workspace/nfg-web"
+		"/home/daniel/Workspace/nfg-web",
+		"/home/daniel/Workspace/nfg-web/ansible",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/roles",
+		"/home/daniel/Workspace/nfg-web/docker",
+		"/home/daniel/Workspace/nfg-web/docker/apps",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen",
+		"/home/daniel/Workspace/nfg-web/docker/fpm",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard",
+		"/home/daniel/Workspace/nfg-web/scripts",
+		"/home/daniel/Workspace/nfg-web/systemd.services"
 	],
 	"file_history":
 	[
-		"/home/daniel/Workspace/synthbiowatch-LE/commodities-map/public/js/app/main.js",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/remove-wordpress-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-find-mysql-root-password.yml",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-cli.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-wordpress-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-import-site.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-create-database.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-remove-database.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-dump-database.yml",
-		"/home/daniel/Workspace/nfg-web/docker/docker-compose.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/create-database.yml",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile.jessie-slim",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile.alpine",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vhost.j2",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/ssl.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/php-vhost.j2",
+		"/home/daniel/Workspace/nfg-web/todo.txt",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/nginx.tmpl",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vars_php.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/default.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/playbook.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/configure-docker.yml",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/nginx.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/general.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/wordpress.conf",
+		"/home/daniel/Workspace/nfg-web/scripts/renew-fpm.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/nginx.conf.j2",
+		"/home/daniel/Workspace/nfg-web/ansible/inc/tasks-register-docker-data.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-php-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/resources/vars_docker_conf.yml",
+		"/home/daniel/Workspace/nfg-web/Vagrantfile",
+		"/home/daniel/Workspace/nfg-web/docker/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/cache.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-remove-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-create-database.yml",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/www.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-create-environment.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-container.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/env.j2",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/php-fpm.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-register-docker-data.yml",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/default.conf",
+		"/home/daniel/Workspace/nfg-web/systemd.services/fpm-waker@.service",
+		"/home/daniel/Workspace/nfg-web/systemd.services/fpm@.service",
+		"/home/daniel/Workspace/nfg-web/systemd.services/mysql.service",
+		"/home/daniel/Workspace/nfg-web/systemd.services/switchboard.service",
+		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm-waker.service",
+		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm.service",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vars_docker_conf.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/remove-wordpress-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/TEST.YML",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-register-docker-data.retry",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/create-database.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vars_db.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-find-mysql-root-password-from-docker.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-find-mysql-root-password.yml",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-config.php",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-import-site.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-php-container.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/container-environment.j2",
+		"/home/daniel/Workspace/nfg-web/.gitignore",
+		"/home/daniel/Workspace/nfg-web/nfg-web.sublime-project",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-dump-database.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-remove-database.yml",
+		"/home/daniel/Workspace/synthbiowatch-LE/commodities-map/public/js/app/main.js",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/create-database.retry",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/tasks-add-php-container.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/tasks-add-vhost.yml",
@@ -496,21 +662,11 @@
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/env.j2",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/newdb.sql",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/newdb.sql.j2",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/www.conf",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-config.php",
 		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-cli.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/vhost.j2",
-		"/home/daniel/Workspace/nfg-web/systemd.services/fpm-waker@.service",
-		"/home/daniel/Workspace/nfg-web/README.md",
 		"/home/daniel/Workspace/nfg-web/systemd.services/fpm-waker@.socket",
-		"/home/daniel/Workspace/nfg-web/systemd.services/fpm@.service",
 		"/home/daniel/Workspace/playbooks/nfg-accounts/playbook.yml",
-		"/home/daniel/Workspace/nfg-web/docker/dockergen/nginx.tmpl",
-		"/home/daniel/Workspace/nfg-web/Vagrantfile",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-container-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/playbook.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/update-wordpress.yml",
 		"/home/daniel/Workspace/nfg-web/docker/dockergen/README.md",
 		"/home/daniel/Workspace/nfg-web/.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory",
@@ -524,8 +680,6 @@
 		"/home/daniel/Workspace/mailu/ansible/playbook.yml",
 		"/home/daniel/Workspace/mailu/ansible/playbook.",
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/inventory.yml",
-		"/home/daniel/Workspace/nfg-web/docker/switchboard/default.conf",
-		"/home/daniel/Workspace/nfg-web/docker/switchboard/nginx.conf",
 		"/home/daniel/Workspace/nfg-web/docker/switchboard/Dockerfile",
 		"/home/daniel/Workspace/mailu/Vagrantfile",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-vhost.yml",
@@ -533,18 +687,13 @@
 		"/home/daniel/Workspace/nfg-web/scripts/create-fpm.sh",
 		"/home/daniel/Workspace/nfg-web/scripts/create-wordpress-fpm.sh",
 		"/home/daniel/Workspace/nfg-web/docker/dockergen/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/systemd.services/switchboard.service",
 		"/home/daniel/Workspace/nfg-web/docker/nginx-config/Dockerfile",
 		"/home/daniel/Workspace/nfg-web/docker/nginx-config/README.md",
-		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm-waker.service",
 		"/home/daniel/Workspace/nfg-web/problems.txt",
 		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm-waker.socket",
-		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm.service",
-		"/home/daniel/Workspace/nfg-web/systemd.services/mysql.service",
 		"/home/daniel/Workspace/nfg-web/systemd.services/README.md",
 		"/home/daniel/Workspace/nfg-web/systemd.services/nginx.service",
 		"/home/daniel/Workspace/nfg-web/docker/switchboard/php-pass.conf",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/php-fpm.conf",
 		"/home/daniel/Workspace/nfg-web/scripts/README.md",
 		"/home/daniel/Workspace/nfg-web/systemd.services/vhost-fpm.service",
 		"/home/daniel/Workspace/nfg-web/systemd.services/vhost.fpm-proxy.service",
@@ -569,41 +718,11 @@
 		"/home/daniel/Workspace/synthbiowatch-LE/commodities-map/public/class-commodities-map-public.php",
 		"/home/daniel/mnt/humewd/authclient/AuthClientHelpers.php",
 		"/home/daniel/mnt/humewd/authclient/ZendLdapClient.php",
-		"/home/daniel/mnt/humewd/controllers/AuthController.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/user/controllers/AuthController.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/notification/widgets/views/overview.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/notification/widgets/overview.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/space/widgets/spaceChooser.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/widgets/views/main-nav.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/space/widgets/members.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/user/profile/_layout.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/widgets/views/profile-info.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/space/widgets/views/members.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/user/views/auth/login.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/user/auth/login.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/directory/widgets/views/newSpaces.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/directory/widgets/views/newMembers.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/directory/widgets/newMembers.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/directory/widgets/newSpaces.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/mostactiveusers/widgets/sidebar.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/widgets/views/cs-info.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/widgets/views/left.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/space/space/_layout.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/space/widgets/space-info.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/views/layouts/main.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/widgets/Common.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/widgets/views/flashNotifications.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/widgets/FlashNotifications.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/views/layouts/head.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/themes/common/widgets/views/PrettySocialPrinters.php",
-		"/home/daniel/Workspace/cw-media/public_html/sites/all/themes/common/templates/widgets/login-widget.tpl.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/modules/directory/widgets/NewMembers.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/config/dynamic.php",
-		"/home/daniel/Workspace/cw-socialnetwork-1.x/public_html/protected/humhub/views/htmlRedirect.php"
+		"/home/daniel/mnt/humewd/controllers/AuthController.php"
 	],
 	"find":
 	{
-		"height": 26.0
+		"height": 34.0
 	},
 	"find_in_files":
 	{
@@ -617,6 +736,37 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"/var/lib/w",
+			"/usr/src",
+			"/var/lib/wordpress",
+			"wp_path",
+			"mydomain.org",
+			"text/html",
+			"keepalive",
+			"text/html",
+			"vhost",
+			"doman",
+			"_log",
+			"_",
+			"memory_",
+			"dhparam",
+			"access",
+			"log",
+			"access_log",
+			"server_name _",
+			"error_log",
+			"use_php",
+			".createdb",
+			"{{ image }}",
+			"_db",
+			"env",
+			"db_",
+			"{{ image }}",
+			"limit",
+			"env",
+			"php3",
+			"check",
+			"90",
 			"'username'",
 			"stat",
 			"include:",
@@ -713,38 +863,7 @@
 			"(",
 			"node->title",
 			"$vid",
-			"nid",
-			"eco \"",
-			"echo ",
-			":",
-			"print_r",
-			"field_source",
-			"echo",
-			"field_body",
-			"$node->body",
-			"$body",
-			"$vid",
-			"drush_createcontent_create_term",
-			"echo ",
-			"print \"",
-			"print ",
-			"drush",
-			"drush_createcontent_create_term",
-			"added",
-			"fields_added",
-			"input_for",
-			"vid",
-			"print(",
-			"getitem",
-			"getCreat",
-			"print(",
-			"tag",
-			"is ",
-			"html",
-			"encode",
-			"decode",
-			"html",
-			"artarticle"
+			"nid"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -752,6 +871,14 @@
 		"regex": false,
 		"replace_history":
 		[
+			"{{ phproot }}",
+			"phproot",
+			"$argv",
+			"$1",
+			"{{ docker_image }}",
+			"mydomain_org_",
+			"mydomain_org",
+			"{{ docker_image }}",
 			"",
 			"nginx",
 			"docker_nginx_config_inc",
@@ -795,8 +922,239 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "docker/docker-compose.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1446,
+								1446
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 378.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "ansible/configure-host/playbook.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1988,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								734,
+								734
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "docker/apps/wordpress/Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 443,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								426,
+								426
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "ansible/add-vhosts/add-wordpress-vhost.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5832,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2541,
+								2541
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 812.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "docker/apps/wordpress/php-fpm.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 561,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								118,
+								118
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "systemd.services/fpm-waker@.service",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 275,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								267,
+								267
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "systemd.services/fpm-waker@.socket",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 142,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "docker/fpm/Dockerfile",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 61,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								61,
+								61
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -839,7 +1197,7 @@
 	"project": "nfg-web.sublime-project",
 	"replace":
 	{
-		"height": 48.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -877,7 +1235,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 354.0,
+	"side_bar_width": 313.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

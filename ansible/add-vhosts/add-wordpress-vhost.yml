@@ -2,7 +2,7 @@
 # Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
 - hosts: all
   vars:
-    - docker_image: "wordpress"
+    - docker_image: "wordpress:php7.1-fpm-alpine-mod"
     - admin_user: admin
     - site_title: "{{ domain }}"
     - salts_file: "/var/www/{{ domain }}/public_html/salts.php"
@@ -24,13 +24,14 @@
     register: salts_file_exists
     ignore_errors: yes
     failed_when: not salts_file_exists.stat.exists
+    become: true
 
   # Shell: wget https://api.wordpress.org/secret-key/1.1/salt /var/www/$domain/public_html/wp-content/salts.php
   - name: Create new SALTS file (unique keys) for WP auths
     get_url:
       url: https://api.wordpress.org/secret-key/1.1/salt
       dest: "{{ salts_file }}"
-    become: yes
+    become: true
     when: salts_file_exists|failed
 
   # Shell: echo "<?php" | cat /var/www/$domain/public_html/salts.php > /var/www/$domain/public_html/salts.php

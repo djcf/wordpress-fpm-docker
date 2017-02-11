@@ -11,9 +11,10 @@
 
 - name: Project directory should exist
   file:
-    path: "/var/www/{{ domain }}"
+    path: "/var/www/{{ domain }}/public_html/wp-content"
     state: directory
     recurse: yes
+  become: true
 
 # Shell equiv:
 # systemctl enable fpm-waker@$domain.socket; systemctl start fpm-waker@$domain.socket

@@ -33,6 +33,10 @@ server {
     {% endif %}
 
     {% endif %}
+
+    {% if custom_vhost_exists|succeeded %}
+        include {{ docker_volumes['vhost_config'] }}/{{ domain }}.conf;
+    {% endif %}
 }
 
 {% if ssl_host == true %}

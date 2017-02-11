@@ -27,7 +27,7 @@
       with_items:
         - general.conf
         - wordpress.conf
-        - cache.conf
+        - ssl.conf
       become: true
       notify: reload nginx
 

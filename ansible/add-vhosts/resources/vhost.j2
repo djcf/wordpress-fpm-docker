@@ -32,10 +32,10 @@ server {
         {% endfor %}
     {% endif %}
 
+    {% if custom_vhost_exists|succeeded %}
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
     {% endif %}
 
-    {% if custom_vhost_exists|succeeded %}
-        include {{ docker_volumes['vhost_config'] }}/{{ domain }}.conf;
     {% endif %}
 }
 
@@ -52,13 +52,13 @@ server {
     {% if lets_encrypt == true %}
 
     {% else %}
-    {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
+        {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
         ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
         ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
-    {% else %}
+        {% else %}
         ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
         ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
-    {% endif %}
+        {% endif %}
         ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
     {% endif %}
 
@@ -66,7 +66,7 @@ server {
 
         root /var/www/{{ domain }}/public_html;
     {% if use_php is defined and use_php == True %}
-        {% include php-vhost.j2 %}
+        {% include "php-vhost.j2" %}
     {% else %}
         location / {
             try_files $uri $uri/ =404;
@@ -79,5 +79,10 @@ server {
             include {{ nginx_config }};
         {% endfor %}
     {% endif %}
+
+    {% if custom_vhost_exists|succeeded %}
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
+    {% endif %}
+
 }
 {% endif %}

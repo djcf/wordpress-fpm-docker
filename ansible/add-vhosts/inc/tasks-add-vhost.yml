@@ -16,11 +16,12 @@
     changed_when: false
 
   - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
-    command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
+    command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem 2048"
     args: creates="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
     when:
       - ssl_host
       - not lets_encrypt
+    become: true
 
   - name: Check if an SSL certificate exists locally (NB careful not to check into version control if so)
     local_action: "stat path={{ domain }}.crt"
@@ -61,10 +62,12 @@
       - local_ssl_cert|succeeded
 
   - name: Try to find a custom vhost file for inclusion
-    stat: "path={{ docker_volumes['vhost_config'] }}/{{ domain }}.conf"
+    stat: "path={{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf"
     register: custom_vhost_exists
     failed_when: not custom_vhost_exists.stat.exists
     ignore_errors: true
+    become: true
+    changed_when: false
 
   - name: Copy vhost template to host
     template: src=resources/vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ domain }}.conf"

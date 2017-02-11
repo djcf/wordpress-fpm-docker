@@ -1,10 +1,9 @@
 Short-term
 * fpm should shut down when no vhost connections
-* add global fpm instance
-* test SSL cert
-* waitport.sh
 * move to ansible role
-* better installation
+	* better installation
+	* add global fpm instance
+* test SSL cert
 
 Medium-term
 * Ansible plays

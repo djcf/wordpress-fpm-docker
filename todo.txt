@@ -1,9 +1,8 @@
 Short-term
-* fpm should shut down when no vhost connections
 * move to ansible role
+	* fpm should shut down when no vhost connections
 	* better installation
 	* add global fpm instance
-* test SSL cert
 
 Medium-term
 * Ansible plays

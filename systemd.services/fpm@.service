@@ -5,6 +5,6 @@ Documentation=https://github.com/djcf/wordpress-fpm-docker
 
 [Service]
 ExecStart=/usr/bin/docker start -a %i.fpm
-ExecStartPost=/bin/sleep 1
+ExecStartPost=/usr/local/bin/waitport.sh /var/run/docker-apps/%i/php-fpm.sock
 
 ExecStop=/usr/bin/docker stop %i.fpm

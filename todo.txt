@@ -1,9 +1,10 @@
 Short-term
-* fpm shut down when no vhost connections
-* transition to buildless alpine containers
-* test current config
+* fpm should shut down when no vhost connections
 * add global fpm instance
 * test SSL cert
+* waitport.sh
+* move to ansible role
+* better installation
 
 Medium-term
 * Ansible plays

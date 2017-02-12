@@ -30,14 +30,3 @@
           - "/etc/ssmtp:/etc/ssmtp:ro"
         env_file: "/var/www/{{ domain }}/.env"
       become: yes
-
-    - action: uri url={{ transport }}://{{ domain }} return_content=yes
-      register: test_success
-      when: subdomain == ""
-
-    - action: uri url={{ transport }}://{{ subdomain }} return_content=yes
-      register: test_success
-      when: subdomain != ""
-
-    - fail: msg='The new vhost does not appear to be accessible'
-      when: "'Wordpress' not in test_success.content"

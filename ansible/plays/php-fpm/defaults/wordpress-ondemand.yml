@@ -1,0 +1,10 @@
+---
+# vars file for php-fpm
+- docker_image: "wordpress:php7.1-fpm-alpine-mod"
+- admin_user: admin
+- site_title: "{{ domain }}"
+- salts_file: "/var/www/{{ domain }}/public_html/salts.php"
+- phproot: /usr/src/wordpress
+- extra_nginx_configs:
+  - inc/wordpress.conf
+- install_path: public_html/wp-content

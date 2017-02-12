@@ -1,6 +1,4 @@
 ---
-- include: tasks-find-mysql-root-password.yml
-
 - name: Unzip site dump
   unarchive:
     src: "{{ domain }}.zip"

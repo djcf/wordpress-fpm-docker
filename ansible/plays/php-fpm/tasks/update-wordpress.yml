@@ -1,7 +1,6 @@
 # Equivilent to shell command:
 # docker rmi wordpress:old
 - name: Remove oldest WP image
-  become: yes
   docker_image:
     state: absent
     name: wordpress

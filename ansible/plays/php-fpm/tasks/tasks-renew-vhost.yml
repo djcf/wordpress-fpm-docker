@@ -1,0 +1,70 @@
+---
+- name: Facts about this vhost 1
+  set_fact:
+    transport: http
+    ssl_method: none
+  when: not ssl_host
+  no_log: true
+  changed_when: false
+
+- name: Facts about this vhost 2
+  set_fact:
+    transport: https
+  when: ssl_host
+  no_log: true
+  changed_when: false
+
+- name: Generate unique diffie-helman seed when using SSL but not letsencrypt
+  command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem 2048"
+  args: creates="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
+  when:
+    - ssl_host
+    - not lets_encrypt
+
+- name: Check if an SSL certificate exists locally (NB careful not to check into version control if so)
+  local_action: "stat path={{ domain }}.crt"
+  register: local_ssl_cert
+  failed_when: not local_ssl_cert.stat.exists
+  ignore_errors: yes
+  when:
+    - ssl_host
+    - not lets_encrypt
+  changed_when: false
+
+- name: Check if an SSL key exists locally (NB careful not to check into version control if so)
+  local_action: "stat path={{ domain }}.key"
+  register: local_ssl_key
+  failed_when: not local_ssl_key.stat.exists
+  ignore_errors: yes
+  when:
+    - ssl_host
+    - not lets_encrypt
+  changed_when: false
+
+- name: Upload SSL certificate into vhost when using SSL but not letsencrypt
+  copy: src="{{ domain }}.crt" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"
+  when:
+    - ssl_host
+    - not lets_encrypt
+    - local_ssl_key|succeeded
+    - local_ssl_cert|succeeded
+
+- name: Upload SSL key into vhost when using SSL but not letsencrypt
+  copy: src={{ domain }}.key dest={{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.key
+  when:
+    - ssl_host
+    - not lets_encrypt
+    - local_ssl_key|succeeded
+    - local_ssl_cert|succeeded
+
+- name: Try to find a custom vhost file for inclusion
+  stat: "path={{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf"
+  register: custom_vhost_exists
+  failed_when: not custom_vhost_exists.stat.exists
+  ignore_errors: true
+  changed_when: false
+
+- name: Copy vhost template to host
+  template: src=resources/vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ domain }}.conf"
+  become: yes
+  notify: reload nginx

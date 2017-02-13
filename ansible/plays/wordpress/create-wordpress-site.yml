@@ -1,0 +1,29 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+- hosts: all
+  vars_prompt:
+  - name: "domain"
+    prompt: "Enter a fully-qualified domain name. It will be added to DNS, a vhost record will be created, and it will be used as a unique key for the site on the server."
+    private: no
+  - name: "site_title"
+    prompt: "Enter a 'site title' for Wordpress"
+    private: no
+  - name: "admin_email"
+    prompt: "Enter the site administrator's email address for the purposes of WP account password recovery. The new admin account password will be sent to this address by Wordpress"
+    private: no
+  - name: "subdomain"
+    prompt: "All top-level domain websites must also have a *.noflag.org.uk subdomain. This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. Please enter the subdomain now. If the default domain is already a subdomain of .noflag.org.uk, leave this field blank"
+    private: no
+  become: true
+  roles:
+  - common
+  - nginx-base
+  - vhost-renew
+  - containers-on-demand
+  - apps-wordpress-base
+  - { role: container-environments, base_id: "{{ domain }}" }
+  - apps-wordpress-create
+  - { role: sql-base, when: db_exists|failed }
+  - { role: sql-create-database, when: db_exists|failed }
+  - { role: site-import, when: dbdump_exists|succeeded }
+  - apps-wordpress-install-new

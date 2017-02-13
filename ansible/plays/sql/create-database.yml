@@ -1,20 +1,21 @@
 ---
 # Usage: ansible-playbook --extra-vars "db_user=myuser db_password=xxx db_name=sqldb" create-database.yml
 - hosts: all
-  vars:
-    - db_port: 3306
-    - db_host: sqldb.noflag.org.uk
   vars_prompt:
     - name: "db_user"
       prompt: "Enter a database user"
+      private: no
     - name: "db_name"
       prompt: "Enter a database name"
+      private: no
     - name: "db_password"
       prompt: "Enter a database password (or type 'random')"
-
-  #connection: docker
-  tasks:
-
+      default: "random"
+      private: no
+    - name: "env_path"
+      prompt: "Do you want to create an environment (.env) file with the new DB values? Such a file can be sourced in bash to create shell variabls, and added to a docker run command to let a container discover its environment. If so, type the file path now or press enter for none"
+      private: no
+  pre_tasks:
   - name: Generate random database password
     local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
     register: generated_password
@@ -26,5 +27,8 @@
       db_password: "{{ generated_password.stdout }}"
     when:
       - db_password == "random"
-
-  - include: inc/tasks-create-database.yml
+  roles:
+    - common
+    - sql-base
+    - sql-create-database
+    - { role: container-environments, when: env_path != "" }

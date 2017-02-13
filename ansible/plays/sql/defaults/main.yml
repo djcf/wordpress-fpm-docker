@@ -1,8 +1,0 @@
----
-escaped_domain: "{{ domain | regex_replace('\\.', '_') }}"
-db_user: "{{ escaped_domain }}_user"
-db_name: "{{ escaped_domain }}_sql"
-db_port: 3306
-db_host: sqldb.noflag.org.uk
-mysql_image: alpin3/mariadb
-db_socket: /run/mysqld/mysqld.sock

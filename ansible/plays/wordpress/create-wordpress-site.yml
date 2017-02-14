@@ -16,11 +16,8 @@
     private: no
   become: true
   roles:
-  - common
-  - nginx-base
   - vhost-renew
   - containers-on-demand
-  - apps-wordpress-base
   - { role: container-environments, base_id: "{{ domain }}" }
   - apps-wordpress-create
   - { role: sql-base, when: db_exists|failed }

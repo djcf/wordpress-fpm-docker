@@ -28,7 +28,5 @@
     when:
       - db_password == "random"
   roles:
-    - common
-    - sql-base
     - sql-create-database
     - { role: container-environments, when: env_path != "" }

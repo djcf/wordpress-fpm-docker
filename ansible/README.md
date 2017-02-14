@@ -1,17 +1,35 @@
-This directory contains the ansible plays used to configure the server. They do things like:
+This directory contains the ansible plays used to configure the server. They are grouped into plays within the ./plays directory, but you can run them from here. For example:
 
-./configure-host:
-	* Installing the LEMP container assembly
-	* Installing the master DNS server
+./plays/sql/create-database.yml:
+	* Create a new database
 
-./add-vhosts:
+./plays/wordpress/create-wordpress-site.yml:
 	* Add new virtual hosts to nginx
 	* Add new php process managers to docker
 	* Install wordpress
 
+For complete documentation, browse to each directory's individual README.md file.
+
+The actual logic for these tasks is contained within ansible roles, in the roles directory.
+
+USAGE EXAMPLES
+
+You must use these plays with a valid inventory. I ussually set the inventory to the $inventory variable, for example "set inventory (pwd)/hosts/local" will run against the local host, or ../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory to run against a vagrant virtual machine.
+
 To install a new wordpress host:
-ansible-playbook  -i $inventory --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk admin_email=email@address.org" add-vhosts/add-wordpress-vhost.yml
 
-Boolean variables are ** NOT ** parsed correctly through the command-line. If you need to do pass a boolean to override a default option you must pass the entire string as JSON:
+	ansible-playbook  -i $inventory plays/wordpress/create-wordpress-site.yml
 
-ansible-playbook -i $inventory --extra-vars "{ 'ssl_host': false, 'domain': 'mydomain.org', 'subdomain':'mysubdomain.noflag.org.uk', 'admin_email': 'admin@example.org'}" add-wordpress-vhost.yml
+The InstallShield(tm) Wizard will guide you through the rest of the setup process but if you wanted to run the command in batch mode, you can supply the arguments directly:
+
+	ansible-playbook  -i $inventory \
+		--extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk site_title="test" admin_email=email@address.org" \
+		plays/wordpress/create-wordpress-site.yml
+
+The Wizard assumes most sensible defaults, but you can turn any option off from the command-line. However,boolean variables are ** NOT ** parsed correctly through the command-line. If you need to do pass a boolean to override a default option you must pass the entire string as JSON.
+
+For example, to disable SSL on the new host, you need to run:
+
+	ansible-playbook -i $inventory \
+ 		--extra-vars "{ 'use_ssl': false, 'domain': 'mydomain.org', 'subdomain':', mysubdomain.noflag.org.uk', 'site_title': 'test', 'admin_email': 'admin@example.org'}" \
+ 		plays/wordpress/create-wordpress-site.yml

@@ -1,0 +1,14 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" plays/wordpress/remove-wordpress.yml
+- hosts: all
+  vars_prompt:
+    - name: "domain"
+      prompt: "Enter the domain you would like to export"
+      private: no
+  roles:
+    - { role: site-export, when: backup != "no", dump_path: "/var/www/{{ domain }}/database.sql.gz" }
+  post_tasks:
+    - name: fetch site export
+      fetch:
+        src: "/var/www/{{ domain }}/site_export.zip"
+        dest: "{{ domain }}.zip"

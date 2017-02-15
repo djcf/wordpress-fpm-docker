@@ -1,0 +1,24 @@
+---
+- hosts: web
+  vars_prompt:
+    - name: "domain"
+      prompt: "Enter the domain to archive"
+      private: no
+    - name: "subdomain"
+      prompt: "Enter a subdomain to add to the vhost"
+      private: no
+    - name: "remove"
+      prompt: "By default, this play will *not* remove web content from the host. Would you like to do that now? (type anything other than 'no')"
+      default: "no"
+      private: no
+  roles:
+    - site-archive
+#    - vhost-renew
+    - sql-remove-database
+    - { role: container-remove, container_name: "{{ domain }}.fpm" }
+  post_tasks:
+    - name: Remove all web content from host
+      file:
+        state: absent
+        path: "/var/www/{{ domain }}"
+      when: remove != "no"

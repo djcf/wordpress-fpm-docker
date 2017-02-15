@@ -1,0 +1,14 @@
+---
+# Usage: ansible-playbook --extra-vars "db_name=xxx" export-database.yml
+- hosts: all
+  vars_prompt:
+    - name: "db_name"
+      prompt: "Enter the name of the database to export."
+      private: no
+  roles:
+    - { role: sql-dump-database, dump_path: "/tmp/database.sql.gz" }
+  post_tasks:
+    - name: fetch database dump
+      fetch:
+        src: "/tmp/database.sql.gz"
+        dest: "{{ db_name}}.sql.gz"

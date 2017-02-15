@@ -1,24 +1,25 @@
+Better SSL sensing for subdomains
+Better domain sensing for vhosts
+
 Short-term
-* move to ansible role
-	* fpm should shut down when no vhost connections
-	* better installation
-	* add global fpm instance
+	! fpm should shut down when no vhost connections
+	* full multi-purpose installation
+	! add global fpm instance
+	! duplicity backups
 
 Medium-term
 * Ansible plays
 	* Transition sites between global fpm, always running, and not always running fpm instances
 	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
-
 	* Ansible play resets WP admin password ??
 	* Ansible play makes new WP admin ??
+	* Script imports wordpress sites from alba
 	* Ansible play logs a Noflag admin in transparently ??
-	* More interactivity
 
 Long-term
 **
-* Script imports wordpress sites from alba
 * LetsEncrypt
 * DNS master
-* Stats & Logging
+* Stats & Logging / cockpit
 * fail2ban
 * New VM with DNS slaves set up by ansible play

@@ -1,23 +1,20 @@
 Better SSL sensing for subdomains
 Better domain sensing for vhosts
+	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
 
 Short-term
-	! fpm should shut down when no vhost connections
-	* full multi-purpose installation
 	! add global fpm instance
-	! duplicity backups
+		* Transition sites between global fpm, always running, and not always running fpm instances
+	duplicity
 
 Medium-term
 * Ansible plays
-	* Transition sites between global fpm, always running, and not always running fpm instances
-	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
-	* Ansible play resets WP admin password ??
-	* Ansible play makes new WP admin ??
 	* Script imports wordpress sites from alba
 	* Ansible play logs a Noflag admin in transparently ??
 
 Long-term
 **
+	? full multi-purpose installation
 * LetsEncrypt
 * DNS master
 * Stats & Logging / cockpit

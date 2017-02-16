@@ -1,0 +1,97 @@
+{% if container_always_active == true %}
+    {% set socket_name = "fpm.sock" %}
+{% else %}
+    # Container sleeps after: {{ container_sleeps_after }}
+    # Valid: xm for minutes (e.g. 20m), xh for hours (e.g. 2h) or xhym for minutes and hours (e.g. 2h30m)
+    # Passed to docker logs --since. For more information, see https://docs.docker.com/engine/reference/commandline/logs
+    #
+    # This is the vhost-descriptor for an on-demand container created using the ansible vhost-renew command.
+    # If no traffic is received (monitored using docker logs --since command) in {{ container_sleeps_after }} amount of time,
+    # a cron-script running on the host tells systemd to sleep the container, using systemctl stop vhost@$container_name.
+    # When a new connection is detected, systemd proxies the connection from nginx and starts the container.
+    # To change the sleep value, just edit this file.
+    {% set socket_name = "fpm-waker.sock" %}
+{% endif %}
+
+server {
+        listen 80;
+        listen [::]:80;
+
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        access_log /dev/stdout;
+        error_log stderr error;
+
+    {% if ssl_method == "redirect" %}
+        return 301 https://$host$request_uri;
+    {% else %}
+        root /var/www/{{ domain }}/public_html;
+    {% if use_php is defined and use_php == True %}
+        {% include "php-vhost.j2" %}
+    {% else %}
+        location / {
+            try_files $uri $uri/ =404;
+        }
+        index index.html index.htm;
+    {% endif %}
+
+        include inc/general.conf;
+    {% if extra_nginx_configs is defined %}
+        {% for nginx_config in extra_nginx_configs %}
+            include {{ nginx_config }};
+        {% endfor %}
+    {% endif %}
+
+    {% if custom_vhost_exists|succeeded %}
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
+    {% endif %}
+
+    {% endif %}
+}
+
+{% if ssl_host == true %}
+
+server {
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        listen 443 ssl http2;
+        listen [::]:443;
+
+        access_log /dev/stdout;
+        error_log stderr error;
+
+    {% if lets_encrypt == true %}
+
+    {% else %}
+        {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
+        ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
+        {% else %}
+        ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
+        {% endif %}
+        ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
+    {% endif %}
+
+        include inc/ssl.conf;
+
+        root /var/www/{{ domain }}/public_html;
+    {% if use_php is defined and use_php == True %}
+        {% include "php-vhost.j2" %}
+    {% else %}
+        location / {
+            try_files $uri $uri/ =404;
+        }
+        index index.html index.htm;
+    {% endif %}
+        include inc/general.conf;
+    {% if extra_nginx_configs is defined %}
+        {% for nginx_config in extra_nginx_configs %}
+            include {{ nginx_config }};
+        {% endfor %}
+    {% endif %}
+
+    {% if custom_vhost_exists|succeeded %}
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
+    {% endif %}
+
+}
+{% endif %}

@@ -1,0 +1,10 @@
+- name: Start the docker assembly
+  docker_service:
+    project_src: "{{ install_path }}/docker"
+    build: true
+
+#- assert:
+#  that:
+#    - dockergen.dockergen.running
+#    - "switchboard.{{ switchboard }}.running"
+#    - "database.{{ sqldb }}.running"

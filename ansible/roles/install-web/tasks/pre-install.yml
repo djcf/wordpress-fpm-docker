@@ -1,0 +1,82 @@
+---
+- name: ensure that various directories exist
+  stat: "path={{ item }} state=directory recurse=yes"
+  with_items:
+    - /etc/ansible/roles
+    - /usr/local/cron
+
+- name: configure systemd to activate docker containers
+  copy: src={{ item }} dest=/etc/systemd/system/ owner=root group=root mode=655
+  with_fileglob:
+  - files/systemd.services/*
+  notify: reload systemd
+
+- name: copy admin scripts to /usr/local/bin
+  copy: src={{ item }} dest=/usr/local/bin owner=root group=root mode=655
+  with_fileglob:
+  - files/bin/*
+
+- name: copy cron scripts to /usr/local/bin
+  copy: src={{ item }} dest=/usr/local/cron owner=root group=root mode=655
+  with_fileglob:
+  - files/cron/*
+
+- name: use cron to pause old containers
+  cron:
+    name: "pause on-demand containers"
+    minute: "*/5"
+    job: "/usr/local/cron/pause-on-demand-containers.sh"
+
+- name: increase system performance by adjusting sysctl
+  copy: src=sysctl.conf dest=/etc/sysctl.d/99-sysctl.conf owner=root group=root mode=655
+  notify: reload sysctl
+
+- name: install this toolkit to a clear path on the remote host
+  git:
+    repo: "{{ remote_path}}"
+    dest: "{{ install_path }}"
+  when: not is_vagrant
+
+#- name: symlink ansible roles into the main ansible directory
+#  file: "src={{ install_path }}/ansible/roles/{{ item }} dest=/etc/ansible/roles/{{ item }} state=link"
+#  with_items:
+#    - common
+#    - system
+#    - configure
+
+- name: install a 'ghost' wordpress directory for nginx to test file existence against during requests
+  unarchive:
+    src: https://wordpress.org/latest.zip
+    dest: /var/lib
+    remote_src: true
+    creates: /var/lib/wordpress
+
+- name: Template out the best-matching MySQL configuration file
+  template: "src=sqlconf/my-{{ rigsize }}.cnf.j2 dest={{ install_path }}/docker/sqldb/my.cnf"
+
+- name: template out a new nginx.conf file with the appropriate number of workers for this host
+  template: "src=nginx.conf.j2 dest={{ install_path }}/docker/switchboard/nginx.conf"
+
+#    - name: host should have latest version of docker-compose
+#      shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-($uname -m) > /usr/local/bin/docker-compose
+
+#    - name: Install pip
+#      apt:
+#        pkg: "{{ item }}"
+#        state: installed
+#      with_items:
+#        - python-dev
+#        - python-pip
+
+#    - name: Install Docker-py
+#      pip:
+#        name: docker-py
+#        version: 1.1.0
+
+#    - name:
+#    - name: Host should have docker.py
+#      become: true
+#      pip: state=present name="{{ item }}"
+#      with_items:
+#        - docker-py==1.2.3
+#        - six==1.10.0

@@ -1,0 +1,3 @@
+---
+- include: gather-docker-facts.yml
+  tags: docker_facts

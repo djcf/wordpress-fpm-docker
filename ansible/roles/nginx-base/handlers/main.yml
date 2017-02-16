@@ -1,0 +1,4 @@
+---
+# handlers file for common
+- name: reload nginx
+  command: "docker exec {{ switchboard }} nginx -s reload"

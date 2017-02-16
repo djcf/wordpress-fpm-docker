@@ -1,0 +1,15 @@
+---
+- name: remove pre-built app containers (wp)
+  docker:
+    name: docker_wordpress_1
+    image: wordpress
+    state: absent
+
+- name: Allow root user to access from any host (drop root user first)
+  command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
+  ignore_errors: true
+
+- name: Allow root user to access from any host
+  command: docker exec {{ sqldb }} mysql -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY '{{ mysql_root_password }}'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
+- include: install-nginx-configs.yml

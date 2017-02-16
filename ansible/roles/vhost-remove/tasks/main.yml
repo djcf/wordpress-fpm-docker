@@ -1,0 +1,19 @@
+---
+- name: Remove relevant files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ docker_volumes['docker_sites_enabled'] }}/default/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/php-fpm-group/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/on-demand/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/other-external/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/container-apps/{{ domain }}.conf"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.pem"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.key"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.crt"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.cert"
+    - "{{ docker_volumes['docker_ssl_certs'] }}/{{ domain }}.dhparam.pem"
+    - "/etc/systemd/system/socket.target.wants/fpm-waker@{{ domain }}.socket"
+    - "/var/run/docker-apps/{{ domain }}/"
+  notify: reload nginx

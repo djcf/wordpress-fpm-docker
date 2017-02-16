@@ -1,0 +1,11 @@
+---
+# defaults file for duplicity-backups
+gpg_email: admin@lists.noflag.org.uk
+gpg_name: Noflag Technical Collective
+threshold: 4 # the number of shares needed to recombine the secret key
+sharecount: 7 # the number of files to split the secret key into
+paths: /var/www /var/backups/duplicity /var/docker-data
+daily_options:
+weekly_options: full
+removal_options: remove-all-but-n-full 4
+bucket: backups

@@ -1,0 +1,19 @@
+##NOT WORKING!
+
+- name: Read values from environment
+  shell: "source {{ env_path }}; echo {{ item|upper }}"
+  register: output
+  with_items: values
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Store read password
+  set_fact:
+    "{{ item.0 }}": "{{ item.1.stdout }}"
+  when:
+    - item.0 is undefined
+  with_together:
+    - values
+    - output.results
+  changed_when: false

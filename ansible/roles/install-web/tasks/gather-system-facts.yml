@@ -1,0 +1,36 @@
+---
+- name: set fact -- rigsize (medium)
+  set_fact:
+    rigsize: "medium"
+  when:
+    - ansible_memtotal_mb|int >= 128
+
+- name: set fact -- rigsize (large)
+  set_fact:
+    rigsize: "large"
+  when:
+    - ansible_memtotal_mb|int >= 1024
+
+- name: set fact -- rigsize (huge)
+  set_fact:
+    rigsize: "huge"
+  when:
+    - ansible_memtotal_mb|int >= 3000
+
+- name: check if host is a vagrant
+  stat: path=/vagrant
+  changed_when: false
+  register: is_vagrant
+
+- name: set fact about host vagrancy
+  set_fact:
+    is_vagrant: true
+    fish_users:
+      - vagrant
+    install_path: /vagrant
+  when: is_vagrant.stat.exists
+
+- name: set fact -- number of worker_connections
+  command: ulimit -n
+  register: worker_connections
+  changed_when: false

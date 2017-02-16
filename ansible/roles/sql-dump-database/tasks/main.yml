@@ -1,0 +1,17 @@
+---
+# Shell equivilent:
+# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysqldump -hsqldb.noflag.org.uk -P3306 -uroot $db_name | gzip > /tmp/dump/$db_name.sql.gz
+- name: Export database
+  docker_container:
+    name: "{{ db_name }}.dumpdb"
+    image: "{{ mysql_image }}"
+    networks:
+      - name: docker_sqlnet
+        link: "{{ db_host }}"
+    command: "mysqldump -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot {{ db_name }} | gzip -9 > {{ dump_path }}"
+    volumes:
+      - "{{ dump_path }}:{{ dump_path }}"
+    env:
+      MYSQL_PWD: "{{mysql_root_password}}"
+    cleanup: yes
+    detach: no

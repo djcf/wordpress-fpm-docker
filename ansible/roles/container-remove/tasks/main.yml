@@ -1,0 +1,7 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" plays/wordpress/remove-wordpress.yml
+# docker rm -f $domain.fpm
+- name: Remove container
+  docker_container:
+    name: "{{ container_name }}"
+    state: absent

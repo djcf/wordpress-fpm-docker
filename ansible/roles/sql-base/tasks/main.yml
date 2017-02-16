@@ -1,0 +1,20 @@
+---
+# tasks file for base-sql
+- include: tasks-find-mysql-root-password.yml
+
+- name: guess .env path (when domain is defined and env_path is undefined)
+  set_fact:
+    env_path: "/var/www/{{ domain }}/.env"
+  when:
+    - domain is defined
+    - env_path is undefined
+
+- name: try to find an .env file to load database details from
+  stat: "path={{ env_path }}"
+  when: env_path is defined
+  register: env_file_exists
+
+- include: tasks-load-environment.yml
+  when:
+    - env_path is defined
+    - env_file_exists.stat.exists

@@ -1,0 +1,7 @@
+---
+# handlers file for common
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: reload sysctl
+  command: sysctl -p /etc/sysctl.d/99-sysctl.conf

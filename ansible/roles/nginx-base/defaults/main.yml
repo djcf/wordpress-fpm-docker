@@ -1,0 +1,10 @@
+---
+ssl_host: yes
+ssl_method: redirect
+lets_encrypt: yes
+use_php: yes
+default_cert: "default"
+subdomain: ""
+vhost_prefix: "default"
+#container_sleeps_after: 20m  # default value so templates don't complain; should be overriden anyhow by role containers-on-demand
+container_always_active: no # should be overriden by role containers-on-demand

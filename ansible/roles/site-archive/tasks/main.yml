@@ -1,0 +1,29 @@
+---
+- name: Crawl remote site
+  command: >
+    mkdir -p /var/www/{{ domain }}/ && \
+    wget --mirror \
+      --convert-links \
+      --adjust-extension \
+      --page-requisites \
+      --no-parent \
+      --directory-prefix=/var/www/{{ domain }}/ \
+      --no-check-certificate \
+      --level=5 \
+    http://{{ domain }}
+  creates: "/var/www/{{ domain }}/{{ domain }}"
+  delegate_to: "{{ archive_host }}"
+
+  # tasks file for site-archive
+- name: Transfer file from web to archive
+  synchronize:
+    src:  "/var/www/{{ domain }}/site_export.zip"
+    dest: "/var/www/{{ domain }}/"
+    mode: pull
+  delegate_to: "{{ archive_host }}"
+
+- name: create archival vhost
+  template:
+    src: "vhost.j2"
+    dest: "{{ docker_volumes['docker_sites_enabled'] }}/archives/{{ domain }}.conf"
+  notify: reload nginx

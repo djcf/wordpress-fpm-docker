@@ -1,0 +1,33 @@
+---
+# tasks file for general-install
+- name: run apt-get update
+  apt: update_cache=yes
+
+- name: run apt-get upgrade
+  apt: upgrade=full
+
+- name: Install imporant utilities
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  with_items:
+    - nano
+    - ssmtp
+    - ansible
+    - zip
+    - unzip
+    - git
+    - curl
+    - wget
+    - docker
+    - docker-compose
+    - fish
+
+- name: Change user shell
+  user:
+    name: "{{ item }}"
+    shell: /usr/bin/fish
+  with_items: "{{ fish_users }}"
+  when: fish_users is defined
+  ignore_errors: true

@@ -1,0 +1,36 @@
+- name: copy generic .conf files to docker volumes
+  copy:
+    src: "nginx/{{ item }}"
+    dest: "{{ docker_volumes['docker_nginx_config_inc'] }}"
+  with_items:
+    - general.conf
+    - wordpress.conf
+    - ssl.conf
+    - archives.conf
+  notify: reload nginx
+
+- name: copy nginx config auto-includes
+  copy:
+    src: "nginx/{{ item }}"
+    dest: "{{ docker_volumes['docker_nginx_config'] }}"
+  with_items:
+    - default_site.conf
+    - upstream-archives.conf
+  notify: reload nginx
+
+- name: A default SSL certificate-pair should exist for all vhosts when using SSL but not letsencrypt and no user certificates were provided
+  command: "openssl req -new -nodes -x509 -subj /C=GB/ST=London/L=London/O=IT/CN=noflag.org.uk -days 365 -keyout {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.key -out {{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt -extensions v3_ca creates={{ docker_volumes['docker_ssl_certs'] }}/{{ default_cert }}.crt"
+  notify: reload nginx
+
+- name: Ensure vhost prefixes exist for vhosts
+  file:
+    state: directory
+    path: "{{ docker_volumes['docker_sites_enabled'] }}/{{ item }}"
+    recurse: true
+  with_items:
+    - default
+    - archives
+    - on-demand
+    - php-fpm-group
+    - container-apps
+    - other-external

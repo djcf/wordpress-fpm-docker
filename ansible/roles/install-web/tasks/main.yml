@@ -1,0 +1,11 @@
+---
+# tasks file for system
+- include: gather-system-facts.yml
+  tags: all
+
+- include: pre-install.yml
+  tags: preinstall
+
+- include: install.yml
+  when: not is_vagrant
+  tags: install

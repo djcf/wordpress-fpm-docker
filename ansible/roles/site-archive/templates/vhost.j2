@@ -1,0 +1,11 @@
+server {
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        include inc/archive.conf;
+		listen 80;
+}
+server {
+        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        listen 443 ssl http2;
+        include inc/ssl.conf;
+        include inc/archive.conf;
+}

@@ -1,0 +1,10 @@
+---
+sqldb: sqldb.noflag.org.uk   # sqldb refers to the name of the container for the purpose of docker run and docker exec commands
+db_host: sqldb.noflag.org.uk # db_host is interpolated into an application, for example a conf file or environment
+db_port: 3306
+mysql_image: gists/mariadb #yobasystems/alpine-mariadb
+db_socket: /run/mysqld/mysqld.db_socket
+env_values: # what env values might we want to load from the environment file ?
+  - db_name
+  - db_password
+  - db_user

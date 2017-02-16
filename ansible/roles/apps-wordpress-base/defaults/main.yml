@@ -1,0 +1,9 @@
+docker_image: "wordpress:php7.1-fpm-alpine-mod"
+admin_user: admin
+site_title: "{{ domain }}"
+salts_file: "/var/www/{{ domain }}/public_html/salts.php"
+phproot: /usr/src/wordpress # this path is the default installation location for wordpress in alpine linux containers
+extra_nginx_configs:
+  - inc/wordpress.conf
+install_path: public_html/wp-content # not actually an install path but a sub-directory tree which must be created with the site
+env_path: "/var/www/{{ domain }}/.env"

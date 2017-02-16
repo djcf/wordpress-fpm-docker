@@ -1,0 +1,5 @@
+---
+# vars file for containers-on-demand
+container_always_active: false
+state: present
+vhost_prefix: on-demand

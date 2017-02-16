@@ -1,0 +1,11 @@
+---
+- name: "*** WARNING ***"
+  debug: msg="The export-site role *requires* ansible 2.3+ on the host machine. Since this isn't packaged yet, you may not be able to run it. If you are sure you have ansible 2.3, uncomment the directives in roles/site-export/tasks/main.yml"
+#
+#- name: compress backup files
+#  archive:
+#    path:
+#      - "/var/www/{{ domain }}/public_html"
+#      - "/var/www/{{ domain }}/{{ db_name }}.sql.gz"
+#    dest: "/var/www/{{ domain }}/site_export.zip"
+#    format: zip

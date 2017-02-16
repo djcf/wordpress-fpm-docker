@@ -1,3 +1,7 @@
+SQL BACKUPS!
+filesize monitoring
+in-place image shrinking
+
 Better SSL sensing for subdomains
 Better domain sensing for vhosts
 	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
@@ -5,7 +9,6 @@ Better domain sensing for vhosts
 Short-term
 	! add global fpm instance
 		* Transition sites between global fpm, always running, and not always running fpm instances
-	duplicity
 
 Medium-term
 * Ansible plays

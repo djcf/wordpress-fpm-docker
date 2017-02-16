@@ -1,6 +1,4 @@
-SQL BACKUPS!
 filesize monitoring
-in-place image shrinking
 
 Better SSL sensing for subdomains
 Better domain sensing for vhosts

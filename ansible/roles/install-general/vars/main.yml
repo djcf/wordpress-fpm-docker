@@ -1,2 +1,11 @@
 ---
 # vars file for general-install
+aliases_list:
+  - user: postmaster
+    alias: root
+  - user: webmaster
+    alias: root
+  - user: admin
+    alias: root
+  - user: root
+    alias: admin@lists.noflag.org.uk

@@ -28,10 +28,8 @@ cat >/root/.gnupg/settings <<EOF
   %echo Generating a basic OpenPGP key
   Key-Type: DSA
   Key-Length: 4096
-  Subkey-Type: ELG-E
-  Subkey-Length: 4096
   Name-Real: {{ gpg_name }}
-  Name-Comment: Used primarily for backup encryption
+  Name-Comment: Used primarily for backup encryption on {{ inventory_hostname }}
   Name-Email: {{ gpg_email }}
   Expire-Date: 0
   # Do a commit here, so that we can later print "done" :-)

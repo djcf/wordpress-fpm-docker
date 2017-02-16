@@ -13,12 +13,26 @@
   cron:
     name: "recursively reduce image sizes"
     minute: 0
-    hour: 2
+    hour: 1
     job: "/usr/local/cron/shrink-in-place.sh"
 
 - name: use cron to backup SQL databases for which a known environment exists
   cron:
     name: "backup SQL databases"
     minute: 0
-    hour: 1
+    hour: 2
     job: "/usr/local/cron/backup-sql.sh"
+
+- name: use cron to monitor large SQL databases (todo--improve this)
+  cron:
+    name: "monitor large SQL databases"
+    minute: 0
+    hour: 3
+    job: "find /var/backups/sql -type f -size +50M"
+
+- name: use cron to monitor large web content (todo--improve this)
+  cron:
+    name: "monitor large web content"
+    minute: 30
+    hour: 3
+    job: "du -sm * | awk '$1 > 150'"

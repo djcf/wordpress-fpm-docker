@@ -16,24 +16,6 @@
   with_fileglob:
   - files/bin/*
 
-- name: copy cron scripts to /usr/local/bin
-  copy: src={{ item }} dest=/usr/local/cron owner=root group=root mode=655
-  with_fileglob:
-  - files/cron/*
-
-- name: use cron to pause old containers
-  cron:
-    name: "pause on-demand containers"
-    minute: "*/5"
-    job: "/usr/local/cron/pause-on-demand-containers.sh"
-
-- name: use cron to reduce image size in web directories
-  cron:
-    name: "recursively reduce image sizes"
-    minute: 0
-    hour: 2
-    job: "/usr/local/cron/shrink-in-place.sh"
-
 - name: increase system performance by adjusting sysctl
   copy: src=sysctl.conf dest=/etc/sysctl.d/99-sysctl.conf owner=root group=root mode=655
   notify: reload sysctl

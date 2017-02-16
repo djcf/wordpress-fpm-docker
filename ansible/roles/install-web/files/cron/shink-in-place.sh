@@ -3,7 +3,7 @@
 # Author: daniel
 
 # absolute path to image folder
-FOLDER=$(pwd)
+FOLDER=/var/www
 
 # max height
 MAX_WIDTH=1600

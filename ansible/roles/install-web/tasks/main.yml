@@ -6,6 +6,9 @@
 - include: pre-install.yml
   tags: preinstall
 
-- include: install.yml
+- include: cronable.yml
+  tags: cron
+
+- include: docker.yml
   when: not is_vagrant
   tags: install

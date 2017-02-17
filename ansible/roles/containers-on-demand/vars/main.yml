@@ -5,4 +5,4 @@ state: present
 vhost_prefix: on-demand
 container_sleeps_after: 20m
 group_fpm: false
-socket_prefix: {{ domain }}/vhost # e.g. /var/run/docker-apps/mydomain.org/vhost.fpm
+socket_name: {{ domain }}/vhost.fpm-waker # e.g. /var/run/docker-apps/mydomain.org/fpm-waker.sock

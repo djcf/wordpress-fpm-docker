@@ -1,4 +1,6 @@
-## NOTE: The default nginx.conf file in this location is automatically-mapped into the nginx container by docker at runtime.
+##
+{{ ansible_managed | comment }}
+# NOTE: The default nginx.conf file in this location is automatically-mapped into the nginx container by docker at runtime.
 # Changes made to this file automatically persist into the container as a result of the volume mount
 # configuration in docker-compose.yml
 

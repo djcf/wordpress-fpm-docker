@@ -1,8 +1,9 @@
-[www]
-pm = ondemand
+{{ ansible_managed | comment }}
+[{{ pool_name }}]
+pm = {{ pool_type }}
 
-; todo: find out max_children value and other confs
-pm.max_children = 255
+; todo: find out max_children value (but how?)
+pm.max_children = {{ pool_max_children }}
 
 user = {{ db_user }}
 access.log = /proc/self/fd/2

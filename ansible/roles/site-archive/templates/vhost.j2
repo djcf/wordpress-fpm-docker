@@ -1,3 +1,4 @@
+{{ ansible_managed | comment }}
 server {
         server_name {{ domain }} www.{{ domain }} {{ subdomain }};
         include inc/archive.conf;

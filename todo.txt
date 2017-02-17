@@ -1,18 +1,19 @@
+Short-term
+
+import database script
+* script to add all users to fpm image
+php-group auto-tuning
+
 Better SSL sensing for subdomains
+	use {{ list | join(" ") }}
 Better domain sensing for vhosts
 	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
 
-add ansible managed comments
-import database script
-
 regenerate vhost
+	* Transition sites between global fpm, always running, and not always running fpm instances
 	non-interactive
 	well-documented readme
 	all options commented out as inline vars:
-
-Short-term
-	! add global fpm instance
-		* Transition sites between global fpm, always running, and not always running fpm instances
 
 Medium-term
 * Ansible plays
@@ -26,10 +27,11 @@ Long-term
 * DNS master
 * Stats & Logging / cockpit
 * fail2ban
+	* host-ssh
+	* docker
 * DNS slaves set up by ansible play
 
 FINALLY
 	* document
 	* tidy up roles
-
-TROUBLESHOOTING DIAGRAM
+	* TROUBLESHOOTING DIAGRAM

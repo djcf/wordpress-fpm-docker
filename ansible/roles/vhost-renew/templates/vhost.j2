@@ -1,6 +1,4 @@
-{% if container_always_active == true %}
-    {% set socket_name = "fpm.sock" %}
-{% else %}
+{% if not container_always_active %}
     # Container sleeps after: {{ container_sleeps_after|default("20m") }}
     # Valid: xm for minutes (e.g. 20m), xh for hours (e.g. 2h) or xhym for minutes and hours (e.g. 2h30m)
     # Passed to docker logs --since. For more information, see https://docs.docker.com/engine/reference/commandline/logs
@@ -11,11 +9,10 @@
     # When a new connection is detected, systemd proxies the connection from nginx until the container has started again.
     #
     # OPTIONS:
-    # * To change the sleep value, just edit this vhost. {# (NB: This is a vhost template not a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
+    # * To change the sleep value, just edit this vhost. {# (NB: *THIS* file is a vhost template *not* a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
     # * To disable sleeping on this php-fpm container, move this vhost to ../web-apps (or any other directory except ./on-demand)
     # * To move this website into the multi-user php-fpm-group container, re-run the renew-vhost play.
     #
-    {% set socket_name = "fpm-waker.sock" %}
 {% endif %}
 {{ ansible_managed | comment }}
 server {
@@ -30,7 +27,7 @@ server {
         return 301 https://$host$request_uri;
     {% else %}
         root /var/www/{{ domain }}/public_html;
-    {% if use_php is defined and use_php == True %}
+    {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
     {% else %}
         location / {
@@ -53,7 +50,7 @@ server {
     {% endif %}
 }
 
-{% if ssl_host == true %}
+{% if ssl_host %}
 
 server {
         server_name {{ domain }} www.{{ domain }} {{ subdomain }};
@@ -63,7 +60,7 @@ server {
         access_log /dev/stdout;
         error_log stderr error;
 
-    {% if lets_encrypt == true %}
+    {% if lets_encrypt %}
 
     {% else %}
         {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
@@ -79,7 +76,7 @@ server {
         include inc/ssl.conf;
 
         root /var/www/{{ domain }}/public_html;
-    {% if use_php is defined and use_php == True %}
+    {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
     {% else %}
         location / {

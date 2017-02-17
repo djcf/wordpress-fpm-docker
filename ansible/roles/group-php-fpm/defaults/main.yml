@@ -1,5 +1,4 @@
 ---
 # defaults file for group-php-fpm
-group_fpm: true
-container_always_active: true
-socket_prefix: "php"
+pool_type: ondemand
+pool_max_children: 6

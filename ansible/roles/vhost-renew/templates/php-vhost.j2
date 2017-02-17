@@ -25,7 +25,7 @@
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_intercept_errors on;
-        fastcgi_pass unix:/var/run/docker-apps/{{ socket_prefix }}.{{ socket_name }};
+        fastcgi_pass unix:/var/run/docker-apps/{{ socket_name }}.sock;
 
         fastcgi_cache_bypass $no_cache;
         fastcgi_no_cache $no_cache;

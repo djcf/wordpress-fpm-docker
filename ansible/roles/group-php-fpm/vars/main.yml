@@ -1,0 +1,5 @@
+---
+# vars file for group-php-fpm
+group_fpm: true
+container_always_active: true
+socket_prefix: php

@@ -7,3 +7,4 @@ extra_nginx_configs:
   - inc/wordpress.conf
 install_path: public_html/wp-content # not actually an install path but a sub-directory tree which must be created with the site
 env_path: "/var/www/{{ domain }}/.env"
+user_wp_content_dir: "/var/www/{{ domain }}/public_html/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)

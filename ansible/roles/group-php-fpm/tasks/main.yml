@@ -1,0 +1,11 @@
+---
+- name: Add new user to group-fpm container
+  command: "docker exec {{ group_fpm_container }} 'useradd {{ db_user }} -s /bin/false'"
+
+# tasks file for group-php-fpm
+- name: Template a new fpm-pool to the group-php-fpm container
+  template:
+    src: php-pool.j2
+    dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ domain }}.conf"
+  notify:
+    - reload fpm

@@ -1,0 +1,1 @@
+Not all websites need to be run from this host. For example, site archives are run from a separated VPS. If you need to define a vhost which is proxied from another server, define it here.

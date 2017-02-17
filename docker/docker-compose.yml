@@ -10,19 +10,14 @@ version: '2'
 #
 
 services:
- # Pre-builds the fpm service for when its needed
-  #fpm:
-  #  build: fpm
-  #  image: fpm
-  #  command: /bin/true
-  # Pre-builds a wordpress image for when its needed
-  # Add wordpress as a child container using fpm
+  # wordpress group fpm container
   wordpress:
     build: apps/wordpress
     image: wordpress:php7.1-fpm-alpine-mod
-    #depends_on:
-    #  - fpm
-    command: /bin/true
+    container_name: group-wordpress.fpm
+    volumes:
+      - group_php_pools:/usr/local/etc/php-fpm.d:ro
+      - /var/www:/var/www:ro
   # switchboard manages vhosts
   switchboard:
     # optionally build the image instead of pulling nginx from repo:
@@ -36,7 +31,7 @@ services:
       - 443:443
     volumes:
       - /var/run/docker-apps:/var/run/docker-apps
-      - nginx_config:/etc/nginx/conf.d
+      - nginx_config:/etc/nginx/conf.d:ro
       - nginx_config_inc:/etc/nginx/inc:ro
       - vhost_config:/etc/nginx/vhost.d:ro
       - htpasswd:/etc/nginx/htpasswd:ro
@@ -57,12 +52,11 @@ services:
     image: jwilder/docker-gen
     container_name: dockergen
     volumes:
+      - nginx_config:/etc/nginx/conf.d
       - /var/run/docker.sock:/tmp/docker.sock:ro
       # IMPORTANT: Do NOT use without customized template. Will enable STS and bad things will happen:
       - ./dockergen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
     # todo: add :rw
-    volumes_from:
-      - switchboard
     command: -notify-sighup switchboard -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
   database:
     #env_file: env
@@ -94,10 +88,10 @@ volumes:
   vhost_config:
     driver: local
   # Files in this location are available for per-vhost or server-wide include manually.
-  # Nothing here is automatically included into the server config. Maps to /etc/nginx/inc
+  # Nothing here is automatically included into the server config. Maps to switchboard:/etc/nginx/inc
   nginx_config_inc:
     driver: local
-  # Designed for htpasswd info. Maps to /etc/nginx/htpasswd
+  # Designed for htpasswd info. Maps to switchboard:/etc/nginx/htpasswd
   htpasswd:
     driver: local
   # This directory contains vhost config files for each container, except the ones which dockergen auto-generates.
@@ -108,6 +102,9 @@ volumes:
   # Includes the master server's default SSL cert and any supplied by clients.
   # If the cert exists, it will be automatically included by both dockergen and ansible.
   ssl_certs:
+    driver: local
+  # This location contains the group pools for the always-active php-fpm instance (it is not used by the on-demand instances)
+  group_php_pools:
     driver: local
 
 networks:

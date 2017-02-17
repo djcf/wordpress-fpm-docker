@@ -1,0 +1,6 @@
+---
+- name: reload nginx
+  command: "docker exec {{ switchboard }} nginx -s reload"
+
+- name: reload fpm
+  command: "docker stop {{ group_fpm_container }}; docker start {{ group_fpm_container }}"

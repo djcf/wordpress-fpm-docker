@@ -1,29 +1,27 @@
-[global]
-daemonize = no
-error_log = /proc/self/fd/2
-
 [www]
 pm = ondemand
 
-pm.max_children = 6
+; todo: find out max_children value and other confs
+pm.max_children = 255
 
-user = www-data
+user = {{ db_user }}
 access.log = /proc/self/fd/2
-listen = /var/run/php-fpm.sock
+listen = /var/run/{{ socker_prefix }}.fpm.sock
 listen.owner = www-data
 listen.group = www-data
 pm.status_path = /status
 security.limit_extensions = .php .php3 .php4 .php5 .php7 .phtml
 
-env[HOSTNAME] = $HOSTNAME
-env[DB_USER] = $DB_USER
-env[DB_PASSWORD] = $DB_PASSWORD
-env[DB_NAME] = $DB_NAME
-env[DB_HOST] = $DB_HOST
-env[DB_PORT]= $DB_PORT
-env[ENVIRONMENT]= $ENVIRONMENT
-env[HTTP_USER_AGENT_HTTPS] = $HTTP_USER_AGENT_HTTPS
-env[HTTP_HOST] = $HTTP_HOST
+; env[HOSTNAME] = {{ domain }}
+env[DB_USER] = {{ db_user }}
+env[DB_PASSWORD] = {{ db_password }}
+env[DB_NAME] = {{ db_name }}
+env[DB_HOST] = {{ db_host }}
+env[DB_PORT]= {{ db_post }}
+env[ENVIRONMENT]=live
+env[HTTP_USER_AGENT_HTTPS] = {{ ssl_host | ternary('ON', 'OFF') }}
+env[WP_CONTENT_DIR] = {{ user_wp_content_dir }}
+#env[HTTP_HOST] = {{ domain }}
 
 php_flag[display_errors] = on
 php_admin_value[error_log] = /proc/self/fd/2

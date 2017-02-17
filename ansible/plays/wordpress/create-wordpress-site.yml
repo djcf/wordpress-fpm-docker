@@ -14,10 +14,13 @@
   - name: "subdomain"
     prompt: "All top-level domain websites must also have a *.noflag.org.uk subdomain. This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. Please enter the subdomain now. If the default domain is already a subdomain of .noflag.org.uk, leave this field blank"
     private: no
+  vars:
+    group_fpm: true
   become: true
   roles:
   - vhost-renew
-  - containers-on-demand
+  - { role: containers-on-demand, when: not group_fpm }
+  - { role: group-php-fpm, when: group_fpm }
   - { role: container-environments, base_id: "{{ domain }}" }
   - apps-wordpress-create
   - { role: sql-create-database, when: db_exists|failed }

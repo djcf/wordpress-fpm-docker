@@ -1,18 +1,23 @@
 {% if container_always_active == true %}
     {% set socket_name = "fpm.sock" %}
 {% else %}
-    # Container sleeps after: {{ container_sleeps_after }}
+    # Container sleeps after: {{ container_sleeps_after|default("20m") }}
     # Valid: xm for minutes (e.g. 20m), xh for hours (e.g. 2h) or xhym for minutes and hours (e.g. 2h30m)
     # Passed to docker logs --since. For more information, see https://docs.docker.com/engine/reference/commandline/logs
     #
     # This is the vhost-descriptor for an on-demand container created using the ansible vhost-renew command.
-    # If no traffic is received (monitored using docker logs --since command) in {{ container_sleeps_after }} amount of time,
-    # a cron-script running on the host tells systemd to sleep the container, using systemctl stop vhost@$container_name.
-    # When a new connection is detected, systemd proxies the connection from nginx and starts the container.
-    # To change the sleep value, just edit this file.
+    # If no traffic is received (monitored using docker logs --since command) in {{ container_sleeps_after }},
+    # a cron-script tells host systemd to sleep the container, using `systemctl stop vhost@{{ domain }}.fpm`.
+    # When a new connection is detected, systemd proxies the connection from nginx until the container has started again.
+    #
+    # OPTIONS:
+    # * To change the sleep value, just edit this vhost. {# (NB: This is a vhost template not a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
+    # * To disable sleeping on this php-fpm container, move this vhost to ../web-apps (or any other directory except ./on-demand)
+    # * To move this website into the multi-user php-fpm-group container, re-run the renew-vhost play.
+    #
     {% set socket_name = "fpm-waker.sock" %}
 {% endif %}
-
+{{ ansible_managed | comment }}
 server {
         listen 80;
         listen [::]:80;

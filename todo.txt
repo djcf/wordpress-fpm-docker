@@ -1,8 +1,14 @@
-filesize monitoring
-
 Better SSL sensing for subdomains
 Better domain sensing for vhosts
 	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
+
+add ansible managed comments
+import database script
+
+regenerate vhost
+	non-interactive
+	well-documented readme
+	all options commented out as inline vars:
 
 Short-term
 	! add global fpm instance
@@ -20,4 +26,10 @@ Long-term
 * DNS master
 * Stats & Logging / cockpit
 * fail2ban
-* New VM with DNS slaves set up by ansible play
+* DNS slaves set up by ansible play
+
+FINALLY
+	* document
+	* tidy up roles
+
+TROUBLESHOOTING DIAGRAM

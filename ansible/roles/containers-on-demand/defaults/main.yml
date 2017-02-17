@@ -1,3 +1,7 @@
 ---
 # defaults file for containers-on-demand
 container_sleeps_after: 20m
+group_fpm: false
+container_always_active: false
+state: present
+vhost_prefix: on-demand

@@ -11,6 +11,6 @@
     enabled: true
   when: not container_always_active
 
-- name: Fix bug in last task by forcing the wake socket
+- name: Fix bug in last task by forcing the wake socket activation
   command: /usr/local/bin/renew-fpm.sh {{ domain }}
   changed_when: false

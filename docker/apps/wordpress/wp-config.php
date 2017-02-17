@@ -74,8 +74,21 @@ else:
 	}
 
     /** A couple extra tweaks to help things run well on Pantheon. **/
-    if (isset($_SERVER['HTTP_HOST'])) {
+    if (isset($_ENV['HTTP_HOST']) && ($_ENV['HTTP_HOST'] != "")) {
         // HTTP is still the default scheme for now.
+        $scheme = 'http';
+        // If we have detected that the end use is HTTPS, make sure we pass that
+        // through here, so <img> tags and the like don't generate mixed-mode
+        // content warnings.
+        if (isset($_ENV['HTTP_USER_AGENT_HTTPS']) && $_ENV['HTTP_USER_AGENT_HTTPS'] == 'ON') {
+            $scheme = 'https';
+        }
+        define('WP_HOME', $scheme . '://' . $_ENV['HTTP_HOST']);
+        define('WP_SITEURL', $scheme . '://' . $_ENV['HTTP_HOST']);
+    } elseif (isset($_SERVER['HTTP_HOST'])) {
+        // HTTP is still the default scheme for now.
+        // Daniel's note: I think this is set correctly using by nginx's fastcgi_param file in /etc/nginx
+        // If not, you can force it by editing the .env file and restarting the container
         $scheme = 'http';
         // If we have detected that the end use is HTTPS, make sure we pass that
         // through here, so <img> tags and the like don't generate mixed-mode
@@ -85,6 +98,10 @@ else:
         }
         define('WP_HOME', $scheme . '://' . $_SERVER['HTTP_HOST']);
         define('WP_SITEURL', $scheme . '://' . $_SERVER['HTTP_HOST']);
+    }
+
+    if (isset($_ENV['WP_CONTENT_DIR'])) {
+        define('WP_CONTENT_DIR', $_ENV['WP_CONTENT_DIR']);
     }
 
     // Force the use of a safe temp directory when in a container

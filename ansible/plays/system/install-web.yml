@@ -2,4 +2,5 @@
 - hosts: all
   become: true
   roles:
+    - abaez.docker
     - install-web

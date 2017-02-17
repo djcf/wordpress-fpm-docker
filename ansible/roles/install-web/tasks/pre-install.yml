@@ -1,6 +1,9 @@
 ---
 - name: ensure that various directories exist
-  stat: "path={{ item }} state=directory recurse=yes"
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
   with_items:
     - /etc/ansible/roles
     - /usr/local/cron
@@ -46,8 +49,8 @@
 - name: template out a new nginx.conf file with the appropriate number of workers for this host
   template: "src=nginx.conf.j2 dest={{ install_path }}/docker/switchboard/nginx.conf"
 
-#    - name: host should have latest version of docker-compose
-#      shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-($uname -m) > /usr/local/bin/docker-compose
+- name: host should have latest version of docker-compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m) > /usr/bin/docker-compose && chmod +x /usr/bin/docker-compose
 
 #    - name: Install pip
 #      apt:

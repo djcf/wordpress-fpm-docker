@@ -11,22 +11,22 @@
 
 # Shell equivilent:
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP USER db_user; DROP DATABASE IF EXISTS db_name; CREATE DATABASE db_name; GRANT ALL ON db_name.* TO 'db_user'@'%' IDENTIFIED BY 'db_password';\"'
-#- name: Create database (transient container option -- better)
-#  docker_container:
-#    name: "{{ domain }}-createdb"
-#    image: "{{ mysql_image }}"
-#    networks:
-#      - name: docker_sqlnet
-#        links:
-#          - "{{ db_host }}:mysql"
-    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
-#    command: "mysql -f -h\"mysql\" -P\"{{ db_port }}\" -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
-#    env:
-#      MYSQL_PWD: "{{mysql_root_password}}"
-#    cleanup: yes
-#    detach: no
-#  become: yes
+- name: Create database (transient container option -- better)
+  docker_container:
+    name: "{{ domain }}-createdb"
+    image: "{{ mysql_image }}"
+    networks:
+      - name: docker_sqlnet
+        links:
+          - "{{ db_host }}:mysql"
+   #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
+    command: "mysql -f -h\"mysql\" -P\"{{ db_port }}\" -uroot -e \"CREATE DATABASE {{ db_name }} IF NOT EXISTS; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
+    env:
+      MYSQL_PWD: "{{mysql_root_password}}"
+    cleanup: yes
+    detach: no
+  become: yes
 
-- name: Create database (existing container option)
-  command: "docker exec {{ sqldb }} mysql -u root -e \"DROP DATABASE IF EXISTS {{ db_name }}; CREATE DATABASE {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
-  become: true
+#- name: Create database (existing container option)
+#  command: "docker exec {{ sqldb }} mysql -u root -e \"CREATE DATABASE IF NOT EXISTS {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
+#  become: true

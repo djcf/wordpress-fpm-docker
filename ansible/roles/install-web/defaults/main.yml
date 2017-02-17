@@ -4,3 +4,5 @@ rigsize: small
 is_vagrant: false
 install_path: /usr/local/nfg-web
 remote_path: https://github.com/djcf/wordpress-fpm-docker.git
+db_port: 3306
+db_socket: /run/mysqld/mysqld.sock

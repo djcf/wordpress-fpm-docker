@@ -2,5 +2,5 @@
 - hosts: all
   become: true
   roles:
-    - abaez.docker
+    - marvinpinto.docker
     - install-web

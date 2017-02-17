@@ -31,6 +31,6 @@
   when: is_vagrant.stat.exists
 
 - name: set fact -- number of worker_connections
-  command: ulimit -n
+  shell: ulimit -n
   register: worker_connections
   changed_when: false

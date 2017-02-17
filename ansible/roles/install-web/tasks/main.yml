@@ -11,4 +11,4 @@
 
 - include: docker.yml
   when: not is_vagrant
-  tags: install
+  tags: docker

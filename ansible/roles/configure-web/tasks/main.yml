@@ -1,10 +1,4 @@
 ---
-- name: remove pre-built app containers (wp)
-  docker:
-    name: docker_wordpress_1
-    image: wordpress
-    state: absent
-
 - name: Allow root user to access from any host (drop root user first)
   command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
   ignore_errors: true

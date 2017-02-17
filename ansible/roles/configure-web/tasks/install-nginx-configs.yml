@@ -1,20 +1,20 @@
 - name: copy generic .conf files to docker volumes
   synchronize:
-    src: "nginx/config_inc"
+    src: "{{ role_path }}/files/nginx/config-inc"
     dest: "{{ docker_volumes['docker_nginx_config_inc'] }}"
   notify: reload nginx
 
 - name: copy group_fpm global pool settings
   copy:
     src: "fpm/{{ item }}"
-    dest: "{{ docker_volumes['group_php_pools'] }}"
+    dest: "{{ docker_volumes['docker_group_php_pools'] }}"
   with_items:
-    - fpm/www.conf
+    - www.conf
   notify: reload fpm
 
 - name: copy nginx config auto-includes to /etc/nginx/conf.d
   synchronize:
-    src: "nginx/conf.d"
+    src: "{{ role_path }}/files/nginx/conf.d"
     dest: "{{ docker_volumes['docker_nginx_config'] }}"
   notify: reload nginx
 
@@ -24,6 +24,6 @@
 
 - name: Ensure vhost prefixes exist for vhosts in /etc/nginx/sites-enabled
   synchronize:
-    src: nginx/sites_enabled
+    src: "{{ role_path }}/files/nginx/sites-enabled"
     dest: "{{ docker_volumes['docker_sites_enabled'] }}"
   notify: reload nginx

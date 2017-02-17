@@ -17,7 +17,7 @@ services:
     container_name: group-wordpress.fpm
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro
-      - /var/www:/var/www:ro
+      - /var/www:/var/www
   # switchboard manages vhosts
   switchboard:
     # optionally build the image instead of pulling nginx from repo:

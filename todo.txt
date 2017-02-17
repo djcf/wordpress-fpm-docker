@@ -5,7 +5,15 @@ import database script
 php-group auto-tuning
 
 Better SSL sensing for subdomains
-	use {{ list | join(" ") }}
+
+	1 Enter ONE PRIMARY SUBDOMAIN
+	2 Enter any number of secondary top-level domains separated by comma,space
+		Convert to list
+		Add 1 to list
+	3 2 ? Append www. to item, add results to list
+	4 Debug print list
+	5 vhost -> use {{ list | join(" ") }}
+
 Better domain sensing for vhosts
 	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
 

@@ -18,6 +18,19 @@ Docker-compose
 
 The web host uses systemd's socket activation to kill off fpm processes which are not in use. To see how that works, look here: https://developer.atlassian.com/blog/2015/03/docker-systemd-socket-activation/
 
+Documentation
+-------
+
+** Every single directory ** in this repository should have an accompanying README.md file. The README.md file should contain an in-depth explanation for the purpose of * EVERY * file in that directory.
+
+** User Documentation **
+
+To begin, browse to the "ansible" directory.
+
+** System Documentation **
+
+To begin, browse to the "docs" directory for a high-level overview.
+
 SOCKET ACTIVATION
 -------
 
@@ -62,10 +75,6 @@ See also this useful list of systemd commands: https://www.dynacont.net/document
 
 Since systemd would by default talk to the docker client process and not the docker daemon, we use https://github.com/ibuildthecloud/systemd-docker to allow sane communication between docker services between the docker and systemd daemons.
 
-TO CONFIGURE
--------
-
-* Modify the file .env with the MySQL root password
 
 LOCAL DEVELOPMENT (INSTALL USING VAGRANT)
 -------
@@ -83,19 +92,7 @@ Or in fish: set $inventory (pwd)/.vagrant/provisioners/ansible/inventory/vagrant
 TODO
 -----
 
-	* FPM should use tinyinit (?)
 	* Finish WP updates playbook
-	* Finish create vhost playbooks
-	* Make wordpress import playbook
-	* System init should kill fpm processes when not in use and start more gracefully
 	* Ansible scripts should install and renew letsencrypt certs
-	* nginx should also cache generated php files
-	* nginx could install pagespeed
 	* DNS management
 	* Import from Alba
-	* Use wordpress (alpine) official docker image
-
-BUGS
-------
-
-	* WP install process errors with mysql-client not found

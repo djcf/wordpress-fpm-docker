@@ -1,29 +1,29 @@
 ---
 - name: Crawl remote site
   command: >
-    mkdir -p /var/www/{{ domain }}/ && \
+    mkdir -p /var/www/{{ primary_subdomain }}/ && \
     wget --mirror \
       --convert-links \
       --adjust-extension \
       --page-requisites \
       --no-parent \
-      --directory-prefix=/var/www/{{ domain }}/ \
+      --directory-prefix=/var/www/{{ primary_subdomain }}/ \
       --no-check-certificate \
       --level=5 \
-    http://{{ domain }}
-  creates: "/var/www/{{ domain }}/{{ domain }}"
+    http://{{ primary_domain }}
+  creates: "/var/www/{{ primary_subdomain }}/{{ primary_domain }}"
   delegate_to: "{{ archive_host }}"
 
   # tasks file for site-archive
 - name: Transfer file from web to archive
   synchronize:
-    src:  "/var/www/{{ domain }}/site_export.zip"
-    dest: "/var/www/{{ domain }}/"
+    src:  "/var/www/{{ primary_subdomain }}/site_export.zip"
+    dest: "/var/www/{{ primary_subdomain }}/"
     mode: pull
   delegate_to: "{{ archive_host }}"
 
 - name: create archival vhost
   template:
     src: "vhost.j2"
-    dest: "{{ docker_volumes['docker_sites_enabled'] }}/archives/{{ domain }}.conf"
+    dest: "{{ docker_volumes['docker_sites_enabled'] }}/archives/{{ primary_subdomain }}.conf"
   notify: reload nginx

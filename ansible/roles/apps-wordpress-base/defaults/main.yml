@@ -1,10 +1,11 @@
 docker_image: "wordpress:php7.1-fpm-alpine-mod"
 admin_user: admin
-site_title: "{{ domain }}"
-salts_file: "/var/www/{{ domain }}/public_html/salts.php"
+site_title: "{{ primary_subdomain }}"
+use_php: yes
 phproot: /usr/src/wordpress # this path is the default installation location for wordpress in alpine linux containers
 extra_nginx_configs:
   - inc/wordpress.conf
-install_path: public_html/wp-content # not actually an install path but a sub-directory tree which must be created with the site
-env_path: "/var/www/{{ domain }}/.env"
-user_wp_content_dir: "/var/www/{{ domain }}/public_html/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)
+user_site_dir: "/var/www/{{ primary_subdomain }}"
+salts_file: "{{ user_site_dir }}/public_html/salts.php"
+env_path: "{{ user_site_dir }}/.env"
+user_wp_content_dir: "{{ user_site_dir }}/public_html/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)

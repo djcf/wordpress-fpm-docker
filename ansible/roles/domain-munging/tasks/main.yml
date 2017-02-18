@@ -1,0 +1,47 @@
+---
+# tasks file for domain-munging
+- name: Get base name of primary_subdomain if domain host was accidentally entered
+  set_fact:
+    - primary_subdomain: "{{ primary_subdomain.split('.')[0] }}"
+  when:
+    - '"{{domain_host}}" in primary_subdomain'
+
+## primary_subdomain now validated
+
+- name: Set secondary domain and domain list
+  set_fact:
+    - secondary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
+    - domain_list: "{{ domains|split(' ') }}"
+
+- name: Set primary_domain if empty
+  set_fact:
+    primary_domain: "{{ secondary_domain }}"
+  when:
+    - primary_domain == ""
+
+## primary_domain now validated
+
+- name: Add a www. subdomain alias when using a top-level domain
+  set_fact:
+    domain_list: "{{ domain_list }} + [ 'www.{{ primary_domain }}' ]"
+  when:
+    - 'domain_host not in primary_domain'
+    - '"www." not in primary_domain'
+
+- name: Add primary_domain to domain_list
+  set_fact:
+    domain_list: "{{ domain_list }} + [ '{{ primary_domain }}' ]"
+
+- name: Add secondary domain to domain_list
+  set_fact:
+    domain_list: "{{ domain_list }} + [ '{{ secondary_domain }}' ]"
+  when:
+    - 'domain_host not in primary_domain'
+
+- name: The following domains will be created for this site
+  debug:
+    var: "{{ item }}"
+  with_items:
+    - primary_domain
+    - primary_subdomain
+    - domain_list

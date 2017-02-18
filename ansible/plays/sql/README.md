@@ -34,6 +34,19 @@ Non-interactive usage:
 
 The playbook will save the database to /tmp/database.sql.gz on the host, and then download it to $database.sql.gz.
 
+Import a database
+==================
+
+There are two ways to do this. If you know that the database already exists, you can simply enter the database name and the name of the file to upload:
+
+	ansible-playbook -i $inventory sql/import-database.yml
+
+If the database does not exist, you can either create (see 'Create a Database') or run the following script instead:
+
+	ansible-playbook -i $inventory sql/import-new-database.yml
+
+By default, the import role will not try to find an .env file, as it doesn't know where to look for one. If you supply one when prompted or create one, the role will try to use the credentials in the env file to connect to the database instead of the root MySQL user. This is **MUCH** safer.
+
 Environment path
 ------------
 

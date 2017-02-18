@@ -1,27 +1,23 @@
 Short-term
 
-import database script
+* Add/remove a global DNS record to an existing vhost / and update WP accordingly
+
+* WP UPDATES
+* https://github.com/ibuildthecloud/systemd-docker
+
+
 * script to add all users to fpm image
-php-group auto-tuning
+* php-group auto-tuning ?
 
-Better SSL sensing for subdomains
 
-	1 Enter ONE PRIMARY SUBDOMAIN
-	2 Enter any number of secondary top-level domains separated by comma,space
-		Convert to list
-		Add 1 to list
-	3 2 ? Append www. to item, add results to list
-	4 Debug print list
-	5 vhost -> use {{ list | join(" ") }}
-
-Better domain sensing for vhosts
-	* Add/remove a global DNS record to an existing vhost / and update WP accordingly
-
+TOMORROW:
 regenerate vhost
 	* Transition sites between global fpm, always running, and not always running fpm instances
 	non-interactive
 	well-documented readme
 	all options commented out as inline vars:
+
+
 
 Medium-term
 * Ansible plays

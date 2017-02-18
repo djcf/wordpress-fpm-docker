@@ -22,7 +22,7 @@ If you are running against a newly-provisioned server, you need to run plays/sys
 
 USAGE EXAMPLES
 
-You must use these plays with a valid inventory. I ussually set the inventory to the $inventory variable, for example "set inventory (pwd)/hosts/local" will run against the local host, or ../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory to run against a vagrant virtual machine.
+You must use these plays with a valid inventory. I usually set the inventory to the $inventory variable, for example "set inventory (pwd)/hosts/local" will run against the local host, or ../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory to run against a vagrant virtual machine.
 
 To install a new wordpress host:
 
@@ -42,4 +42,4 @@ For example, to disable SSL on the new host, you need to run:
  		--extra-vars "{ 'use_ssl': false, 'domain': 'mydomain.org', 'subdomain':', mysubdomain.noflag.org.uk', 'site_title': 'test', 'admin_email': 'admin@example.org'}" \
  		plays/wordpress/create-wordpress-site.yml
 
-For complete documentation, browse each plays directory.
+For complete documentation, browse each play's directory.

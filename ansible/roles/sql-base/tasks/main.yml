@@ -2,11 +2,11 @@
 # tasks file for base-sql
 - include: tasks-find-mysql-root-password.yml
 
-- name: guess .env path (when domain is defined and env_path is undefined)
+- name: guess .env path (when primary_subdomain is defined and env_path is undefined)
   set_fact:
-    env_path: "/var/www/{{ domain }}/.env"
+    env_path: "/var/www/{{ primary_subdomain }}/.env"
   when:
-    - domain is defined
+    - primary_subdomain is defined
     - env_path is undefined
 
 - name: try to find an .env file to load database details from

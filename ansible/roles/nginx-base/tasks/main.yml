@@ -1,2 +1,7 @@
 ---
 # tasks file for nginx-base
+- name: Don't use lets_encrypt when the primary domain is a subdomain of the domain host
+  set_fact:
+    lets_encrypt: false
+  when:
+    - '"{{domain_host}}" in primary_domain'

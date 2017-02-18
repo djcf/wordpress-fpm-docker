@@ -1,7 +1,7 @@
 ---
 - name: Project directory should exist
   file:
-    path: "/var/www/{{ domain }}/{{ install_path }}"
+    path: "{{ user_wp_content_dir }}"
     state: directory
     recurse: yes
 
@@ -30,7 +30,7 @@
 
 # shell: cp -r /var/lib/wordpress/wp-content/* /var/www/$domain/public_html/wp-content
 - name: sync wp-content directories
-  command: "rsync -a --stats /var/lib/wordpress/wp-content/ /var/www/{{ domain }}/public_html/wp-content"
+  command: "rsync -a --stats /var/lib/wordpress/wp-content/ /var/www/{{ primary_subdomain }}/public_html/wp-content"
   changed_when: '"files transferred: 0" not in wp_content_rsync.stdout'
   register: wp_content_rsync
 
@@ -38,7 +38,7 @@
 # docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
 - name: Create Wordpress container for new site
   docker_container:
-    name: "{{ domain }}.fpm"
+    name: "{{ primary_subdomain }}.fpm"
     image: "{{ docker_image }}"
     state: "{{ state }}"
     networks:
@@ -46,18 +46,18 @@
         links:
         - "{{ db_host }}"
     volumes:
-      - "/var/run/docker-apps/{{ domain }}:/var/run"
-      - "/var/www/{{ domain }}/public_html/wp-content:{{ phproot }}/wp-content"
+      - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
+      - "/var/www/{{ primary_subdomain }}/public_html/wp-content:{{ phproot }}/wp-content"
       - "/etc/ssmtp:/etc/ssmtp:ro"
       - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
-    env_file: "/var/www/{{ domain }}/.env"
+    env_file: "/var/www/{{ primary_subdomain }}/.env"
     detach: yes
 
 # Shell equivilent
 # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
 #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress db check'
 - name: Check to see if WP database exists
-  command: "docker run --env-file /var/www/{{ domain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
+  command: "docker run --env-file /var/www/{{ primary_subdomain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ primary_subdomain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: db_exists.rc != 0
   register: db_exists

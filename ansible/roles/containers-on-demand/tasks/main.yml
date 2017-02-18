@@ -6,11 +6,11 @@
 # We use a systemd unit template to avoid cluttering up /etc/systemd/services
 - name: Create a systemd wake socket for the new container
   systemd:
-    name: "fpm-waker@{{ domain }}.socket"
+    name: "fpm-waker@{{ primary_subdomain }}.socket"
     state: started
     enabled: true
   when: not container_always_active
 
 - name: Fix bug in last task by forcing the wake socket activation
-  command: /usr/local/bin/renew-fpm.sh {{ domain }}
+  command: /usr/local/bin/renew-fpm.sh {{ primary_subdomain }}
   changed_when: false

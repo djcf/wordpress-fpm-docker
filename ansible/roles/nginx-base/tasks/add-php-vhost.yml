@@ -18,15 +18,15 @@
     # docker create --name $domain.fpm wordpress --net=docker_sqlnet --volumes {} wordpress
     - name: Create php container for new site
       docker_container:
-        name: "{{ domain }}.fpm"
+        name: "{{ primary_subdomain }}.fpm"
         image: "{{ docker_image }}"
         state: "{{ state }}"
         networks:
           - name: docker_sqlnet
             link: "{{ db_host }}"
         volumes:
-          - "/var/run/docker-apps/{{ domain }}:/var/run/docker-apps"
-          - "/var/www/{{ domain }}/public_html/wp-content:/var/lib/wordpress/wp-content"
+          - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run/docker-apps"
+          - "/var/www/{{ primary_subdomain }}/public_html/wp-content:/var/lib/wordpress/wp-content"
           - "/etc/ssmtp:/etc/ssmtp:ro"
-        env_file: "/var/www/{{ domain }}/.env"
+        env_file: "/var/www/{{ primary_subdomain }}/.env"
       become: yes

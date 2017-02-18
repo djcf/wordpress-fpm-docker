@@ -1,0 +1,49 @@
+---
+- name: Copy database to remote host
+  copy:
+    src: "{{ local_import_file }}"
+    dest: "/tmp"
+  when: local_import_file is defined
+
+- name: Set path to upload (user upload)
+  set_fact:
+    import_file: "/tmp/{{ local_import_file }}"
+  when: local_import_file is defined
+
+- name: Set path to database file (not user upload)
+  set_fact:
+    import_file: "/var/www/{{ domain }}/database.sql.gz"
+  when: domain is defined
+
+# Shell equivilent:
+# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'gunzip -c /tmp/$domain.sql.gz | mysql -f -hsqldb.noflag.org.uk -P3306 -uroot'
+- name: Import database (root user)
+  docker_container:
+    image: "{{ mysql_image }}"
+    networks:
+      - name: docker_sqlnet
+        link: "{{ db_host }}"
+    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
+    command: "gunzip -c /tmp/database.sql.gz | mysql -f -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot {{ db_name }}"
+    env:
+      MYSQL_PWD: "{{ mysql_root_password }}"
+    cleanup: yes
+    detach: no
+    volumes: "{{ import_file }}:/tmp/database.sql.gz:ro"
+  when: (env_path is not defined) or (env_path == "")
+
+- name: Import database (non-root user (safer))
+  docker_container:
+    image: "{{ mysql_image }}"
+    networks:
+      - name: docker_sqlnet
+        link: "{{ db_host }}"
+    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
+    command: "gunzip -c /tmp/database.sql.gz | mysql -f -h\"$DB_HOST\" -P\"$DB_PORT\" -u$DB_USER -p$DB_PASSWORD $DB_NAME"
+    env_file: "{{ env_path }}"
+    cleanup: yes
+    detach: no
+    volumes: "{{ import_file }}:/tmp/database.sql.gz:ro"
+  when:
+    - env_path is defined
+    - env_path != ""

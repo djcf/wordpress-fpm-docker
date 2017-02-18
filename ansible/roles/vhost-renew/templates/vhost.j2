@@ -5,7 +5,7 @@
     #
     # This is the vhost-descriptor for an on-demand container created using the ansible vhost-renew command.
     # If no traffic is received (monitored using docker logs --since command) in {{ container_sleeps_after }},
-    # a cron-script tells host systemd to sleep the container, using `systemctl stop vhost@{{ domain }}.fpm`.
+    # a cron-script tells host systemd to sleep the container, using `systemctl stop vhost@{{ primary_subdomain }}.fpm`.
     # When a new connection is detected, systemd proxies the connection from nginx until the container has started again.
     #
     # OPTIONS:
@@ -19,14 +19,14 @@ server {
         listen 80;
         listen [::]:80;
 
-        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        server_name {{ domain_list | join(" ") }};
         access_log /dev/stdout;
         error_log stderr error;
 
     {% if ssl_method == "redirect" %}
         return 301 https://$host$request_uri;
     {% else %}
-        root /var/www/{{ domain }}/public_html;
+        root /var/www/{{ primary_subdomain }}/public_html;
     {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
     {% else %}
@@ -44,7 +44,7 @@ server {
     {% endif %}
 
     {% if custom_vhost_exists|succeeded %}
-        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 
     {% endif %}
@@ -53,7 +53,7 @@ server {
 {% if ssl_host %}
 
 server {
-        server_name {{ domain }} www.{{ domain }} {{ subdomain }};
+        server_name {{ domain_list | join(" ") }};
         listen 443 ssl http2;
         listen [::]:443;
 
@@ -64,18 +64,18 @@ server {
 
     {% else %}
         {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
-        ssl_certificate /etc/nginx/certs/{{ domain }}.crt;
-        ssl_certificate_key /etc/nginx/certs/{{ domain }}.key;
+        ssl_certificate /etc/nginx/certs/{{ primary_subdomain }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ primary_subdomain }}.key;
         {% else %}
         ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
         ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
         {% endif %}
-        ssl_dhparam /etc/nginx/certs/{{ domain }}.dhparam.pem;
+        ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;
     {% endif %}
 
         include inc/ssl.conf;
 
-        root /var/www/{{ domain }}/public_html;
+        root /var/www/{{ primary_subdomain }}/public_html;
     {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
     {% else %}
@@ -92,7 +92,7 @@ server {
     {% endif %}
 
     {% if custom_vhost_exists|succeeded %}
-        include {{ docker_volumes['docker_vhost_config'] }}/{{ domain }}.conf;
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 
 }

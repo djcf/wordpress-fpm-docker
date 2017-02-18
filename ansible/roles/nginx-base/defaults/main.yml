@@ -1,10 +1,11 @@
 ---
-ssl_host: yes
-ssl_method: redirect
-lets_encrypt: yes
-use_php: yes
+ssl_host: true
+#lets_encrypt: yes
 default_cert: "default"
-subdomain: ""
 vhost_prefix: "default"
-#container_sleeps_after: 20m  # default value so templates don't complain; should be overriden anyhow by role containers-on-demand
 container_always_active: no # should be overriden by role containers-on-demand
+transport: "{{ ssl_host|ternary('https', 'http') }}"
+ssl_method: "{{ ssl_host|ternary('redirect', 'none') }}"
+lets_encrypt: "{{ ssl_host }}"
+primary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
+domain_list: []

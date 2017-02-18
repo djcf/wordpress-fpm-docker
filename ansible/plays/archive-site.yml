@@ -1,24 +1,26 @@
 ---
 - hosts: web
   vars_prompt:
-    - name: "domain"
-      prompt: "Enter the domain to archive"
-      private: no
-    - name: "subdomain"
-      prompt: "Enter a subdomain to add to the vhost"
-      private: no
-    - name: "remove"
-      prompt: "By default, this play will *not* remove web content from the host. Would you like to do that now? (type anything other than 'no')"
-      default: "no"
-      private: no
+  - name: "primary_subdomain"
+    prompt: "** Primary subdomain **\nALL websites must have a primary subdomain associated with them and parked to the domain host.\nThis is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. It will be used as a unique key to identify this user's domain.\n\nFor example, for 'example.noflag.org.uk', enter 'example'. \n\nEnter a primary subdomain"
+    private: no
+  - name: "domains"
+    prompt: "If the website has alias domains of any kind, enter them now, separated by a space. For example, 'example.org www.example.org'. www. aliases will NOT be added unless specified"
+    private: no
+    default: ""
+  - name: "remove"
+    prompt: "By default, this play will *not* remove web content from the host. Would you like to do that now? (type anything other than 'no')"
+    default: "no"
+    private: no
   roles:
+    - domain-munging
     - site-archive
 #    - vhost-renew
     - sql-remove-database
-    - { role: container-remove, container_name: "{{ domain }}.fpm" }
+    - { role: container-remove, container_name: "{{ primary_subdomain }}.fpm" }
   post_tasks:
     - name: Remove all web content from host
       file:
         state: absent
-        path: "/var/www/{{ domain }}"
+        path: "/var/www/{{ primary_subdomain }}"
       when: remove != "no"

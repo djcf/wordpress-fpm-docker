@@ -1,59 +1,28 @@
-# Equivilent to shell command:
-# docker rmi wordpress:old
-- name: Remove oldest WP image
-  docker_image:
-    state: absent
-    name: wordpress
-    tag: old
-
-# Equivilent to shell command:
-# docker tag wordpress:latest wordpress:old
-- name: Rename current (old) WP image
-  become: yes
-  docker_image:
-    name: wordpress
-    repository: wordpress:latest
-    tag: old
-    state: present
+- name: Rename WP containers
+  command:|
+docker rmi {{ wordpress }}:oldest
+docker tag {{ wordpress }}:old {{ wordpress }}:oldest
+docker rmi {{ wordpress }}:old
+docker tag {{ wordpress }}:latest {{ wordpress }}:old
+docker rmi {{ wordpress }}:latest
+docker rm -f (docker ps -qf "ancestor={{ wordpress }}:old")
 
 # Equivilent to shell command:
 # docker build -t wordpress:latest {{ path }}/wordpress
 - name: Build new WP image
-  become: yes
   docker_image:
-    name: wordpress
-    path: "{{ path }}/wordpress"
+    name: "{{ wordpress }}"
+    path: "{{ path }}/apps/wordpress"
     state: present
     tag: latest
 
-# Loads docker_facts module to get facts about containers
-# Equivilent to shell command:
-# docker_facts=$(docker ps -a | grep wordpress:old)
-- name: Get facts about containers
-  local_action:
-    module: docker_facts
-    images: wordpress:old
-
-# Equivilent to shell command:
-# docker rm -f {{ docker_containers }}
-- name: Remove the old wordpress containers
-  #debug: msg="Image ID {{ item.key }} Created {{ item.value.docker_created }} Repo Tags {{ item.value.docker_repotags }}"
-  with_dict: docker_containers
-
 # Equivilent to shell command:
 # docker run
-- name: Create wordpress containers using latest WP image
+- name: Create on-demand wordpress containers using latest WP image
 
-# Equivilent to shell command:
-# docker run
-- name: Run a database update
+- name: Execute database updates
+  command: "docker run --rm --volumes-from {{ item }} --net docker_sqlnet --link {{ sqldb }} wordpress:latest sh -c '/usr/local/bin/wp --allow-root --path={{ php_root }} core update'"
 
-#- name: Find all WP docker images which are outdated
-#  become: yes
-#  command: "docker ps -q --filter ancestor=wordpress:latest"
-#  register: container_list
-
-#- name: Execute database updates
-#  become: yes
-#  command: "docker run --rm --volumes-from {{ item }} --link  sqldb.noflag.org.uk wordpress:latest sh -c '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress core update'"
-#  with_items: "{{ container_list.stdout_lines }}"
+- name: Execute database updates
+  command: "docker run --rm --volumes-from {{ item }} --net docker_sqlnet --link {{ sqldb }} wordpress:latest sh -c '/usr/local/bin/wp --allow-root --path={{ php_root }} core update'"
+  with_items:

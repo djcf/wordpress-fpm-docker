@@ -2,21 +2,4 @@
 - name: Unzip site dump
   unarchive:
     src: "{{ site_dump_file }}"
-    dest: "/var/www/{{ domain }}/public_html"
-
-# Shell equivilent:
-# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'gunzip -c /tmp/$domain.sql.gz | mysql -f -hsqldb.noflag.org.uk -P3306 -uroot'
-- name: Create database
-  docker_container:
-    name: "{{ domain }}.createdb"
-    image: "{{ mysql_image }}"
-    networks:
-      - name: docker_sqlnet
-        link: "{{ db_host }}"
-    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
-    command: "gunzip -c /tmp/database.sql.gz | mysql -f -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot {{ db_name }}"
-    env:
-      MYSQL_PWD: "{{ mysql_root_password }}"
-    cleanup: yes
-    detach: no
-    volumes: "/var/www/{{ domain }}/public_html/{{ domain }}.sql.gz:/tmp/database.sql.gz:ro"
+    dest: "/var/www/{{ domain }}/public_html

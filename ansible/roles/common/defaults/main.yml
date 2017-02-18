@@ -2,6 +2,7 @@
 switchboard: switchboard
 group_fpm_container: group-wordpress.fpm
 default_cert: default
+domain_host: noflag.org.uk
 docker_volume_lbls:
   - "docker_sites_enabled"
   - "docker_htpasswd"

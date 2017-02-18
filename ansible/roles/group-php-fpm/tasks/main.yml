@@ -7,6 +7,6 @@
 - name: Template a new fpm-pool to the group-php-fpm container
   template:
     src: php-pool.j2
-    dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ domain }}.conf"
+    dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
   notify:
     - reload fpm

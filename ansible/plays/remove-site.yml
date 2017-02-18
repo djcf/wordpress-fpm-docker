@@ -2,8 +2,8 @@
 # Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" plays/wordpress/remove-wordpress.yml
 - hosts: all
   vars_prompt:
-    - name: "domain"
-      prompt: "Enter the domain you would like to remove"
+    - name: "primary_subdomain"
+      prompt: "Enter the primary sub-domain you would like to remove"
       private: no
     - name: "backup"
       prompt: "Would you like to backup this website first? (type anything other than 'no')"
@@ -15,19 +15,19 @@
       private: no
   become: true
   roles:
-    - { role: site-export, when: backup != "no", dump_path: "/var/www/{{ domain }}/database.sql.gz" }
+    - { role: site-export, when: backup != "no", dump_path: "/var/www/{{ primary_subdomain }}/database.sql.gz" }
     - vhost-remove
     - sql-remove-database
-    - { role: container-remove, container_name: "{{ domain }}.fpm" }
+    - { role: container-remove, container_name: "{{ primary_subdomain }}.fpm" }
   post_tasks:
     - name: fetch site export
       fetch:
-        src: "/var/www/{{ domain }}/site_export.zip"
-        dest: "{{ domain }}.zip"
+        src: "/var/www/{{ primary_subdomain }}/site_export.zip"
+        dest: "{{ primary_subdomain }}.zip"
       when: backup != "no"
 
     - name: Remove all web content from host
       file:
         state: absent
-        path: "/var/www/{{ domain }}"
+        path: "/var/www/{{ primary_subdomain }}"
       when: remove != "no"

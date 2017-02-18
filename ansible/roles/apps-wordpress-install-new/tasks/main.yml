@@ -3,7 +3,7 @@
 # Shell equvilent:
 # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress core is-installed'
 - name: Check to see if WP is installed already
-  command: "docker run --net=docker_sqlnet --env-file /var/www/{{ domain }}/.env --link {{ db_host }} --volumes-from {{ domain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'"
+  command: "docker run --net=docker_sqlnet --env-file /var/www/{{ primary_subdomain }}/.env --link {{ db_host }} --volumes-from {{ primary_subdomain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: wp_was_installed.rc != 0
   register: wp_was_installed
@@ -14,32 +14,32 @@
 #   '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress core install --url=http://$domain --admin_email=test@test.org'
 - name: Install Wordpress database if not
   docker_container:
-    command: "/usr/local/bin/wp core install --allow-root --path={{ phproot }} --url={{ transport }}://{{ domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email='{{ admin_email }}'"
-    name: "{{ domain }}-installer"
+    command: "/usr/local/bin/wp core install --allow-root --path={{ phproot }} --url={{ ssl_host|ternary('https', 'http') }}://{{ primary_domain }} --title='{{ site_title }}' --admin_user='{{ admin_user }}' --admin_email='{{ admin_email }}'"
+    name: "{{ primary_subdomain }}-installer"
     image: "{{ docker_image }}"
     networks:
       - name: docker_sqlnet
         link: "{{ db_host }}"
     volumes_from:
-      - "{{ domain }}.fpm"
-    env_file: "/var/www/{{ domain }}/.env"
+      - "{{ primary_subdomain }}.fpm"
+    env_file: "/var/www/{{ primary_subdomain }}/.env"
     cleanup: yes
     detach: no
   when:
     - wp_was_installed|failed
 
-- name: Test the global domain is loading wordpress correctly
-  action: uri url={{ transport }}://{{ domain }} return_content=yes
-  register: test_success
-  when:
-    - subdomain == ""
+# - name: Test the global primary_subdomain is loading wordpress correctly
+#   action: uri url={{ ssl_host|ternary('https', 'http') }}://{{ primary_subdomain }} return_content=yes
+#   register: test_success
+#   when:
+#     - subdomain == ""
 
-- name: Test the subdomain is loading wordpress correctly
-  action: uri url={{ transport }}://{{ subdomain }} return_content=yes
-  register: test_success
-  when:
-    - subdomain != ""
+# - name: Test the subdomain is loading wordpress correctly
+#   action: uri url={{ ssl_host|ternary('https', 'http') }}://{{ subdomain }} return_content=yes
+#   register: test_success
+#   when:
+#     - subdomain != ""
 
-- name: Assert that the new site is loading wordpress correctly
-  fail: msg='The new vhost does not appear to be working'
-  when: "'Wordpress' not in test_success.content"
+# - name: Assert that the new site is loading wordpress correctly
+#   fail: msg='The new vhost does not appear to be working'
+#   when: "'Wordpress' not in test_success.content"

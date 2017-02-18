@@ -1,0 +1,5 @@
+---
+# defaults file for domain-munging
+domain_host: noflag.org.uk
+primary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
+domain_list: []

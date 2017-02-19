@@ -7,6 +7,8 @@ Short-term
 
 * check multi-domain WP routing
 
+* CHECK SALTS MAPPING
+
 * php-group auto-tuning ?
 
 

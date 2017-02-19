@@ -18,6 +18,7 @@ services:
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro
       - /var/www:/var/www
+      - /var/run/docker-apps:/var/run:ro
     logging:
       options:
         max-size: 25k

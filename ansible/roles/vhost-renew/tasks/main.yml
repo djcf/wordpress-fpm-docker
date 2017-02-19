@@ -58,4 +58,4 @@
   register: vhost_was_installed
 
 - debug:
-    msg: "A new vhost for {{ primary_subdomain }} ({{ transport }}://{{ primary_domain }}) {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+    msg: "A vhost for {{ primary_subdomain }} ({{ transport }}://{{ primary_domain }}) {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"

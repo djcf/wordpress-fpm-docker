@@ -43,9 +43,9 @@ pm.max_requests = 500
 
 
 
-user = {{ db_user }}
+user = {{ fpm_user }}
 access.log = /proc/self/fd/2
-listen = /var/run/{{ socker_prefix }}.fpm.sock
+listen = /var/run/php-fpm.sock
 listen.owner = www-data
 listen.group = www-data
 pm.status_path = /status
@@ -56,10 +56,11 @@ env[DB_USER] = {{ db_user }}
 env[DB_PASSWORD] = {{ db_password }}
 env[DB_NAME] = {{ db_name }}
 env[DB_HOST] = {{ db_host }}
-env[DB_PORT]= {{ db_post }}
+env[DB_PORT]= {{ db_port }}
 env[ENVIRONMENT]=live
 env[HTTP_USER_AGENT_HTTPS] = {{ ssl_host | ternary('ON', 'OFF') }}
 env[WP_CONTENT_DIR] = {{ user_wp_content_dir }}
+env[SALTS_FILE] = {{ salts_file }}
 ;env[HTTP_HOST] = {{ primary_domain }}
 
 php_flag[display_errors] = on

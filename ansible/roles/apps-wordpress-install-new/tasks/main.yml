@@ -1,9 +1,15 @@
 ---
+#- include: on-demand-strategy.yml
+#  when: not group_fpm
+
+#- include: on-demand-strategy.yml
+#  when: group_fpm
+
 # tasks file for apps-wordpress-install-new
 # Shell equvilent:
 # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress core is-installed'
 - name: Check to see if WP is installed already
-  command: "docker run --net=docker_sqlnet --env-file /var/www/{{ primary_subdomain }}/.env --link {{ db_host }} --volumes-from {{ primary_subdomain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'"
+  command: "docker run --net=docker_sqlnet --env-file /var/www/{{ primary_subdomain }}/.env --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: wp_was_installed.rc != 0
   register: wp_was_installed
@@ -21,7 +27,7 @@
       - name: docker_sqlnet
         link: "{{ db_host }}"
     volumes_from:
-      - "{{ primary_subdomain }}.fpm"
+      - "{{ parent_container }}"
     env_file: "/var/www/{{ primary_subdomain }}/.env"
     cleanup: yes
     detach: no

@@ -7,14 +7,39 @@
     group_fpm: true
     socket_name: php-fpm
     state: started
+    parent_container: "{{ group_fpm_container }}"
 
-- name: Add new user to group-fpm container
-  command: "docker exec {{ group_fpm_container }} 'useradd {{ db_user }} -s /bin/false'"
+- name: Find out whether group-fpm container is running
+  command: "docker inspect --format='{%raw%}{{json .State.Running}}{%endraw%}' {{ group_fpm_container }}"
+  changed_when: false
+  failed_when: fpm_container_running.stdout == "false"
+  register: fpm_container_running
+  ignore_errors: true
 
 # tasks file for group-php-fpm
 - name: Template a new fpm-pool to the group-php-fpm container
   template:
     src: php-pool.j2
     dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
+  vars:
+    fpm_user: www-data
+  when: fpm_container_running|failed
+
+- name: Ensure fpm container is started
+  docker_container:
+    name: "{{ group_fpm_container }}"
+    state: started
+
+- name: Add new user to group-fpm container
+  command: "docker exec {{ group_fpm_container }} sh -c 'adduser -SDH -G www-data -s /bin/false {{ db_user }}'"
+  ignore_errors: true
+
+# tasks file for group-php-fpm
+- name: Template a new fpm-pool to the group-php-fpm container
+  template:
+    src: php-pool.j2
+    dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
+  vars:
+    fpm_user: "{{ db_user }}"
   notify:
     - reload fpm

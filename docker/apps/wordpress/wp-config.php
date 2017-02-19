@@ -61,6 +61,8 @@ else:
      */
     if (file_exists(dirname(__FILE__) . '/salts.php')) {
     	include(dirname(__FILE__) . '/salts.php');
+    } elseif (isset($_ENV['SALTS_FILE'])) {
+        include $_ENV['SALTS_FILE'];
     } else {
 	    define('AUTH_KEY',         $_ENV['AUTH_KEY']);
 	    define('SECURE_AUTH_KEY',  $_ENV['SECURE_AUTH_KEY']);

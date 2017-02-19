@@ -21,7 +21,7 @@
     prompt: "\n\nEnter the site administrator's email address for the purposes of WP account password recovery. The new admin account password will be sent to this address by Wordpress"
     private: no
   vars:
-    group_fpm: false
+    group_fpm: true
   become: true
   pre_tasks:
     - debug:
@@ -29,9 +29,9 @@
   roles:
   - domain-munging
   - { role: containers-on-demand, when: not group_fpm }
-  - { role: group-php-fpm, when: group_fpm }
-  - vhost-renew
   - container-environments
+  - { role: group-php-fpm, when: group_fpm }
   - apps-wordpress-create
+  - vhost-renew
   - { role: sql-create-database, when: db_exists|failed }
   - apps-wordpress-install-new

@@ -38,9 +38,10 @@
 # docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
 - name: Create Wordpress container for new site
   docker_container:
-    name: "{{ primary_subdomain }}.fpm"
+    name: "{{ parent_container }}"
     image: "{{ docker_image }}"
     state: "{{ state }}"
+    hostname: "{{ primary_domain }}"
     networks:
       - name: docker_sqlnet
         links:
@@ -52,12 +53,15 @@
       - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
     env_file: "/var/www/{{ primary_subdomain }}/.env"
     detach: yes
+    log_options:
+      max_size: 25k
+  when: not group_fpm
 
 # Shell equivilent
 # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
 #   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress db check'
 - name: Check to see if WP database exists
-  command: "docker run --env-file /var/www/{{ primary_subdomain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ primary_subdomain }}.fpm --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
+  command: "docker run --env-file /var/www/{{ primary_subdomain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: db_exists.rc != 0
   register: db_exists

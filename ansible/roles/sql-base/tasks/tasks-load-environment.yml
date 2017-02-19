@@ -1,7 +1,7 @@
 - name: Read values from environment
   shell: "source {{ env_path }}; echo ${{ item|upper }}"
   register: output
-  with_items: env_values
+  with_items: "{{ env_values }}"
   args:
     executable: /bin/bash
   changed_when: false
@@ -11,14 +11,11 @@
     "{{ item.0 }}": "{{ item.1.stdout }}"
   when: '{{ item.0 }} is undefined'
   with_together:
-    - env_values
-    - output.results
+    - "{{ env_values }}"
+    - "{{ output.results }}"
   changed_when: false
 
 - name: Container environment loaded; the following facts are now available for use by ansible
   debug:
-    var: item
-  with_items:
-    - db_name
-    - db_password
-    - db_user
+    var: "{{ item }}"
+  with_items: "{{ env_values }}"

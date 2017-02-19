@@ -1,7 +1,31 @@
 ---
+- name: Remove from host systemd
+  command: |
+    systemctl stop fpm@{{ primary_subdomain }}.service
+    systemctl stop fpm-waker@{{ primary_subdomain }}.service
+    systemctl stop fpm-waker@{{ primary_subdomain }}.socket
+    systemctl disable fpm@{{ primary_subdomain }}.service
+    systemctl disable fpm-waker@{{ primary_subdomain }}.service
+    systemctl disable fpm-waker@{{ primary_subdomain }}.socket
+  ignore_errors: true
+  when: primary_subdomain is defined
+
 # Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" plays/wordpress/remove-wordpress.yml
 # docker rm -f $domain.fpm
 - name: Remove container
   docker_container:
     name: "{{ container_name }}"
     state: absent
+
+- name: Ensure no other container traces remain
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ docker_volumes['docker_sites_enabled'] }}/default/{{ primary_subdomain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/on-demand/{{ primary_subdomain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/container-apps/{{ primary_subdomain }}.conf"
+    - "/etc/systemd/system/socket.target.wants/fpm-waker@{{ primary_subdomain }}.socket"
+    - "/var/run/docker-apps/{{ primary_subdomain }}/"
+  notify: reload nginx
+  when: primary_subdomain is defined

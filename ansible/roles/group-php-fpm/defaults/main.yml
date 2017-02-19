@@ -2,3 +2,8 @@
 # defaults file for group-php-fpm
 pool_type: ondemand
 pool_max_children: 6
+pool_start_servers: 2 # only used when pool_type is dynamic
+pool_min_spare_servers: 1 # only used when pool_type is dynamic
+pool_max_spare_servers: 3 # only used when pool_type is dynamic
+pool_process_idle_timeout: 10s # only used when pool_type is ondemand
+pool_name: "{{ escaped_base }}"

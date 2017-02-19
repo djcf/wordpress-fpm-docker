@@ -20,7 +20,7 @@
         links:
           - "{{ db_host }}:mysql"
    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
-    command: "mysql -f -h\"mysql\" -P\"{{ db_port }}\" -uroot -e \"CREATE DATABASE {{ db_name }} IF NOT EXISTS; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
+    command: "mysql -f -h\"mysql\" -P\"{{ db_port }}\" -uroot -e \"CREATE DATABASE IF NOT EXISTS {{ db_name }}; GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ db_password }}';\""
     env:
       MYSQL_PWD: "{{mysql_root_password}}"
     cleanup: yes

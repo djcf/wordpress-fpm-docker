@@ -1,12 +1,12 @@
 Short-term
 
 * Add/remove a global DNS record to an existing vhost / and update WP accordingly
-
 * WP UPDATES
+	* script to add all users to fpm image
 * https://github.com/ibuildthecloud/systemd-docker
 
+* check multi-domain WP routing
 
-* script to add all users to fpm image
 * php-group auto-tuning ?
 
 

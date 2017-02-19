@@ -1,17 +1,36 @@
 ---
 # ???
-- name: PREPARING TO CREATE CONTAINER ENVIRONMENT
+- name: Set base id for container-environment
+  set_fact:
+    base_id: "{{ primary_subdomain }}"
+  when:
+    - base_id is not defined
+    - primary_subdomain is defined
+
+- name: Set escaped base from base id
   set_fact:
     escaped_base: "{{ base_id | regex_replace('\\.', '_') }}"
   when:
     - base_id is defined
 
-- name: PREPARING TO CREATE CONTAINER ENVIRONMENT 2
+- name: Set db_user
   set_fact:
     db_user: "{{ escaped_base }}_user"
+  when:
+    - base_id is defined
+    - db_user is not defined
+
+- name: Set db_name
+  set_fact:
     db_name: "{{ escaped_base }}_sql"
   when:
     - base_id is defined
+    - db_name is not defined
+
+- name: project directory should exist
+  file: "path=/var/www/{{ primary_subdomain }} state=directory recurse=true"
+  when:
+    - primary_subdomain is defined
 
 # Shell: if [ -e /var/www/$domain/.env ]
 - name: ENV file should exist

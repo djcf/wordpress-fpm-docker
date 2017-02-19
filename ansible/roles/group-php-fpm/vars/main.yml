@@ -1,7 +1,2 @@
 ---
 # vars file for group-php-fpm
-group_fpm: true
-container_always_active: true
-socket_name: php-fpm
-pool_name: {{ escaped_base }}
-vhost_prefix: php-fpm-group

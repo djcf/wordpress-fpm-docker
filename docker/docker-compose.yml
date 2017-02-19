@@ -18,6 +18,10 @@ services:
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro
       - /var/www:/var/www
+    logging:
+      options:
+        max-size: 25k
+
   # switchboard manages vhosts
   switchboard:
     # optionally build the image instead of pulling nginx from repo:
@@ -41,6 +45,9 @@ services:
       - ssl_certs:/etc/nginx/certs:ro
       - /var/www:/var/www:ro
       - /var/lib/wordpress:/usr/src/wordpress:ro
+    logging:
+      options:
+        max-size: 25k
   # dockergen listens to the docker socket and automatically generates vhosts when containers are started
   # It is not used for the on-demand containerized vhosts like php/fpm apps
   # see https://index.docker.io/u/jwilder/nginx-proxy/
@@ -58,6 +65,9 @@ services:
       - ./dockergen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
     # todo: add :rw
     command: -notify-sighup switchboard -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    logging:
+      options:
+        max-size: 25k
   database:
     #env_file: env
     image: yobasystems/alpine-mariadb # (tested)
@@ -74,6 +84,9 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     networks:
       - sqlnet
+    logging:
+      options:
+        max-size: 25k
 
 volumes:
   # This is where the MariaDB database files are kept

@@ -1,6 +1,6 @@
 - name: copy generic .conf files to docker volumes
   synchronize:
-    src: "{{ role_path }}/files/nginx/config-inc"
+    src: "{{ role_path }}/files/nginx/config-inc/"
     dest: "{{ docker_volumes['docker_nginx_config_inc'] }}"
   notify: reload nginx
 
@@ -14,7 +14,7 @@
 
 - name: copy nginx config auto-includes to /etc/nginx/conf.d
   synchronize:
-    src: "{{ role_path }}/files/nginx/conf.d"
+    src: "{{ role_path }}/files/nginx/conf.d/"
     dest: "{{ docker_volumes['docker_nginx_config'] }}"
   notify: reload nginx
 
@@ -24,6 +24,6 @@
 
 - name: Ensure vhost prefixes exist for vhosts in /etc/nginx/sites-enabled
   synchronize:
-    src: "{{ role_path }}/files/nginx/sites-enabled"
+    src: "{{ role_path }}/files/nginx/sites-enabled/"
     dest: "{{ docker_volumes['docker_sites_enabled'] }}"
   notify: reload nginx

@@ -27,27 +27,27 @@ server {
         return 301 https://$host$request_uri;
     {% else %}
         root /var/www/{{ primary_subdomain }}/public_html;
-    {% if use_php is defined and use_php %}
+        {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
-    {% else %}
+        {% else %}
         location / {
             try_files $uri $uri/ =404;
         }
         index index.html index.htm;
-    {% endif %}
+        {% endif %}
 
         include inc/general.conf;
-    {% if extra_nginx_configs is defined %}
+        {% if extra_nginx_configs is defined %}
         {% for nginx_config in extra_nginx_configs %}
-            include {{ nginx_config }};
+        include {{ nginx_config }};
         {% endfor %}
+        {% endif %}
     {% endif %}
 
     {% if custom_vhost_exists|succeeded %}
         include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 
-    {% endif %}
 }
 
 {% if ssl_host %}
@@ -87,7 +87,7 @@ server {
         include inc/general.conf;
     {% if extra_nginx_configs is defined %}
         {% for nginx_config in extra_nginx_configs %}
-            include {{ nginx_config }};
+        include {{ nginx_config }};
         {% endfor %}
     {% endif %}
 

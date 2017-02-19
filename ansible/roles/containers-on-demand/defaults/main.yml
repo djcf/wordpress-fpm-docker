@@ -1,7 +1,6 @@
 ---
 # defaults file for containers-on-demand
 container_sleeps_after: 20m
-group_fpm: false
 container_always_active: false
-state: present
-vhost_prefix: on-demand
+state: "{{ container_always_active|ternary('present', 'started') }}"
+socket_name: "{{ primary_subdomain }}/vhost.fpm-waker" # e.g. /var/run/docker-apps/mydomain.org/fpm-waker.sock

@@ -1,0 +1,18 @@
+---
+- name: ensure no trace of a group fpm pool exists for this site
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ docker_volumes['docker_sites_enabled'] }}/default/{{ primary_subdomain }}.conf"
+    - "{{ docker_volumes['docker_sites_enabled'] }}/php-fpm-group/{{ primary_subdomain }}.conf"
+    - "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
+  notify:
+    - reload nginx
+    - reload fpm
+
+- name: Set facts relating to on-demand containers
+  set_fact:
+    vhost_prefix: on-demand
+    group_fpm: false
+    socket_name: "{{ primary_subdomain }}/vhost.fpm-waker" # e.g. /var/run/docker-apps/mydomain.org/fpm-waker.sock

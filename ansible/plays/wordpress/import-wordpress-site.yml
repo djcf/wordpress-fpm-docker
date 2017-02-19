@@ -15,10 +15,10 @@
   become: true
   roles:
   - domain-munging
-  - vhost-renew
   - { role: containers-on-demand, when: not group_fpm }
   - { role: group-php-fpm, when: group_fpm }
-  - { role: container-environments, base_id: "{{ primary_subdomain }}" }
+  - container-environments
+  - vhost-renew
   - apps-wordpress-create
   - { role: sql-create-database, when: db_exists|failed }
   - { role: site-import }

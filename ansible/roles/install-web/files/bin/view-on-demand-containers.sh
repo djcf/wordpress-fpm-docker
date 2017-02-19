@@ -7,7 +7,7 @@ for filename in $ON_DEMAND_CONTAINERS/*.conf; do
     timeout=$(echo $first_line | cut -d ":" -f2)
     domain=${filename%.conf}
     domain=${domain##*/}
-    echo $domain: $timeout
+    echo $domain.fpm: $timeout
     recent_logs=$(docker logs $domain.fpm --since $timeout 2>&1 | cat)
 
     if [ -z "$recent_logs" ]; then

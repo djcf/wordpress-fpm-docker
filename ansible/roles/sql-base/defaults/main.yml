@@ -8,3 +8,5 @@ env_values: # what env values might we want to load from the environment file ?
   - db_name
   - db_password
   - db_user
+  - db_socket
+  - db_host

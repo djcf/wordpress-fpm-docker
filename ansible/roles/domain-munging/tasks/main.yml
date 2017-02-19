@@ -2,7 +2,7 @@
 # tasks file for domain-munging
 - name: Get base name of primary_subdomain if domain host was accidentally entered
   set_fact:
-    - primary_subdomain: "{{ primary_subdomain.split('.')[0] }}"
+    primary_subdomain: "{{ primary_subdomain.split('.')|first }}"
   when:
     - '"{{domain_host}}" in primary_subdomain'
 
@@ -10,8 +10,14 @@
 
 - name: Set secondary domain and domain list
   set_fact:
-    - secondary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
-    - domain_list: "{{ domains|split(' ') }}"
+    secondary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
+
+- name: Split extra domains into domain list
+  set_fact:
+    domain_list: "{{ domains.split(' ') }}"
+  when:
+    - domain_list
+    - domains != ""
 
 - name: Set primary_domain if empty
   set_fact:
@@ -45,3 +51,4 @@
     - primary_domain
     - primary_subdomain
     - domain_list
+

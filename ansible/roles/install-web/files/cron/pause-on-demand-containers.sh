@@ -11,7 +11,7 @@ for filename in $ON_DEMAND_CONTAINERS/*.conf; do
     recent_logs=$(docker logs $domain.fpm --since $timeout 2>&1 | cat)
 
     if [ -z "$recent_logs" ]; then
-        echo "Container '$domain.fpm' has not any traffic for $timeout. Pausing container..."
-        systemctl stop vhost@$domain.fpm
+        #echo "Container '$domain.fpm' has not any traffic for $timeout. Pausing container..."
+        systemctl stop fpm@$domain.service
     fi
 done

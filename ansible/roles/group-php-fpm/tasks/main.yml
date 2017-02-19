@@ -1,4 +1,12 @@
 ---
+- name: Set facts about php-fpm group
+  set_fact:
+    container_always_active: true
+    use_php: true
+    vhost_prefix: php-fpm-group
+    group_fpm: true
+    socket_name: php-fpm
+    state: started
 
 - name: Add new user to group-fpm container
   command: "docker exec {{ group_fpm_container }} 'useradd {{ db_user }} -s /bin/false'"

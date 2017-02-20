@@ -13,16 +13,19 @@ services:
   # wordpress group fpm container
   wordpress:
     build: apps/wordpress
-    image: wordpress:php7.1-fpm-alpine-mod
+    image: wordpress-php7.1-fpm-alpine-mod:latest
     container_name: group-wordpress.fpm
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro
       - /var/www:/var/www
-      - /var/run/docker-apps:/var/run:ro
+      - /var/run/docker-apps:/var/run
     logging:
       options:
         max-size: 25k
-
+    networks:
+      - sqlnet
+    links:
+      - database:sqldb.noflag.org.uk
   # switchboard manages vhosts
   switchboard:
     # optionally build the image instead of pulling nginx from repo:
@@ -73,9 +76,9 @@ services:
     #env_file: env
     image: yobasystems/alpine-mariadb # (tested)
     #image: alpin3/mariadb (tested)
-    #image: aquaron/mariadb (untested)
-    # untested: https://github.com/wallneradam/docker-mariadb-alpine (untested)
-    #   https://github.com/nimmis/docker-alpine-mariadb
+    # untested: image: aquaron/mariadb
+    # untested: https://github.com/wallneradam/docker-mariadb-alpine
+    # untested: https://github.com/nimmis/docker-alpine-mariadb
     restart: always
     container_name: sqldb.noflag.org.uk
     volumes:

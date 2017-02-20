@@ -51,7 +51,7 @@ listen.group = www-data
 pm.status_path = /status
 security.limit_extensions = .php .php3 .php4 .php5 .php7 .phtml
 
-; env[HOSTNAME] = {{ primary_domain }}
+env[HOSTNAME] = {{ primary_domain }}
 env[DB_USER] = {{ db_user }}
 env[DB_PASSWORD] = {{ db_password }}
 env[DB_NAME] = {{ db_name }}

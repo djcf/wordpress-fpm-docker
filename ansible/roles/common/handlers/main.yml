@@ -3,8 +3,8 @@
   command: "docker exec {{ switchboard }} nginx -s reload"
 
 - name: reload fpm
+  #command: "docker stop {{ group_fpm_container }}; docker start {{ group_fpm_container }}"
   docker_container:
     name: "{{ group_fpm_container }}"
-    state: restarted
-
-#  command: "docker stop {{ group_fpm_container }}; docker start {{ group_fpm_container }}"
+    state: started
+    restart: true

@@ -30,3 +30,17 @@
   with_items: "{{ fish_users }}"
   when: fish_users is defined
   ignore_errors: true
+
+- name: Copy convenience scripts
+  copy:
+    src: "{{ item }}"
+    dest: /usr/local/bin
+  with_items:
+    - docker-clean.sh
+
+# Possible instability with docker-daemon and GRPC
+# - name: Install docker-squash
+#   unarchive:
+#     src: https://github.com/jwilder/docker-squash/releases/download/v0.2.0/docker-squash-linux-amd64-v0.2.0.tar.gz
+#     dest: /usr/local/bin
+#     remote_src: true

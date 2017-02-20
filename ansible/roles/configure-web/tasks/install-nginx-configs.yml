@@ -27,3 +27,7 @@
     src: "{{ role_path }}/files/nginx/sites-enabled/"
     dest: "{{ docker_volumes['docker_sites_enabled'] }}"
   notify: reload nginx
+
+- name: Copy health-check to default web dir
+  command: "echo 'Switchboard OK' > /var/www/html/index.html"
+    creates: /var/www/html/index.html

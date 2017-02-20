@@ -1,1 +1,3 @@
-vhosts in this directory are part of the php-fpm container. This is an always-active and multi-user container which is used to run php. At the moment it is only configured to run wordpress, though that could change in the future.
+vhosts in this directory are part of the GROUP php-fpm container. This is an always-active and multi-user container which is used to run php. At the moment it is only configured to run wordpress, though that could change in the future.
+
+The opposite of sites in the php-fpm group container are sites which run in their own, isolated world container, generally named $primary_subdomain.fpm. Those sites ussually started on demand by systemd, instead of being always active like these ones.

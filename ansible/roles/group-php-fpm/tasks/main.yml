@@ -15,6 +15,7 @@
   failed_when: fpm_container_running.stdout == "false"
   register: fpm_container_running
   ignore_errors: true
+  failed_when: fpm_container_running.stdout == 'false' or 'No such object' in fpm_container_running.stderr
 
 # tasks file for group-php-fpm
 - name: Template a new fpm-pool to the group-php-fpm container
@@ -29,9 +30,10 @@
   docker_container:
     name: "{{ group_fpm_container }}"
     state: started
+  ignore_errors: true
 
 - name: Add new user to group-fpm container
-  command: "docker exec {{ group_fpm_container }} sh -c 'adduser -SDH -G www-data -s /bin/false {{ db_user }}'"
+  command: "docker exec {{ group_fpm_container }} sh -c '/usr/local/bin/add-users.sh {{ db_user }}'"
   ignore_errors: true
 
 # tasks file for group-php-fpm

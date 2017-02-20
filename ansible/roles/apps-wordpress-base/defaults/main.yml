@@ -1,4 +1,4 @@
-docker_image: "wordpress:php7.1-fpm-alpine-mod"
+docker_image: "wordpress-php7.1-fpm-alpine-mod"
 admin_user: admin
 site_title: "{{ primary_subdomain }}"
 use_php: yes

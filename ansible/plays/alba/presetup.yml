@@ -1,0 +1,11 @@
+- name: Find root mysql password
+  slurp:
+    src: /etc/mysql/root.password
+  register: alba_mysql_root_password_file
+
+- name: Set MySQL root password fact
+  set_fact:
+    alba_mysql_root_password: "{{ alba_mysql_root_password_file.content | b64decode }}"
+
+- name: Create local directory for downloads
+  local_action: file path=from-alba state=directory

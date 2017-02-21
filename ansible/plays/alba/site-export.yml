@@ -1,0 +1,45 @@
+- name: Try to find wp-config
+  stat: "path=/var/customers/webs/{{ alba_user }}/wp-config.php"
+  register: wp_config_path
+
+- name: Set wordpress location fact
+  set_fact:
+    wp_path: "/var/customers/webs/{{ alba_user }}/wp-config.php"
+  when: wp_config_path.stat.exists
+
+- name: Try to find wp-config (attempt 2)
+  stat: "path=/var/customers/webs/{{ alba_user }}/public_html/wp-config.php"
+  register: wp_config_path_two
+  when: not wp_config_path.stat.exists
+
+- name: Set wordpress location fact (attempt 2)
+  set_fact:
+    wp_path: "/var/customers/webs/{{ alba_user }}/public_html"
+  when: wp_config_path_two.stat.exists
+
+- name: Find name of database
+  shell: "cat {{ wp_path }}/wp-config.php | grep DB_NAME | cut -d \\' -f 4"
+  register: db_name
+  changed_when: false
+
+# - debug:
+#     var: db_name
+
+- name: Dump database to database.sql.gz
+  mysql_db:
+    state: dump
+    name: "{{ db_name.stdout }}"
+    target: "{{ wp_path }}/database.sql.gz"
+    # login_user: root
+    # login_password: "{{ alba_mysql_root_password }}"
+
+- name: Zip site content and database
+  command: "zip -r {{ wp_path }}/website.zip {{ wp_path }}/database.sql.gz {{ wp_path }}/wp-content creates={{ wp_path }}/website.zip"
+
+- name: Download site content and database
+  fetch:
+    src: "{{ wp_path }}/website.zip"
+    dest: "{{ alba_user }}"
+
+- name: Remove the site
+  file: "{{ wp_path }}/website.zip state=absent"

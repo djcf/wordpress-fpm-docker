@@ -8,4 +8,5 @@
     alba_mysql_root_password: "{{ alba_mysql_root_password_file.content | b64decode }}"
 
 - name: Create local directory for downloads
-  local_action: file path=from-alba state=directory
+  become: false
+  local_action: file path=from-alba state=directory mode=777

@@ -1,38 +1,21 @@
-Short-term
+Immediate tasks
 
 * Add/remove a global DNS record to an existing vhost / and update WP accordingly
-* WP UPDATES
-	* script to add all users to fpm image
 * https://github.com/ibuildthecloud/systemd-docker
-
 * check multi-domain WP routing
-
 * CHECK SALTS MAPPING
-
-* php-group auto-tuning ?
-
-
-TOMORROW:
-regenerate vhost
+* Script to regenerate vhost
 	* Transition sites between global fpm, always running, and not always running fpm instances
 	non-interactive
 	well-documented readme
 	all options commented out as inline vars:
 
 
+Short-term
 
-
-Medium-term
-* Ansible plays
-	* Script imports wordpress sites from alba
-	* Ansible play logs a Noflag admin in transparently ??
-
-Long-term
-**
-	? full multi-purpose installation
 * LetsEncrypt
 * DNS master
-* Stats & Logging / cockpit
+* Stats & Logging
 * fail2ban
 	* host-ssh
 	* docker
@@ -42,3 +25,8 @@ FINALLY
 	* document
 	* tidy up roles
 	* TROUBLESHOOTING DIAGRAM
+
+WISHLIST
+	* php-group auto-tuning ?
+	* ? full multi-purpose installation
+	* Ansible play logs a Noflag admin in transparently ??

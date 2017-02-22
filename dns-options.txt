@@ -1,0 +1,9 @@
+http://www.damagehead.com/blog/2015/04/28/deploying-a-dns-server-using-docker/
+https://github.com/sameersbn/docker-bind
+
+https://github.com/sillelien/base-alpine
+
+https://github.com/sqerison/dnsmasq
+
+https://github.com/ventz/docker-bind
+https://github.com/jderusse/docker-dns-gen

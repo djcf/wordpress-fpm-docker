@@ -12,7 +12,9 @@ For complete documentation, browse to each directory's individual README.md file
 
 The actual logic for these tasks is contained within ansible roles, in the roles directory.
 
-INSTALLATION
+Most roles have extremely-configurable settings, with sane defaults. All options and their defaults are included in var_files, which you can edit before running the play.
+
+## INSTALLATION
 
 If you are running against a newly-provisioned server, you need to run plays/system/install-web.yml and plays/system/configure-web.yml. These in turn have some requirements in ansible-galaxy, which you must install first. Run the following commands:
 
@@ -20,7 +22,7 @@ If you are running against a newly-provisioned server, you need to run plays/sys
 	ansible-playbook -i $inventory plays/system/install-web.yml
 	ansible-playbook -i $inventory plays/system/configure-web.yml
 
-USAGE EXAMPLES
+## USAGE EXAMPLES
 
 You must use these plays with a valid inventory. I usually set the inventory to the $inventory variable, for example "set inventory (pwd)/hosts/local" will run against the local host, or ../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory to run against a vagrant virtual machine.
 

@@ -17,3 +17,9 @@ nginx will not reload the new config if there is an error, and will carrying on 
 Don't forget you can also do a config test with:
 
 	docker exec -it switchboard nginx configtest
+
+
+** Included automatically **: Yes
+** By what? **: nginx.conf root directive, and ansible
+** When? **: When a play is run which uses the vhost-renew role and when nginx is reloaded.
+** Where-mapped?**: /etc/nginx/sites-enabled

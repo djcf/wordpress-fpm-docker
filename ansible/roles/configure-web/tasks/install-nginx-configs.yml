@@ -5,11 +5,9 @@
   notify: reload nginx
 
 - name: copy group_fpm global pool settings
-  copy:
-    src: "fpm/{{ item }}"
+  synchronize:
+    src: "{{ role_path }}/files/fpm/"
     dest: "{{ docker_volumes['docker_group_php_pools'] }}"
-  with_items:
-    - www.conf
   notify: reload fpm
 
 - name: copy nginx config auto-includes to /etc/nginx/conf.d
@@ -31,3 +29,18 @@
 - name: Copy health-check to default web dir
   command: "echo 'Switchboard OK' > /var/www/html/index.html"
     creates: /var/www/html/index.html
+
+- name: Copy README for htpasswd
+  copy:
+    src: nginx/htpasswd.md
+    dest: "{{ docker_volumes['docker_htpasswd'] }}"
+
+- name: Copy README for vhost-config
+  copy:
+    src: nginx/vhost-config.md
+    dest: "{{ docker_volumes['docker_vhost_config'] }}"
+
+- name: Copy README for htpasswd
+  copy:
+    src: nginx/ssl-certs.md
+    dest: "{{ docker_volumes['docker_ssl_certs'] }}"

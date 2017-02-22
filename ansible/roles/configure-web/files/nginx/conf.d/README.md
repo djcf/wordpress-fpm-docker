@@ -7,3 +7,8 @@ Multiple files may be housed here. In particular:
 	default_site.conf: Defines the default ISP webhome and _; (unmatchable) vhosts which probably have or require special parameters.
 
 	Any upstream { } directives refering to external sites should also be defined here for use by other vhosts if those vhosts are HTTP proxies and should take the form upstream-$name.conf. We include one by default: upstream-archives.conf, which sends traffic to the archive host.
+
+** Included automatically **: Yes
+** By what? **: nginx.conf (nginx { } root directive)
+** When? **: When nginx is reloaded (docker exec -it switchboard nginx -s reload or -t for config test)
+** Where-mapped?**: /etc/nginx/conf.d

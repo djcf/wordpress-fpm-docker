@@ -487,13 +487,6 @@
 	},
 	"buffers":
 	[
-		{
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -502,10 +495,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 52.0,
-		"last_filter": "rename",
+		"height": 154.0,
+		"last_filter": "instal ",
 		"selected_items":
 		[
+			[
+				"instal ",
+				"Package Control: Install Package"
+			],
 			[
 				"rename",
 				"File: Rename"
@@ -515,7 +512,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 449.0
+		"width": 557.0
 	},
 	"console":
 	{
@@ -540,6 +537,15 @@
 		"/home/daniel/Workspace/nfg-web/ansible/roles",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/common",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/fpm",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron",
 		"/home/daniel/Workspace/nfg-web/docker",
 		"/home/daniel/Workspace/nfg-web/docker/apps",
 		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress",
@@ -549,6 +555,14 @@
 	],
 	"file_history":
 	[
+		"/home/daniel/Workspace/synthbio_database/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/ssl-certs.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/vhost-config.md",
+		"/home/daniel/Workspace/nfg-web/ansible/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/fpm/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/config-inc/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/README.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/defaults/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/plays/nginx/defaults/vhost.yml",
@@ -668,15 +682,7 @@
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/default.conf",
 		"/home/daniel/Workspace/nfg-web/docker/switchboard/nginx.conf",
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/general.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/wordpress.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/nginx.conf.j2",
-		"/home/daniel/Workspace/nfg-web/ansible/inc/tasks-register-docker-data.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-php-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/README.md",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/cache.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-remove-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/www.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/env.j2"
+		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/wordpress.conf"
 	],
 	"find":
 	{
@@ -881,37 +887,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"auto_name": "",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],

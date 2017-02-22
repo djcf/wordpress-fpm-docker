@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - marvinpinto.docker
+    - install-general

@@ -7,7 +7,6 @@ Immediate tasks
 * Script to regenerate vhost
 	* Transition sites between global fpm, always running, and not always running fpm instances
 	non-interactive
-	well-documented readme
 	all options commented out as inline vars:
 
 

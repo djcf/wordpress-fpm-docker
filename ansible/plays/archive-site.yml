@@ -18,6 +18,7 @@
 #    - vhost-renew
     - sql-remove-database
     - { role: container-remove, container_name: "{{ primary_subdomain }}.fpm" }
+    - site-diagnostics
   post_tasks:
     - name: Remove all web content from host
       file:

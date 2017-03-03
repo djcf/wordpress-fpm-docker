@@ -13,7 +13,7 @@ services:
   # wordpress group fpm container
   wordpress:
     build: apps/wordpress
-    image: wordpress-php7.1-fpm-alpine-mod:latest
+    image: wordpress-php7.1-fpm-alpine-mod
     container_name: group-wordpress.fpm
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro

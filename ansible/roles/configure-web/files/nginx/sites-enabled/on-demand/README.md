@@ -9,6 +9,8 @@ Traffic out of the vhost is sent to /var/docker-apps/$domain/vhost-waker.fpm.soc
 * If you want to prevent a website from having a unique php-fpm container, you should re-run the ansible renew-vhost play to put it into the group-fpm container instead.
 
 
-
-
 The opposite of sites running in their own on-demand php-fpm container is sites which have their own php-fpm pool in the group php container. See ../php-fpm-group for more information and a list of such sites.
+
+## More information:
+
+https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md

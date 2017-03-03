@@ -10,5 +10,4 @@
   tags: cron
 
 - include: docker.yml
-  when: not is_vagrant
   tags: docker

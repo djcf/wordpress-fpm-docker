@@ -487,6 +487,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "ansible/roles/configure-web/files/fpm/README.md",
+			"settings":
+			{
+				"buffer_size": 560,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -534,19 +542,40 @@
 	[
 		"/home/daniel/Workspace/nfg-web",
 		"/home/daniel/Workspace/nfg-web/ansible",
+		"/home/daniel/Workspace/nfg-web/ansible/plays",
 		"/home/daniel/Workspace/nfg-web/ansible/roles",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/common",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-install-new/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/fpm",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/container-apps",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/on-demand",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/meta",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron",
-		"/home/daniel/Workspace/nfg-web/docker",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-archive/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-export/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-create-database/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-dump-database",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/templates",
 		"/home/daniel/Workspace/nfg-web/docker/apps",
 		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress",
 		"/home/daniel/Workspace/nfg-web/docker/dockergen",
@@ -555,6 +584,19 @@
 	],
 	"file_history":
 	[
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/renew-fpm.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/view-on-demand-containers.sh",
+		"/home/daniel/Workspace/nfg-web/docs/1.2-On-Demand-Containers.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitport.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitsock.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/create-fpm.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron/backup-sql.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/on-demand/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron/pause-on-demand-containers.sh",
 		"/home/daniel/Workspace/synthbio_database/docker-compose.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/ssl-certs.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/vhost-config.md",
@@ -669,20 +711,7 @@
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/alpine-tasks-find-mysql-root-password-from-docker.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-find-mysql-root-password.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-heavy.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/docker/sqldb/my.cnf",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/php-fpm.ini",
-		"/home/daniel/Workspace/nfg-web/systemd.services/fpm-waker@.service",
-		"/home/daniel/Workspace/nfg-web/docker/switchboard/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-cli.yml",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile.jessie-slim",
-		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile.alpine",
-		"/home/daniel/Workspace/nfg-web/docker/dockergen/nginx.tmpl",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vars_php.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/default.conf",
-		"/home/daniel/Workspace/nfg-web/docker/switchboard/nginx.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/general.conf",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/wordpress.conf"
+		"/home/daniel/Workspace/nfg-web/docker/sqldb/my.cnf"
 	],
 	"find":
 	{
@@ -887,8 +916,37 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "ansible/roles/configure-web/files/fpm/README.md",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 560,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

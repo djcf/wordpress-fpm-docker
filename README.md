@@ -31,11 +31,11 @@ If you want to run it locally using Vagrant, please read `docs/installation and 
 
 ** Every single directory ** in this repository should have an accompanying README.md file. The README.md file should contain an in-depth explanation for the purpose of * EVERY * file in that directory.
 
-** User Documentation **
+**User Documentation**
 
 To begin, browse to the "ansible" directory.
 
-** System Documentation **
+**System Documentation**
 
 To begin, browse to the "docs" directory for a high-level overview.
 

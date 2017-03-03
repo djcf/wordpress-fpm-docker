@@ -27,20 +27,19 @@
   notify: reload nginx
 
 - name: Copy health-check to default web dir
-  command: "echo 'Switchboard OK' > /var/www/html/index.html"
-    creates: /var/www/html/index.html
+  shell: echo 'Switchboard OK' > /var/www/html/index.html creates=/var/www/html/index.html
 
 - name: Copy README for htpasswd
   copy:
-    src: nginx/htpasswd.md
+    src: "{{ role_path }}/files/nginx/htpasswd.md"
     dest: "{{ docker_volumes['docker_htpasswd'] }}"
 
 - name: Copy README for vhost-config
   copy:
-    src: nginx/vhost-config.md
+    src: "{{ role_path }}/files/nginx/vhost-config.md"
     dest: "{{ docker_volumes['docker_vhost_config'] }}"
 
 - name: Copy README for htpasswd
   copy:
-    src: nginx/ssl-certs.md
+    src: "{{ role_path }}/files/nginx/ssl-certs.md"
     dest: "{{ docker_volumes['docker_ssl_certs'] }}"

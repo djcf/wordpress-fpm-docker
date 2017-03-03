@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Proxies a unix socket until an application is ready
+# Used by systemd. See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+
 tries=600
 
 for i in `seq $tries`; do

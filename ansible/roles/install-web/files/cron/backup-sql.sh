@@ -1,4 +1,6 @@
 #!/bin/bash
+#Purpose: plain-text backups of SQL databases
+
 MYSQL_IMAGE="gists/mariadb"
 BACKUPS=/var/backups/sql
 mkdir -p $BACKUPS

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Convenience / training script for admins
+# Unused (and not useful except as demonstration)
+
 if [ "$#" -eq 0 ]; then
     echo "Useage: $0 DOMAIN"
     exit 1

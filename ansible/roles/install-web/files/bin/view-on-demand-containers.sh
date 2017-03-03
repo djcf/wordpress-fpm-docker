@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Prints a list of on-demand containers and the time systemd willw ait before stopping them
+# See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md for more info
 ON_DEMAND_CONTAINERS="/var/lib/docker/volumes/docker_sites_enabled/_data/on-demand"
 
 shopt -s nullglob

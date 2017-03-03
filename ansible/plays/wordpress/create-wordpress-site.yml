@@ -35,3 +35,4 @@
   - vhost-renew
   - { role: sql-create-database, when: db_exists|failed }
   - apps-wordpress-install-new
+  - site-diagnostics

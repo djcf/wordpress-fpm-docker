@@ -21,5 +21,6 @@
   - vhost-renew
   - apps-wordpress-create
   - { role: sql-create-database, when: db_exists|failed }
-  - { role: site-import }
-  - { role: sql-import-database }
+  - site-import
+  - sql-import-database
+  - site-diagnostics

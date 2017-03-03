@@ -1,6 +1,6 @@
 galaxy_info:
   author: your name
-  description: your description
+  description: https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md
   company: your company (optional)
 
   # If the issue tracker for your role is not on github, uncomment the
@@ -217,6 +217,7 @@ galaxy_info:
     # alphanumeric characters. Maximum 20 tags per role.
 
 dependencies:
+  #- { role: angstwad.docker_ubuntu, become: yes, pip_version_docker_py: 1.9.0 }
   - install-general
   # List your role dependencies here, one per line.
   # Be sure to remove the '[]' above if you add dependencies

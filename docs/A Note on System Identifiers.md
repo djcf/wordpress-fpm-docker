@@ -1,3 +1,15 @@
-A Note on System Identifiers.md
+## Identity
 
-TODO
+At some level, it's nessessary to keep track of what parts of the system, i.e. what files, relate to which other parts, for example which vhost file relates to which Wordpress directory when a vhost may be declared for several domains or subdomains. This particular system tries to be as descriptive as possible, rather than prescriptive like Cpanel or Froxlor. But it's still nessessary. 
+
+With Froxlor, each `user` entity may have one or more domains, websites, etc. but there's no way to get to a domain or website just because you know the username. If browsing through /var/webs/customers, you can't know what domain each site serves.
+
+In the begining, it was decided that each unique entity would be represented by one and only one domain, referred to as `$domain`. From this, we could generate web storage paths (`/var/www/$domain`), container name (`$domain.fpm`), vhost files (`$vhost-storage/$domain.conf`), certificate files (`$domain.pem`) and so on. Furthuremore: $domain_user and $domain_db in SQL.
+
+However, it's an unfortunate fact that not all domains will be valid for the lifecycle of a website. Sometimes users want to create a temporary subdomain to develop their site, then move to a full domain after they've purchased one. Sometimes domains expire. Therefore, it is a **requirement** that **all** websites have a valid primary subdomain which they can use to access their site for the its entire lifetime, almost always a subdomain parked under the primary host provider, for example `sitename.noflag.org.uk`.
+
+Given that a primary subdomain will **always** exist **and** have a **1-to-1 mapping with a website**, it was decided that the unique identifier therefore was to be the primary subdomain, rather than the primary domain. I.e., the unique identifier used for vhosts, SSL certificates, web storage paths and so on, was to be the primary subdomain. For a requested website living at example.org, the user was to be identified by the primary id `example.noflag.org.uk`.
+
+Although simple for sysadmins to read and interpret in the context of, e.g., a system path or container name, it does lead to the situation where the last 14-letters of the primary identifier are completely superfluous. Therefore, the ansible buildscripts were updated to instead refer not to `$domain` but to the unique key prefixed in front of every primary subdomain, `example` in the context of `example.noflag.org.uk`. **It will always be the case that a valid subdomain will exist at `.noflag.org.uk` for each primary identifier**.
+
+The docs have not all been updated to take this into account. You may find references to `$domain` or to `$primary subdomain` in some contexts. They all mean the same thing: the bit before .noflag.org.uk in a primary subdomain which is mainly used as a system-unique identifier.

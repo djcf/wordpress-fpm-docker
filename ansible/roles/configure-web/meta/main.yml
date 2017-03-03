@@ -217,6 +217,7 @@ galaxy_info:
     # alphanumeric characters. Maximum 20 tags per role.
 
 dependencies:
+  - install-web
   - common
   - sql-base
   # List your role dependencies here, one per line.

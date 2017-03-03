@@ -10,13 +10,13 @@ rudolph.noflag.org.uk
 ethel.noflag.org.uk
 
 [mail-hosts]
-emma.noflag.org.uk
+mail.noflag.org.uk
 
 [web-hosts]
-alba.noflag.org.uk
+www.noflag.org.uk
 
-[proxy-hosts]
-rudolph.noflag.org.uk
+# [proxy-hosts]
+# proxy.noflag.org.uk
 
 [iceland-hosts]
 emma.noflag.org.uk
@@ -27,20 +27,20 @@ rudolph.noflag.org.uk
 ethel.noflag.org.uk
 
 [list-hosts]
-alba.noflag.org.uk
+lists.noflag.org.uk
 
 [app-hosts]
 rudolph.noflag.org.uk
 
-[dnsmaster]
-rudolph.noflag.org.uk
+# [dnsmaster]
+# dns0.noflag.org.uk
 
-[dnsslaves]
-emma.noflag.org.uk
-ethel.noflag.org.uk
+# [dnsslaves]
+# dns1.noflag.org.uk
+# dns2.noflag.org.uk
 
-[sqlhosts]
-rudolph.noflag.org.uk
+# [sqlhosts]
+# sqldb.noflag.org.uk
 
 # [vpntor-hosts]
 # ethel.noflag.org.uk

@@ -5,11 +5,16 @@ After=docker.service
 Documentation=https://github.com/djcf/wordpress-fpm-docker
 
 [Service]
-TimeoutStartSec=0
-ExecStart=-/usr/bin/docker start switchboard
-ExecStop=-/usr/bin/docker stop switchboard
+TimeoutStartSec=120
+TimeoutStopSec=15
+NotifyAccess=all
+Type=notify
+RestartSec=10s
+ExecStart=-/usr/bin/systemd-docker start switchboard
+ExecStop=-/usr/bin/systemd-docker stop switchboard
 ExecReload=-/usr/bin/docker exec -it switchboard nginx -s reload
 
 [Install]
 WantedBy=multi-user.target
 Alias=nginx.service
+Alias=httpd.service

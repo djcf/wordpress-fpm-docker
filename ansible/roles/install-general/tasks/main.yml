@@ -18,6 +18,7 @@
     - wget
     - fish
     - docker
+    - systemd-docker
 
 # - name: install certain python modules for docker
 #   pip:

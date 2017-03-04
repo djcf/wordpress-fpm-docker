@@ -5,12 +5,15 @@ After=docker.service
 Documentation=https://github.com/djcf/wordpress-fpm-docker
 
 [Service]
-TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker stop sqldb.noflag.org.uk
-ExecStartPre=-/usr/bin/docker rm sqldb.noflag.org.uk
-ExecStart=-/usr/bin/docker run --restart=always --name=sqldb.noflag.org.uk -v docker_sqldata:/var/lib/mysql mariadb
+TimeoutStartSec=120
+TimeoutStopSec=15
+NotifyAccess=all
+Type=notify
+RestartSec=10s
+#ExecStart=-/usr/bin/systemd-docker run --rm --name=sqldb.noflag.org.uk -v docker_sqldata:/var/lib/mysql yobasystems/alpine-mariadb
+ExecStart=-/usr/bin/docker start sqldb.noflag.org.uk
 ExecStop=-/usr/bin/docker stop sqldb.noflag.org.uk
-Restart=on-failure
+#Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

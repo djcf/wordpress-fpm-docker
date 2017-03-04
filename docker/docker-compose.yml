@@ -64,11 +64,12 @@ services:
     container_name: dockergen
     volumes:
       - nginx_config:/etc/nginx/conf.d
+      - ssl_certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       # IMPORTANT: Do NOT use without customized template. Will enable STS and bad things will happen:
-      - ./dockergen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+      - ./dockergen/templates:/etc/docker-gen/templates:ro
     # todo: add :rw
-    command: -notify-sighup switchboard -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    command: -notify-sighup switchboard -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     logging:
       options:
         max-size: 25k
@@ -102,6 +103,7 @@ volumes:
   nginx_config:
     driver: local
   # Dockergen automatically includes files in this location into the inside of each docker container's vhost's server { } block
+  # Ansible does too, when its creating wordpress sites
   vhost_config:
     driver: local
   # Files in this location are available for per-vhost or server-wide include manually.

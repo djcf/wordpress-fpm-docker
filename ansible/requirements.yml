@@ -1,3 +1,4 @@
 - src: marvinpinto.docker
 - src: MichaelRigart.aliases
 - src: galexrt.cockpit
+- src: tersmitten.fail2ban

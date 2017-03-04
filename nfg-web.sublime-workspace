@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"has",
+				"has_wpconfig_include_file"
+			],
+			[
 				"env",
 				"env_path"
 			],
@@ -488,10 +492,10 @@
 	"buffers":
 	[
 		{
-			"file": "ansible/roles/configure-web/files/fpm/README.md",
+			"file": "todo.txt",
 			"settings":
 			{
-				"buffer_size": 560,
+				"buffer_size": 621,
 				"line_ending": "Unix"
 			}
 		}
@@ -544,52 +548,73 @@
 		"/home/daniel/Workspace/nfg-web/ansible",
 		"/home/daniel/Workspace/nfg-web/ansible/plays",
 		"/home/daniel/Workspace/nfg-web/ansible/roles",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-install-new/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/templates",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/defaults",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/fpm",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/container-apps",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/on-demand",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/meta",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/meta",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/files",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/container-environments/templates",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/group-php-fpm/templates",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/meta",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/tasks",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/site-archive/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/site-export/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/templates",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/defaults",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-create-database/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-dump-database",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database/files",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database/tasks",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/templates",
+		"/home/daniel/Workspace/nfg-web/docker",
 		"/home/daniel/Workspace/nfg-web/docker/apps",
 		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress",
-		"/home/daniel/Workspace/nfg-web/docker/dockergen",
 		"/home/daniel/Workspace/nfg-web/docker/fpm",
-		"/home/daniel/Workspace/nfg-web/docker/switchboard"
+		"/home/daniel/Workspace/nfg-web/docs"
 	],
 	"file_history":
 	[
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/requirements.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/.gitignore",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/switchboard.service",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/fpm-waker@.service",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/fpm@.service",
+		"/home/daniel/Workspace/nfg-web/docker/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/docs/1.1-Installation-And-Vagrant.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/install-nginx-configs.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/default_site.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/upstream-cockpit.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/docker.yml",
+		"/home/daniel/Workspace/nfg-web/README.md",
+		"/home/daniel/Workspace/nfg-web/todo.txt",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-config.php",
+		"/home/daniel/Workspace/nfg-web/docs/1.6-Services.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.3-Group-FPM.md",
+		"/home/daniel/Workspace/nfg-web/docs/Where-to-find-stuff.md",
+		"/home/daniel/Workspace/nfg-web/docs/A Note on System Identifiers.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/docs/1.2-On-Demand-Containers.md",
+		"/home/daniel/Workspace/nfg-web/docs/MySQL.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/meta/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/renew-fpm.sh",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/meta/main.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/view-on-demand-containers.sh",
-		"/home/daniel/Workspace/nfg-web/docs/1.2-On-Demand-Containers.md",
-		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitport.sh",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitsock.sh",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/create-fpm.sh",
@@ -678,40 +703,16 @@
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-container.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-create-environment.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vars_db.yml",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-config.php",
 		"/home/daniel/Workspace/nfg-web/roles/common/vars/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/resources/vars_docker_conf.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-add-vhost.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/vhost.j2",
-		"/home/daniel/Workspace/nfg-web/todo.txt",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/resources/php-vhost.j2",
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/ssl.conf",
 		"/home/daniel/Workspace/nfg-web/ansible/configure-host/configure-docker.yml",
 		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/www.conf",
 		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-create-database.yml",
-		"/home/daniel/Workspace/nfg-web/roles/system/vars/main.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/roles/djcf.fish/tasks/main.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/playbook.yml",
-		"/home/daniel/Workspace/nfg-web/scripts/renew-fpm.sh",
-		"/home/daniel/Workspace/nfg-web/systemd.services/fpm@.service",
-		"/home/daniel/Workspace/nfg-web/docker/docker-compose.yml",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/Dockerfile.alpine-bare",
-		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/Dockerfile",
-		"/home/daniel/Workspace/nfg-web/problems.txt",
-		"/home/daniel/Workspace/nfg-web/scripts/waitsock.sh",
-		"/home/daniel/Workspace/nfg-web/scripts/waitport.sh",
-		"/home/daniel/Workspace/nfg-web/tasks",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-gen-vhost.yml",
-		"/home/daniel/Workspace/nfg-web/mem-usage",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/add-wordpress-vhost.retry",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-small.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-medium.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-large.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-huge.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/alpine-tasks-find-mysql-root-password-from-docker.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/add-vhosts/inc/tasks-find-mysql-root-password.yml",
-		"/home/daniel/Workspace/nfg-web/ansible/configure-host/resources/mysql/my-heavy.cnf.j2",
-		"/home/daniel/Workspace/nfg-web/docker/sqldb/my.cnf"
+		"/home/daniel/Workspace/nfg-web/roles/system/vars/main.yml"
 	],
 	"find":
 	{
@@ -921,24 +922,25 @@
 			[
 				{
 					"buffer": 0,
-					"file": "ansible/roles/configure-web/files/fpm/README.md",
-					"semi_transient": true,
+					"file": "todo.txt",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 560,
+						"buffer_size": 621,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								252,
+								252
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

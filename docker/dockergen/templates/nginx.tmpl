@@ -9,6 +9,10 @@
 # Go Version: {{ $.Docker.GoVersion }}
 # Docker OS: {{ $.Docker.OperatingSystem }}
 # Docker Arch: {{ $.Docker.Architecture }}
+# Template adapted from https://github.com/jwilder/nginx-proxy/blob/master/nginx.tmpl
+# If something doesn't work according to those docs, probably a good idea to update this one using above as a template
+# The important thing is to remove server-wide directives we've already defined elsewhere AND
+# REMOVE STRICT TRANSPORT SECURITY! (VERY IMPORTANT!)
 
 {{ define "upstream" }}
 	{{ if .Address }}
@@ -43,24 +47,13 @@ map $http_upgrade $proxy_connection {
 
 {{ if (exists "/etc/nginx/inc/proxy.conf") }}
 	include /etc/nginx/proxy.conf;
-{{ else }}
-	# HTTP 1.1 support
-	proxy_http_version 1.1;
-	proxy_buffering off;
-	proxy_set_header Host $http_host;
-	proxy_set_header Upgrade $http_upgrade;
-	proxy_set_header Connection $proxy_connection;
-	proxy_set_header X-Real-IP $remote_addr;
-	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header X-Forwarded-Proto $proxy_x_forwarded_proto;
-
-	# Mitigate httpoxy attack (see jwilder/nginx-proxy README for details)
-	proxy_set_header Proxy "";
 {{ end }}
 
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+{{ $is_regexp := hasPrefix "~" $host }}
+{{ $upstream_name := when $is_regexp (sha1 $host) $host }}
 
-	upstream {{ $host }} {
+	upstream {{ $upstream_name }} {
 		{{ range $container := $containers }}
 			{{ $addrLen := len $container.Addresses }}
 
@@ -115,7 +108,7 @@ map $http_upgrade $proxy_connection {
 			server {
 				server_name {{ $host }};
 				listen 80 {{ $default_server }};
-				access_log stdout vhost;
+				access_log stdout;
 				return 301 https://$host$request_uri;
 			}
 		{{ end }}
@@ -123,7 +116,7 @@ map $http_upgrade $proxy_connection {
 		server {
 			server_name {{ $host }};
 			listen 443 ssl http2 {{ $default_server }};
-			access_log stdout vhost;
+			access_log stdout;
 
 			include inc/ssl.conf;s
 
@@ -166,7 +159,7 @@ map $http_upgrade $proxy_connection {
 		server {
 			server_name {{ $host }};
 			listen 80 {{ $default_server }};
-			access_log stdout vhost;
+			access_log stdout;
 
 			{{ if (exists (printf "/etc/nginx/vhost.d/%s" $host)) }}
 			include {{ printf "/etc/nginx/vhost.d/%s" $host }};
@@ -197,7 +190,7 @@ map $http_upgrade $proxy_connection {
 		server {
 			server_name {{ $host }};
 			listen 443 ssl http2 {{ $default_server }};
-			access_log stdout vhost;
+			access_log stdout;
 			return 500;
 
 			ssl_certificate /etc/nginx/certs/default.crt;

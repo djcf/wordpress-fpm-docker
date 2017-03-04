@@ -35,8 +35,7 @@ Look in /var/www/$primary_subdomain. Here you will find the .env file which popu
 
 #### I need to edit wp-config.php
 
-Most settings are defined in /var/www/$domain/.env. You can edit the values here, then restart the container:
-
+**For on-demand containers**, most settings are defined in /var/www/$domain/.env. You can edit the values here, then restart the container:
 
     docker stop $domain.fpm; docker start $domain.fpm
 
@@ -45,6 +44,8 @@ The .env file is used by docker to populate the container's environment. Php the
 (If there are settings which are not able to be specified by this file, there's a good argument for including them in the .env template (`repo:/ansible/roles/container-environments/templates/container-environment.j2`), and then setting the php pools to pick up these settings (`repo:/ansible/roles/group-php-fpm/templates/php-pool.j2`). Of course this will require regeneration of any php pool which uses group-fpm.)
 
 You can also create a file which will be included in each site's wp-config.php. To create a file which overwrites it entirely, create the new file `/var/www/$domain/wp-config.php`. When ansible is (re-) run, the file will automatically overwrite the one in the container. If you just need to include a few configuration directives, instead create `/var/www/$domain/wp-config-inc.php`. It will be included automatically by php if the site is part of the group-fpm container. If it is an on-demand site,  you will need to re-run the ansible script which will re-create the docker container with a new volume mapping for that file into the container.
+
+**For group-fpm containers**, the .env file isn't used. Instead, variables are injected into wp-config automatically by the relevent php pool.
 
 #### I need to edit wp core lib
 
@@ -79,12 +80,12 @@ If the setting you are changing is:
 
 `repo:` refers to this exact repository. It's canonically-mastered at https://labs.noflag.org.uk/Noflag/web-two-point-oh/, where you can clone it to any directory of your computer, make changes, then push back to labs. You can of course run ansible scripts from your local computer too.
 
-If you are running a local test environment using vagrant, it will be located in `/vagrant`.
+If you are running a local test environment using vagrant, repo: will be located in `/vagrant`.
 
-If you are running on a remote server, it will most likely be in `/usr/local/web`
+If you are running on a remote server, repo: will most likely be in `/usr/local/web`
 
 If you need to run `docker-compose`, for example to rebake config into a container, make sure you are in `repo:/docker` before doing so.
 
 ### The thing I need to find is in some other type of docker container (non-php)
 
-Per our own convention, check /var/docker-data
+Per our own convention, check /var/docker-data.

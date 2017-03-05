@@ -3,9 +3,11 @@ Description=%i fpm container
 PartOf=switchboard.service
 Documentation=https://github.com/djcf/wordpress-fpm-docker
 
+# Note: Strange timeouts occur when using systemd-docker. So we just call
+# docker directly, instead.
 [Service]
-ExecStart=/usr/bin/systemd-docker start -a %i.fpm
+ExecStart=/usr/bin/docker start -a %i.fpm
 ExecStartPost=/usr/local/bin/waitsock.sh /var/run/docker-apps/%i/php-fpm.sock
 
-ExecStop=/usr/bin/systemd-docker stop %i.fpm
+ExecStop=/usr/bin/docker stop %i.fpm
 #Alias=%i.noflag.org.uk.service

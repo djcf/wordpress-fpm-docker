@@ -2,4 +2,4 @@
 - name: Unzip site dump
   unarchive:
     src: "{{ site_dump_file }}"
-    dest: "/var/www/{{ domain }}/public_html
+    dest: "/var/www/{{ primary_subdomain }}/public_html

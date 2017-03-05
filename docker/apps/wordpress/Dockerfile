@@ -21,6 +21,8 @@ RUN curl -Ok https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cl
 	deluser www-data && addgroup -g 1000 -S www-data && adduser -u 1000 -D -S -G www-data www-data && \
 	/usr/local/bin/hardening.sh
 
+COPY www.conf /usr/local/etc/php-fpm.d/www.conf
+
 WORKDIR /usr/src/wordpress
 
 VOLUME /usr/src/wordpress/wp-content

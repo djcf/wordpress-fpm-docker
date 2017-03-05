@@ -14,6 +14,8 @@
   failed_when: wp_was_installed.rc != 0
   register: wp_was_installed
   changed_when: false
+  tags:
+    - database
 
 # Shell equivilent
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --env-file /var/www/$domain/.env --volumes-from $domain.fpm --rm wordpress sh -c \
@@ -33,6 +35,8 @@
     detach: no
   when:
     - wp_was_installed|failed
+  tags:
+    - database
 
 # - name: Test the global primary_subdomain is loading wordpress correctly
 #   action: uri url={{ ssl_host|ternary('https', 'http') }}://{{ primary_subdomain }} return_content=yes

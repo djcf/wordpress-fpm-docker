@@ -1,7 +1,6 @@
 ---
 - name: Generate unique diffie-helman seed when using SSL but not letsencrypt
-  command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.dhparam.pem 2048"
-  args: creates="{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.dhparam.pem"
+  command: "openssl dhparam -out {{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.dhparam.pem 2048 creates={{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.dhparam.pem"
   when:
     - ssl_host
     - not lets_encrypt
@@ -58,4 +57,4 @@
   register: vhost_was_installed
 
 - debug:
-    msg: "A vhost for {{ primary_subdomain }} ({{ transport }}://{{ primary_domain }}) {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+    msg: "A vhost for {{ primary_subdomain }} ({{ ssl_host|ternary('http','https') }}://{{ primary_domain }}) {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"

@@ -12,8 +12,8 @@
 
 - name: Set path to database file (not user upload)
   set_fact:
-    import_file: "/var/www/{{ domain }}/database.sql.gz"
-  when: domain is defined
+    import_file: "/var/www/{{ primary_subdomain }}/database.sql.gz"
+  when: primary_subdomain is defined
 
 # Shell equivilent:
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'gunzip -c /tmp/$domain.sql.gz | mysql -f -hsqldb.noflag.org.uk -P3306 -uroot'

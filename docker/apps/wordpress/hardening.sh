@@ -26,7 +26,7 @@ sysdirs="
 "
 
 # Remove apk configs.
-find $sysdirs -xdev -regex '.*apk.*' -exec rm -fr {} +
+#find $sysdirs -xdev -regex '.*apk.*' -exec rm -fr {} +
 
 # Ensure system dirs are owned by root and not writable by anybody else.
 find $sysdirs -xdev -type d \
@@ -44,7 +44,7 @@ find $sysdirs -xdev \( \
 # Remove init scripts since we do not use them.
 rm -fr /etc/init.d
 rm -fr /lib/rc
-rm -fr /etc/conf.d
+#rm -fr /etc/conf.d
 rm -fr /etc/inittab
 rm -fr /etc/runlevels
 rm -fr /etc/rc.conf
@@ -57,7 +57,7 @@ rm -fr /etc/mdev.conf
 rm -fr /etc/acpi
 
 # Remove root homedir since we do not need it.
-rm -fr /root
+#rm -fr /root
 
 # Remove fstab since we do not need it.
 rm -f /etc/fstab

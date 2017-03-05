@@ -17,14 +17,29 @@
   stat: path="/var/www/{{ primary_subdomain }}/wp-config.php"
   register: has_wpconfig_file
   ignore_errors: yes
-  failed_when: not has_wpconfig_file.stat.exists
+  tags:
+    - docker
 
 # Shell: if [ -e /var/www/$domain/wp-config.php ]
 - name: See if a wp-config include file exists
   stat: path="/var/www/{{ primary_subdomain }}/wp-config-inc.php"
   register: has_wpconfig_include_file
-  ignore_errors: yes
-  failed_when: not has_wpconfig_include_file.stat.exists
+  tags:
+    - docker
+
+- name: Add wp-config to volume mounts
+  set_fact:
+    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config.php:/usr/src/wordpress/wp-config.php:ro' ]"
+  when: has_wpconfig_file.stat.exists
+  tags:
+    - docker
+
+- name: Add wp-config include to volume mounts
+  set_fact:
+    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config-inc.php:/usr/src/wordpress/wp-config-inc.php:ro' ]"
+  when: has_wpconfig_include_file.stat.exists
+  tags:
+    - docker
 
 # Shell: wget https://api.wordpress.org/secret-key/1.1/salt /var/www/$domain/public_html/wp-content/salts.php
 - name: Create new SALTS file (unique keys) for WP auths
@@ -48,35 +63,14 @@
   changed_when: '"files transferred: 0" not in wp_content_rsync.stdout'
   register: wp_content_rsync
 
-# Shell equivilent:
-# docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
-- name: Create Wordpress container for new site (default, no wp-config overrides)
-  docker_container:
-    name: "{{ parent_container }}"
-    image: "{{ docker_image }}"
-    state: "{{ state }}"
-    hostname: "{{ primary_domain }}"
-    networks:
-      - name: docker_sqlnet
-        links:
-        - "{{ db_host }}"
-    volumes:
-      - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
-      - "/var/www/{{ primary_subdomain }}/public_html/wp-content:{{ phproot }}/wp-content"
-      - "/etc/ssmtp:/etc/ssmtp:ro"
-      - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
-    env_file: "/var/www/{{ primary_subdomain }}/.env"
-    detach: yes
-    log_options:
-      max_size: 25k
-  when:
-    - not group_fpm
-    - not has_wpconfig_file
-    - not has_wpconfig_include_file
+- name: ensure wp-content directory has correct owner
+  shell: |
+chown -R www-data:www-data /var/www/{{ primary_subdomain }}/public_html/wp-content
+chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content
 
 # Shell equivilent:
 # docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
-- name: Create Wordpress container for new site (overwrite entire wp-config file)
+- name: Create Wordpress container for new site
   docker_container:
     name: "{{ parent_container }}"
     image: "{{ docker_image }}"
@@ -86,54 +80,23 @@
       - name: docker_sqlnet
         links:
         - "{{ db_host }}"
-    volumes:
-      - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
-      - "/var/www/{{ primary_subdomain }}/public_html/wp-content:{{ phproot }}/wp-content"
-      - "/etc/ssmtp:/etc/ssmtp:ro"
-      - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
-      - '/var/www/{{ primary_subdomain }}/wp-config.php:/usr/src/wordpress/wp-config.php:ro'
-    env_file: "/var/www/{{ primary_subdomain }}/.env"
+    volumes: "{{ volumes }}"
     detach: yes
     log_options:
       max_size: 25k
-  when:
-    - not group_fpm
-    - has_wpconfig_file
-    - not has_wpconfig_include_file
-
-# Shell equivilent:
-# docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
-- name: Create Wordpress container for new site (include partial wp-config file)
-  docker_container:
-    name: "{{ parent_container }}"
-    image: "{{ docker_image }}"
-    state: "{{ state }}"
-    hostname: "{{ primary_domain }}"
-    networks:
-      - name: docker_sqlnet
-        links:
-        - "{{ db_host }}"
-    volumes:
-      - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
-      - "/var/www/{{ primary_subdomain }}/public_html/wp-content:{{ phproot }}/wp-content"
-      - "/etc/ssmtp:/etc/ssmtp:ro"
-      - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
-      - '/var/www/{{ primary_subdomain }}/wp-config-inc.php:/usr/src/wordpress/wp-config-inc.php:ro'
-    env_file: "/var/www/{{ primary_subdomain }}/.env"
-    detach: yes
-    log_options:
-      max_size: 25k
-  when:
-    - not group_fpm
-    - not has_wpconfig_file
-    - has_wpconfig_include_file
+    env_file: "{{ env_file }}"
+  when: not group_fpm
+  tags:
+    - docker
 
 # Shell equivilent
-# docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress sh -c \
-#   '/usr/local/bin/wp --allow-root --path=/var/lib/wordpress db check'
+# docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress-php7.1-fpm-alpine-mod sh -c \
+#   '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress db check'
 - name: Check to see if WP database exists
-  command: "docker run --env-file /var/www/{{ primary_subdomain }}/.env --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
+  command: "docker run --env-file {{ env_file }} --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: db_exists.rc != 0
   register: db_exists
   changed_when: false
+  tags:
+    - database

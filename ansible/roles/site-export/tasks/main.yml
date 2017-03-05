@@ -5,7 +5,7 @@
 #- name: compress backup files
 #  archive:
 #    path:
-#      - "/var/www/{{ domain }}/public_html"
-#      - "/var/www/{{ domain }}/{{ db_name }}.sql.gz"
-#    dest: "/var/www/{{ domain }}/site_export.zip"
+#      - "/var/www/{{ primary_subdomain }}/public_html"
+#      - "/var/www/{{ primary_subdomain }}/{{ db_name }}.sql.gz"
+#    dest: "/var/www/{{ primary_subdomain }}/site_export.zip"
 #    format: zip

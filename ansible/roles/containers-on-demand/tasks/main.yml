@@ -12,7 +12,7 @@
   when: not container_always_active
 
 - name: Fix bug in last task by forcing the wake socket activation
-  command: /usr/local/bin/renew-fpm.sh {{ primary_subdomain }}
+  command: /usr/local/bin/renew-fpm-container.sh {{ primary_subdomain }}
   changed_when: false
 
 - name: Ensure that no evidence of a group_fpm pool exists for this site

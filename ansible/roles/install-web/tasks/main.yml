@@ -11,3 +11,4 @@
 
 - include: docker.yml
   tags: docker
+  when: use_docker_assembly

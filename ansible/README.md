@@ -41,7 +41,7 @@ The Wizard assumes most sensible defaults, but you can turn any option off from 
 For example, to disable SSL on the new host, you need to run:
 
 	ansible-playbook -i $inventory \
- 		--extra-vars "{ 'use_ssl': false, 'domain': 'mydomain.org', 'subdomain':', mysubdomain.noflag.org.uk', 'site_title': 'test', 'admin_email': 'admin@example.org'}" \
+ 		--extra-vars "{ 'use_ssl': false, 'domain': 'mydomain.org', 'primary_subdomain': 'mysubdomain.noflag.org.uk', 'site_title': 'test', 'admin_email': 'admin@example.org'}" \
  		plays/wordpress/create-wordpress-site.yml
 
 For complete documentation, browse each play's directory.

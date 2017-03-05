@@ -1,3 +1,45 @@
+Renew a vhost
+===============
+
+This process is designed for when you already have a php-container environment set up but you need to renew the vhost which serves the site. For example, if you are adding a new top-level domain (`example.org`) to an existing website (`example.noflag.org.uk`) or removing one, or adding an SSL certificate, etc.
+
+Operations: 
+
+1. Figure out what the user meant by the domains they gave
+2. Renew the vhost
+
+Note: By default, this play assumes you're renewing a _php vhost_. If this is not the case, you should ensure use_php is set to false by editing the play, or supplying `--extra-vars="{ use_php: false }"` at runtime.
+
+Usage:
+
+Interactive usage:
+
+    ansible-playbook -i $inventory renew-vhost.yml
+
+Non-interactive:
+
+    ansible-playbook -i $inventory renew-vhost.yml --extra-vars '{ use_php: false, domain: "mydomain.org" }'
+
+Create a static site
+================
+
+Very similar to above. 
+
+Operations: 
+
+1. Figure out what the user meant by the domains they gave
+2. Renew the vhost. (By default, all vhosts are static sites unless use_php is enabled or they are proxied from somewhere else.)
+
+Usage:
+
+Interactive usage:
+
+    ansible-playbook -i $inventory renew-vhost.yml
+
+Non-interactive:
+
+    ansible-playbook -i $inventory renew-vhost.yml --extra-vars 'domain=mydomain.org'
+
 Remove a website
 ================
 

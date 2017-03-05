@@ -12,7 +12,6 @@
 - name: Find out whether group-fpm container is running
   command: "docker inspect --format='{%raw%}{{json .State.Running}}{%endraw%}' {{ group_fpm_container }}"
   changed_when: false
-  failed_when: fpm_container_running.stdout == "false"
   register: fpm_container_running
   ignore_errors: true
   failed_when: fpm_container_running.stdout == 'false' or 'No such object' in fpm_container_running.stderr

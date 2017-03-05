@@ -10,36 +10,28 @@
  * https://pantheon.io/docs
  */
 
-/**
- * Local configuration information.
- *
- * If you are working in a local/desktop development environment and want to
- * keep your config separate, we recommend using a 'wp-config-local.php' file,
- * which you should also make sure you .gitignore.
- */
-if (file_exists('/var/www/' . $_SERVER['HTTP_HOST'] . '/wp-config.php')):
-  # IMPORTANT: ensure your local config does not include wp-settings.php
-  require_once('/var/www/' . $_SERVER['HTTP_HOST'] . '/wp-config.php');
+if (file_exists('/var/www/' . $_ENV['PRIMARY_SUBDOMAIN'] . '/public_html/wp-config.php')):
+   require_once('/var/www/' . $_ENV['PRIMARY_SUBDOMAIN'] . '/public_html/wp-config.php');
 
 /**
- * Pantheon platform settings. Everything you need should already be set.
+ * Platform settings. Everything you need should already be set.
  */
 else:
     // ** MySQL settings - included in the Pantheon Environment ** //
     /** The name of the database for WordPress */
-    define('DB_NAME', $_SERVER['DB_NAME']);
+    define('DB_NAME', $_ENV['DB_NAME']);
 
     /** MySQL database username */
-    define('DB_USER', $_SERVER['DB_USER']);
+    define('DB_USER', $_ENV['DB_USER']);
 
     /** MySQL database password */
-    define('DB_PASSWORD', $_SERVER['DB_PASSWORD']);
+    define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
 
-    if ($_SERVER['DB_HOST'] == "localhost") {
+    if ($_ENV['DB_HOST'] == "localhost") {
         define('DB_HOST', 'localhost');
 	} else {
 		   /** MySQL hostname; on Pantheon this includes a specific port number. */
-	    define('DB_HOST', $_SERVER['DB_HOST'] . ':' . $_SERVER['DB_PORT']);
+	    define('DB_HOST', $_ENV['DB_HOST'] . ':' . $_ENV['DB_PORT']);
 	}
     /** Database Charset to use in creating database tables. */
     define('DB_CHARSET', 'utf8');
@@ -47,6 +39,12 @@ else:
     /** The Database Collate type. Don't change this if in doubt. */
     define('DB_COLLATE', '');
 
+    if (!isset($_ENV['HTTP_HOST']) && (isset($_ENV['SERVER_NAME']))) {
+        $_ENV['HTTP_HOST'] = $_ENV['SERVER_NAME'];
+    }
+    if (!isset($_ENV['HTTP_HOST']) && (isset($_ENV['HOSTNAME']))) {
+        $_ENV['HTTP_HOST'] = $_ENV['HOSTNAME'];
+    }
     /**#@+
      * Authentication Unique Keys and Salts.
      *
@@ -87,39 +85,25 @@ else:
         }
         define('WP_HOME', $scheme . '://' . $_ENV['HTTP_HOST']);
         define('WP_SITEURL', $scheme . '://' . $_ENV['HTTP_HOST']);
-    } elseif (isset($_SERVER['HTTP_HOST'])) {
-        // HTTP is still the default scheme for now.
-        // Daniel's note: I think this is set correctly using by nginx's fastcgi_param file in /etc/nginx
-        // If not, you can force it by editing the .env file and restarting the container
-        $scheme = 'http';
-        // If we have detected that the end use is HTTPS, make sure we pass that
-        // through here, so <img> tags and the like don't generate mixed-mode
-        // content warnings.
-        if (isset($_SERVER['HTTP_USER_AGENT_HTTPS']) && $_SERVER['HTTP_USER_AGENT_HTTPS'] == 'ON') {
-            $scheme = 'https';
-        }
-        define('WP_HOME', $scheme . '://' . $_SERVER['HTTP_HOST']);
-        define('WP_SITEURL', $scheme . '://' . $_SERVER['HTTP_HOST']);
     }
 
-    if (isset($_ENV['WP_CONTENT_DIR'])) {
+    if (isset($_ENV['WP_CONTENT_DIR']) && ($_ENV['WP_CONTENT_DIR'] != "")) {
         define('WP_CONTENT_DIR', $_ENV['WP_CONTENT_DIR']);
     }
 
-    if (file_exists('/var/www/' . $_SERVER['HTTP_HOST'] . '/wp-config-inc.php')) {
-        include_once('/var/www/' . $_SERVER['HTTP_HOST'] . '/wp-config-inc.php');
+    if (file_exists($_ENV['WEBROOT'] . '/wp-config-inc.php')) {
+        include_once($_ENV['WEBROOT'] . '/wp-config-inc.php');
     }
     if (file_exists(dirname(__FILE__) . '/wp-config-inc.php')) {
         include_once(dirname(__FILE__) . '/wp-config-inc.php');
     }
-
     // Force the use of a safe temp directory when in a container
     #if ( defined( 'PANTHEON_BINDING' ) ):
     #    define( 'WP_TEMP_DIR', sprintf( '/srv/bindings/%s/tmp', PANTHEON_BINDING ) );
     #endif;
 
     // FS writes aren't permitted in test or live, so we should let WordPress know to disable relevant UI
-    if ( in_array( $_SERVER['ENVIRONMENT'], array( 'test', 'live' ) ) && ! defined( 'DISALLOW_FILE_MODS' ) ) :
+    if ( in_array( $_ENV['ENVIRONMENT'], array( 'test', 'live' ) ) && ! defined( 'DISALLOW_FILE_MODS' ) ) :
         define( 'DISALLOW_FILE_MODS', true );
     endif;
 
@@ -143,7 +127,13 @@ $table_prefix = 'wp_';
  * de_DE.mo to wp-content/languages and set WPLANG to 'de_DE' to enable German
  * language support.
  */
-define('WPLANG', '');
+
+if (isset($_ENV['WPLANG'])) {
+    define('WPLANG', $_ENV['WPLANG']);
+} else {
+    define('WPLANG', "");
+}
+
 
 /**
  * For developers: WordPress debugging mode.
@@ -155,8 +145,11 @@ define('WPLANG', '');
  * You may want to examine $_ENV['ENVIRONMENT'] to set this to be
  * "true" in dev, but false in test and live.
  */
-if ( ! defined( 'WP_DEBUG' ) ) {
-    define('WP_DEBUG', false);
+
+if (isset($_ENV['WP_DEBUG']) && ($_ENV['WP_DEBUG'] == "true")) {
+     define('WP_DEBUG', true);   
+} else {
+     define('WP_DEBUG', false);   
 }
 
 /* That's all, stop editing! Happy Pressing. */

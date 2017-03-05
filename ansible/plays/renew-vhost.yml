@@ -13,26 +13,8 @@
     prompt: "\n\n** Extra domains **\nIf the website has alias domains of any kind, enter them now, separated by a space"
     private: no
     default: ""
-  - name: "site_title"
-    prompt: "\n\nEnter a 'site title' for Wordpress:"
-    private: no
-    default: "My new website"
-  - name: "admin_email"
-    prompt: "\n\nEnter the site administrator's email address for the purposes of WP account password recovery. The new admin account password will be sent to this address by Wordpress"
-    private: no
-  vars:
-    group_fpm: false
   become: true
-  pre_tasks:
-    - debug:
-        var: group_fpm
   roles:
   - domain-munging
-  - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
-  - container-environments
-  - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
-  - apps-wordpress-create
-  - vhost-renew
-  - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
-  - apps-wordpress-install-new
-  - site-diagnostics
+  - { role: vhost-renew, use_php: true, tags: ['vhost'] }
+#  - site-diagnostics

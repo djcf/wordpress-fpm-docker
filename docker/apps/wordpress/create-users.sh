@@ -5,6 +5,16 @@ if [ ! -d $FPM_POOLS ]; then
 	exit 0
 fi
 
+chown -R www-data:www-data /usr/src/wordpress/wp-content
+
+POOL_COUNT=`ls -1 $FPM_POOLS | wc -l`
+# First of all, count the number of php pools. If its one, we've either running
+# in the group-php container but have not been initialized with a website yet
+# or we're on an on-demand container which only has 1 pool. either way, we don't want to continue
+if [ "$POOL_COUNT" -eq 1 ]; then
+	exit 0
+fi
+
 for filename in $FPM_POOLS/*.conf; do
 	user_subdomain=${filename%.conf}
     user_subdomain=${user_subdomain##*/}
@@ -24,16 +34,20 @@ for filename in $FPM_POOLS/*.conf; do
 		if id "$user_name" >/dev/null 2>&1; then # check if the user name exists in the container
 			local_UID=`id -u $user_name`
 			echo "Fix perms: User $user_name exists" # it does...
-			if [ "$USER_NAME" == root ]; then # check if the user which owns the directory is root (UID 0)
+			if [ "$USER_NAME" == "root" ]; then # check if the user which owns the directory is root (UID 0)
 				echo "Changing ownership of $DIR away from root"
 				chown -R $user_name:www-data $DIR # change the directory to match the username/id of the user
+			elif [ "$USER_NAME" == "www-data" ]; then # perhaps www-data owns the directory?
+				echo "Creating new user and changing ownership of $DIR away from www-data"
+				adduser -SDH -G www-data -s /bin/false $user_name # it was, so add a new user with any old user ID...
+				chown -R $user_name:www-data $DIR # ... and chown the external directory to match the new username and ID
 			elif [ "$local_UID" != "$canonical_UID" ]; then # the user which owns the directory is not root, but it isn't the same one which is supposed to either.
 				echo "Changing user id of existing user to match remote"
 				/usr/local/bin/chids.sh $user_name www-data $canonical_UID $DIR # invoke external script to change the UID locally
 			fi
 		else # the username does not exist in the container,
 			echo "Adding user $user_name:" # so whatever else happens we'll need to create it
-			if [ "$USER_NAME" = "root" ]; then # check if the user which owns the directory is root
+			if [ "$USER_NAME" == "root" ]; then # check if the user which owns the directory is root
 				adduser -SDH -G www-data -s /bin/false $user_name # it was, so add a new user with any old user ID...
 				echo "Changing ownership of $DIR away from root"
 				chown -R $user_name:www-data $DIR # ... and chown the external directory to match the new username and ID

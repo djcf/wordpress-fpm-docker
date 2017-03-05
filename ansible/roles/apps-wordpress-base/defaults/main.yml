@@ -6,6 +6,7 @@ phproot: /usr/src/wordpress # this path is the default installation location for
 extra_nginx_configs:
   - inc/wordpress.conf
 user_site_dir: "/var/www/{{ primary_subdomain }}"
-salts_file: "{{ user_site_dir }}/public_html/salts.php"
+webroot: "{{ user_site_dir }}/public_html"
+salts_file: "{{ webroot }}/salts.php"
 env_path: "{{ user_site_dir }}/.env"
-user_wp_content_dir: "{{ user_site_dir }}/public_html/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)
+user_wp_content_dir: "{{ webroot }}/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)

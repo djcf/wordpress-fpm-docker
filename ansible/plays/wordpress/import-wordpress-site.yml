@@ -15,12 +15,12 @@
   become: true
   roles:
   - domain-munging
-  - { role: containers-on-demand, when: not group_fpm }
-  - { role: group-php-fpm, when: group_fpm }
+  - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
+  - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
   - container-environments
   - vhost-renew
   - apps-wordpress-create
-  - { role: sql-create-database, when: db_exists|failed }
+  - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
   - site-import
   - sql-import-database
   - site-diagnostics

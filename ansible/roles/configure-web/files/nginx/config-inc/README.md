@@ -3,6 +3,6 @@ This directory is used for generic vhost configuration which does not apply to a
 It is ** not ** included automatically at any stage. It is included manually within a vhost declaration. All vhosts *should* include the general.conf.
 
 ** Included automatically **: No
-** By what? **: Ansible will include *certain files* in some cases during vhost generation. Dockergen will/should include ssl.conf where possible.
+** By what? **: Ansible will include *certain files* in some cases during vhost generation. Dockergen will/should include ssl.conf where possible and proxy.conf
 ** When? **: When a play is run which uses the vhost-renew role.
 ** Where-mapped?**: /etc/nginx/confg-inc

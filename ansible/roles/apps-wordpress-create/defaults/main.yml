@@ -1,2 +1,7 @@
 ---
 # defaults file for apps-wordpress-create
+volumes:
+  - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
+  - "{{ user_wp_content_dir }}:{{ phproot }}/wp-content"
+  - "/etc/ssmtp:/etc/ssmtp:ro"
+  - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"

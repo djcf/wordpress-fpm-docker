@@ -18,10 +18,14 @@
   copy: src={{ item }} dest=/usr/local/bin owner=root group=root mode=655
   with_fileglob:
   - files/bin/*
+  tags:
+    - bins
 
 - name: increase system performance by adjusting sysctl
   copy: src=sysctl.conf dest=/etc/sysctl.d/99-sysctl.conf owner=root group=root mode=655
   notify: reload sysctl
+  tags:
+    - tweaks
 
 - name: install this toolkit to a clear path on the remote host
   git:
@@ -45,9 +49,13 @@
 
 - name: Template out the best-matching MySQL configuration file
   template: "src=sqlconf/my-{{ rigsize }}.cnf.j2 dest={{ install_path }}/docker/sqldb/my.cnf"
+  tags:
+    - tweaks
 
 - name: template out a new nginx.conf file with the appropriate number of workers for this host
   template: "src=nginx.conf.j2 dest={{ install_path }}/docker/switchboard/nginx.conf"
+  tags:
+    - tweaks
 
 #    - name: Install pip
 #      apt:

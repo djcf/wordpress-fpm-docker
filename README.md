@@ -38,11 +38,3 @@ To begin, browse to the "ansible" directory.
 **System Documentation**
 
 To begin, browse to the "docs" directory for a high-level overview.
-
-TODO
------
-
-	* Finish WP updates playbook
-	* Ansible scripts should install and renew letsencrypt certs
-	* DNS management
-	* Import from Alba

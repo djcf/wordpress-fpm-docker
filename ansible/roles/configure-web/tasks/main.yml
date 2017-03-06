@@ -2,8 +2,16 @@
 - name: Allow root user to access from any host (drop root user first)
   command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
   ignore_errors: true
+  tags:
+    - database
+    - fixes
 
 - name: Allow root user to access from any host
   command: docker exec {{ sqldb }} mysql -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY '{{ mysql_root_password }}'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+  tags:
+    - database
+    - fixes
 
 - include: install-nginx-configs.yml
+  tags:
+    - configs

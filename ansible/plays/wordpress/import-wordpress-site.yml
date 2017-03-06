@@ -23,4 +23,4 @@
   - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
   - site-import
   - sql-import-database
-  - site-diagnostics
+#  - site-diagnostics

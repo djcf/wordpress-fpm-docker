@@ -1,35 +1,25 @@
 Immediate tasks
 
-* Add/remove a global DNS record to an existing vhost / and update WP accordingly
 * check site imports
-* check that themes and plugins can be added removed (permissions)
+* check that themes and plugins can be added and removed (permissions)
 
 Short-term
-
 * LetsEncrypt
+
+** DNS **
 * DNS master
 * DNS slaves set up by ansible play
+* Add/remove a global DNS record to an existing vhost / and update WP accordingly
 
 FINALLY
 	* document/cleanup
 	* tidy up roles
 
 WISHLIST
-	* fail2ban
-		* docker and wordpress
+	* fail2ban reads docker logs and protects wp-admin
 	* php-group auto-tuning ?
 	* Ansible play logs an admin in transparently ??
-	* HEALTHCHECKS FOR EVERYTHING!
-	* Stats & Logging
-
-
-HEALTHCHECK --interval=10s --timeout=3s \
-    CMD \
-    SCRIPT_NAME=/ping \
-    SCRIPT_FILENAME=/ping \
-    REQUEST_METHOD=GET \
-cgi-fcgi -bind -connect 127.0.0.1:9000 || exit 1
-https://easyengine.io/tutorials/php/fpm-status-page/
+	* Stats & Logging using docker logs (e.g. awstats)
 
 To read:
 https://easyengine.io/tutorials/php/fpm-sysctl-tweaking/

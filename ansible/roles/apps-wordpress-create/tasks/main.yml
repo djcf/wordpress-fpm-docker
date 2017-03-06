@@ -65,8 +65,8 @@
 
 - name: ensure wp-content directory has correct owner
   shell: |
-chown -R www-data:www-data /var/www/{{ primary_subdomain }}/public_html/wp-content
-chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content
+    chown -R www-data:www-data /var/www/{{ primary_subdomain }}/public_html/wp-content
+    chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content
 
 # Shell equivilent:
 # docker create --name $domain.fpm wordpress --net=docker_sqlnet wordpress
@@ -84,7 +84,7 @@ chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content
     detach: yes
     log_options:
       max_size: 25k
-    env_file: "{{ env_file }}"
+    env_file: "{{ env_path }}"
   when: not group_fpm
   tags:
     - docker
@@ -93,7 +93,7 @@ chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content
 # docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk:sqldb.noflag.org.uk --volumes-from $domain.fpm --rm wordpress-php7.1-fpm-alpine-mod sh -c \
 #   '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress db check'
 - name: Check to see if WP database exists
-  command: "docker run --env-file {{ env_file }} --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
+  command: "docker run --env-file {{ env_path }} --net=docker_sqlnet --link {{ db_host }} --volumes-from {{ parent_container }} --rm {{ docker_image }} sh -c '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'"
   ignore_errors: yes
   failed_when: db_exists.rc != 0
   register: db_exists

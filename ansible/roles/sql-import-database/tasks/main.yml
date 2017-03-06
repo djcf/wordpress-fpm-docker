@@ -10,10 +10,12 @@
     import_file: "/tmp/{{ local_import_file }}"
   when: local_import_file is defined
 
-- name: Set path to database file (not user upload)
+- name: Set path to database file (not user upload and no import_file supplied)
   set_fact:
     import_file: "/var/www/{{ primary_subdomain }}/database.sql.gz"
-  when: primary_subdomain is defined
+  when: 
+    - primary_subdomain is defined
+    - import_file is not defined
 
 # Shell equivilent:
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'gunzip -c /tmp/$domain.sql.gz | mysql -f -hsqldb.noflag.org.uk -P3306 -uroot'
@@ -32,6 +34,8 @@
     volumes: "{{ import_file }}:/tmp/database.sql.gz:ro"
   when: (env_path is not defined) or (env_path == "")
 
+# Shell equiv
+# docker run --env-file .env --rm -v public_html/database.sql.gz:/tmp/database.sql.gz:ro -it gists/mariadb ash
 - name: Import database (non-root user (safer))
   docker_container:
     image: "{{ mysql_image }}"
@@ -39,11 +43,12 @@
       - name: docker_sqlnet
         link: "{{ db_host }}"
     #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
-    command: "gunzip -c /tmp/database.sql.gz | mysql -f -h\"$DB_HOST\" -P\"$DB_PORT\" -u$DB_USER -p$DB_PASSWORD $DB_NAME"
+    command: sh -c 'gunzip -c /tmp/database.sql.gz | mysql -f -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASSWORD" "$DB_NAME"'
     env_file: "{{ env_path }}"
     cleanup: yes
     detach: no
     volumes: "{{ import_file }}:/tmp/database.sql.gz:ro"
+    name: "{{ primary_subdomain }}_sqlimport"
   when:
     - env_path is defined
     - env_path != ""

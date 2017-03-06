@@ -19,6 +19,8 @@
     - fish
     - docker
     - systemd-docker
+  tags:
+    - apt
 
 # - name: install certain python modules for docker
 #   pip:
@@ -32,6 +34,8 @@
 
 - name: run apt-get upgrade
   apt: upgrade=full
+  tags:
+    - update
 
 - name: Change user shell
   user:
@@ -40,6 +44,8 @@
   with_items: "{{ fish_users }}"
   when: fish_users is defined
   ignore_errors: true
+  tags:
+    - shell
 
 - name: Copy convenience scripts
   copy:
@@ -47,9 +53,14 @@
     dest: /usr/local/bin
   with_items:
     - docker-clean.sh
+  tags:
+    - bins
 
 - name: host should have latest version of docker-compose
   shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m) > /usr/bin/docker-compose && chmod +x /usr/bin/docker-compose
+  tags:
+    - bins
+    - aptfixes
 
 # Possible instability with docker-daemon and GRPC
 # - name: Install docker-squash

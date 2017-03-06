@@ -1,7 +1,6 @@
 FROM wordpress:php7.1-fpm-alpine
 
-RUN apk update
-RUN apk add ssmtp mariadb-client
+RUN apk update && apk add ssmtp mariadb-client fcgi
 
 COPY chids.sh /usr/local/bin/chids.sh
 COPY create-users.sh /usr/local/bin/create-users.sh
@@ -27,3 +26,12 @@ WORKDIR /usr/src/wordpress
 
 VOLUME /usr/src/wordpress/wp-content
 VOLUME /etc/ssmtp
+
+# See https://easyengine.io/tutorials/php/fpm-status-page/
+# And https://www.thatsgeeky.com/2012/02/directly-connecting-to-php-fpm/
+# Unfortunately this writes to logs which would conflict with on-demand containers -- unless we can find a way to stop it from doing so
+#HEALTHCHECK CMD \
+#    SCRIPT_NAME=/ping \
+#    SCRIPT_FILENAME=/ping \
+#    REQUEST_METHOD=GET \
+#	cgi-fcgi -bind -connect /var/run/php-fpm.sock || exit 1

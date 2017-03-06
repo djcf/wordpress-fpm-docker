@@ -31,7 +31,12 @@
   git:
     repo: "{{ remote_path}}"
     dest: "{{ install_path }}"
-  when: not is_vagrant
+  #when: not is_vagrant
+
+- name: copy letsencrypts challenge-response directory
+  synchronize:
+    src: "{{ role_path }}/files/letsencrypt-challenge"
+    dest: /var/www
 
 #- name: symlink ansible roles into the main ansible directory
 #  file: "src={{ install_path }}/ansible/roles/{{ item }} dest=/etc/ansible/roles/{{ item }} state=link"
@@ -46,16 +51,20 @@
     dest: /var/lib
     remote_src: true
     creates: /var/lib/wordpress
+  tags:
+    - wordpress
 
 - name: Template out the best-matching MySQL configuration file
   template: "src=sqlconf/my-{{ rigsize }}.cnf.j2 dest={{ install_path }}/docker/sqldb/my.cnf"
   tags:
     - tweaks
+    - database
 
 - name: template out a new nginx.conf file with the appropriate number of workers for this host
   template: "src=nginx.conf.j2 dest={{ install_path }}/docker/switchboard/nginx.conf"
   tags:
     - tweaks
+    - nginx
 
 #    - name: Install pip
 #      apt:

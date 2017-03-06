@@ -1,6 +1,5 @@
 Immediate tasks
 
-* check site imports
 * check that themes and plugins can be added and removed (permissions)
 
 Short-term

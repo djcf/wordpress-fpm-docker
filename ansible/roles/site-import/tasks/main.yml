@@ -3,3 +3,8 @@
   unarchive:
     src: "{{ site_dump_file }}"
     dest: "/var/www/{{ primary_subdomain }}/public_html"
+
+- name: ensure wp-content directory has correct owner
+  shell: |
+    chown -R www-data:www-data /var/www/{{ primary_subdomain }}/public_html/wp-content
+    chmod 755 -R /var/www/{{ primary_subdomain }}/public_html/wp-content

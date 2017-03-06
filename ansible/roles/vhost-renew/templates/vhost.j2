@@ -23,7 +23,14 @@ server {
         access_log /dev/stdout;
         error_log stderr error;
 
-    {% if ssl_method == "redirect" %}
+    {% if ssl_host and lets_encrypt %}
+        location /.well-known/ {
+            alias /var/www/letsencrypt-challenge/.well-known/?;
+            try_files $uri index.html =404;
+        }
+    {% endif %}
+
+    {% if ssl_host and ssl_method == "redirect" %}
         return 301 https://$host$request_uri;
     {% else %}
         root /var/www/{{ primary_subdomain }}/public_html;
@@ -61,7 +68,8 @@ server {
         error_log stderr error;
 
     {% if lets_encrypt %}
-
+        ssl_certificate /etc/nginx/certs/{{ primary_domain }}.crt;
+        ssl_certificate_key /etc/nginx/certs/{{ primary_domain }}.key;
     {% else %}
         {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
         ssl_certificate /etc/nginx/certs/{{ primary_subdomain }}.crt;

@@ -5,12 +5,12 @@
     src: "{{ role_path }}/files/default_site.conf"
     dest: "{{ docker_volumes['docker_nginx_config'] }}"
 
-- name: Copy new docker-compose
-  copy:
-    src: "{{ role_path }}/files/docker-compose.yml"
-    dest: /usr/local
+# - name: Copy new docker-compose
+#   copy:
+#     src: "{{ role_path }}/files/docker-compose.yml"
+#     dest: /usr/local
 
-- name: Bring up new docker containers
-  command: "docker-compose -f /usr/local/docker-compose.yml up -d"
-  tags:
-    - docker
+# - name: Bring up new docker containers
+#   command: "docker-compose -f /usr/local/docker-compose.yml up -d"
+#   tags:
+#     - docker

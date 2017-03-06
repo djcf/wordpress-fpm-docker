@@ -1,7 +1,7 @@
 [old-hosts]
 alba.noflag.org.uk
 
-[ns-hosts]
+[nameservers]
 ns1.noflag.org.uk
 ns2.noflag.org.uk
 ns3.noflag.org.uk
@@ -9,23 +9,27 @@ ns3.noflag.org.uk
 [new-hosts]
 emma.noflag.org.uk
 rudolph.noflag.org.uk
+bhagat.noflag.org.uk
 
-[mail-hosts]
+[netherlands]
+bhagat.noflag.org.uk
+
+[mail]
 mail.noflag.org.uk
 
-[web-hosts]
+[web]
 www.noflag.org.uk
 
-[archive]
-archive.noflag.org.uk
+[archives]
+archives.noflag.org.uk
 
-[proxy-hosts]
+[proxies]
 proxy.noflag.org.uk
 
-[iceland-hosts]
+[iceland]
 emma.noflag.org.uk
 alba.noflag.org.uk
 rudolph.noflag.org.uk
 
-[app-hosts]
+[apps]
 www.noflag.org.uk

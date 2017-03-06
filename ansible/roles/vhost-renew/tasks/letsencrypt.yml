@@ -1,0 +1,32 @@
+- name: Reload nginx so the new vhost appears
+  command: "docker exec -it {{ switchboard }} nginx -s reload"
+
+# "/etc/ssl/{{ primary_domain }}.crt"
+- letsencrypt:
+    account_key: /etc/pki/cert/private/account.key
+    csr: "/etc/pki/cert/csr/{{ primary_domain }}.csr"
+    dest: "{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_domain }}.crt"
+  register: le_challenge
+
+# perform the necessary steps to fulfill the challenge
+# for example:
+#
+- copy:
+    dest: "/var/www/letsencrypt-challenge/.well-known/{{ le_challenge['challenge_data'][primary_domain]['http-01']['resource'] }}"
+    content: "{{ le_challenge['challenge_data'][primary_domain]['http-01']['resource_value'] }}"
+    when: le_challenge|changed
+
+- name: turn SSL on again so we can regenerate the vhost -- with the ssl certificate this time
+  set_fact:
+    ssl_host: true
+
+- letsencrypt:
+    account_key: /etc/pki/cert/private/account.key
+    csr: "/etc/pki/cert/csr/{{ primary_domain }}.csr"
+    dest: "{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_domain }}.crt"
+    data: "{{ le_challenge }}"
+
+- name: Copy vhost template to host with new SSL certificate
+  template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+  notify: reload nginx
+  validate: "docker exec -it {{ switchboard }} nginx -t"

@@ -8,39 +8,74 @@
     socket_name: php-fpm
     state: started
     parent_container: "{{ group_fpm_container }}"
+    fpm_user: "{{ primary_subdomain }}"
+  tags:
+    - vhost
+    - all
 
-- name: Find out whether group-fpm container is running
-  command: "docker inspect --format='{%raw%}{{json .State.Running}}{%endraw%}' {{ group_fpm_container }}"
-  changed_when: false
-  register: fpm_container_running
-  ignore_errors: true
-  failed_when: fpm_container_running.stdout == 'false' or 'No such object' in fpm_container_running.stderr
+# - name: Find out whether group-fpm container is running
+#   command: "docker inspect --format='{%raw%}{{json .State.Running}}{%endraw%}' {{ group_fpm_container }}"
+#   changed_when: false
+#   register: fpm_container_running
+#   ignore_errors: true
+#   failed_when: fpm_container_running.stdout == 'false' or 'No such object' in fpm_container_running.stderr
 
-# tasks file for group-php-fpm
+- name: Create new user for the site
+  user:
+    name: "{{ fpm_user }}"
+    groups: www-data,mail
+    shell: /bin/false
+    home: "{{ user_site_dir }}"
+    system: true
+
+# Okay, now we have fpm container running and the right user, we can go ahead and rewrite the pool with the correct user
 - name: Template a new fpm-pool to the group-php-fpm container
   template:
     src: php-pool.j2
     dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
-  vars:
-    fpm_user: www-data
-  when: fpm_container_running|failed
-
-- name: Ensure fpm container is started
-  docker_container:
-    name: "{{ group_fpm_container }}"
-    state: started
-  ignore_errors: true
-
-- name: Add new user to group-fpm container
-  command: "docker exec {{ group_fpm_container }} sh -c '/usr/local/bin/add-users.sh {{ db_user }}'"
-  ignore_errors: true
-
-# tasks file for group-php-fpm
-- name: Template a new fpm-pool to the group-php-fpm container
-  template:
-    src: php-pool.j2
-    dest: "{{ docker_volumes['docker_group_php_pools'] }}/{{ primary_subdomain }}.conf"
-  vars:
-    fpm_user: "{{ db_user }}"
   notify:
     - reload fpm
+
+- name: ensure wp-content directory has correct owner
+  file:
+    path: "{{ webroot }}"
+    mode: 0750
+    owner: "{{ fpm_user }}"
+    group: www-data
+    recurse: true
+
+- name: Remove fpm container
+  docker_container:
+    name: "{{ group_fpm_container }}"
+    state: absent
+
+# - name: Start the docker assembly
+#   docker_service:
+#     project_src: "{{ install_path }}/docker"
+
+# This above code should work but doesnt.
+# So we need to run docker-compose manually for now.
+# This fixes two issues in two completely unrelated pieces of software
+## FOR FUCKS SAKE!!! 
+- name: Re-create docker container (workaround)
+  shell: "cd {{ install_path }}/docker; /usr/local/bin/docker-compose up -d"
+
+# Don't use this: unnessesary code duplication
+# - name: Re-create fpm container
+#   docker_container:
+#     image: wordpress-php7.1-fpm-alpine-mod
+#     name: group-wordpress.fpm
+#     volumes:
+#       - group_php_pools:/usr/local/etc/php-fpm.d:ro
+#       - /var/www:/var/www
+#       - /var/run/docker-apps:/var/run
+#       - /etc/passwd:/etc/passwd:ro
+#       - /etc/group:/etc/group:ro
+#     log_options:
+#       max-size: 25k
+#     networks:
+#       - name: docker_sqlnet
+#         links: sqldb.noflag.org.uk
+#     env:
+#       WEBROOT: "/usr/src/wordpress"
+#       WP_DEBUG: "off"

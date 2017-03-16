@@ -1,2 +1,3 @@
 ---
 # defaults file for nginx-create-vhost
+lets_encrypt_cert_exists: true

@@ -63,6 +63,12 @@ Non-interactive:
 
 	ansible-playbook -i $inventory remove-site.yml --extra-vars 'backup=yes remove=no domain=mydomain.org'
 
+Add a user to SFTP
+=================
+This play allows a user to connect to the host using SFTP. They cannot connect using FTP or SCP but they may use an SSH keyfile though this file must be manually added to the server by the admin. A password will also be generated for the user and stored in a text file locally (be careful not to check it into version control) where it should be immediately removed by the admin when it is no longer required.
+
+All sftp-only users are directed to the internal sftp server upon login; it is not possible for them to run shell commands. They are chrooted into a jailed /var/www/$user directory upon login. All sftp-only users are also members of the www-data group, which is what allows them to read and write to their user files.
+
 Archive a website
 =================
 

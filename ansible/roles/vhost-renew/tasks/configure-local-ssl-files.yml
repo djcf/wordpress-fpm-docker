@@ -1,0 +1,35 @@
+---
+- name: Check if an SSL certificate exists locally (NB careful not to check into version control if so)
+  local_action: "stat path={{ primary_subdomain }}.crt"
+  register: local_ssl_cert
+  failed_when: not local_ssl_cert.stat.exists
+  ignore_errors: yes
+  changed_when: false
+
+- name: Check if an SSL key exists locally (NB careful not to check into version control if so)
+  local_action: "stat path={{ primary_subdomain }}.key"
+  register: local_ssl_key
+  failed_when: not local_ssl_key.stat.exists
+  ignore_errors: yes
+  changed_when: false
+
+- name: Upload SSL certificate into vhost when using SSL but not lets_encrypt
+  copy: src="{{ primary_subdomain }}.crt" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.crt"
+  when:
+    - local_ssl_key|succeeded
+    - local_ssl_cert|succeeded
+  notify: reload nginx
+
+- name: Upload SSL key into vhost when using SSL but not lets_encrypt
+  copy: src="{{ primary_subdomain }}.key" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.key"
+  when:
+    - local_ssl_key|succeeded
+    - local_ssl_cert|succeeded
+  notify: reload nginx
+
+- name: Set fact about SSL certificates
+  set_fact:
+    use_own_certificate: true
+  when:
+    - local_ssl_key|succeeded
+    - local_ssl_cert|succeeded

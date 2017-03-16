@@ -1,0 +1,10 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+- hosts: all
+  vars_prompt:
+  - name: "primary_subdomain"
+    prompt: "Enter the username of the user. This user will be added to the sftp-only and www-data groups and created if they do not exist already.\nFollowing this operation, a new password will be generated for the user, overriding any previous passwords in place.\nThe username is *always* the primary_subdomain.\n\nEnter a username now"
+    private: no
+  become: true
+  roles:
+    - add-sftp-user

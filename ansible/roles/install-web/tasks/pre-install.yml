@@ -7,6 +7,7 @@
   with_items:
     - /etc/ansible/roles
     - /usr/local/cron
+    - "{{ letsencrypt_account_dir }}"
 
 - name: configure systemd to activate docker containers
   copy: src={{ item }} dest=/etc/systemd/system/ owner=root group=root mode=655
@@ -31,12 +32,32 @@
   git:
     repo: "{{ remote_path}}"
     dest: "{{ install_path }}"
+  ignore_errors: true
   #when: not is_vagrant
+
+- name: Install ctop
+  get_url:
+    url: https://github.com/bcicen/ctop/releases/download/v0.4.1/ctop-0.4.1-linux-amd64
+    dest: /usr/local/bin/ctop
+    remote_src: true
+    mode: 0744
 
 - name: copy letsencrypts challenge-response directory
   synchronize:
     src: "{{ role_path }}/files/letsencrypt-challenge"
-    dest: /var/www
+    dest: /var/www/
+
+- name: Create letsencrypt account key
+  command: "openssl genrsa -out {{ letsencrypt_account_key }} 4096"
+  args:
+    creates: "{{ letsencrypt_account_key }}"
+
+- name: Ensure letsencrypt key is root-only
+  file:
+    path: "{{ letsencrypt_account_key }}"
+    owner: root
+    group: root
+    mode: 0640
 
 #- name: symlink ansible roles into the main ansible directory
 #  file: "src={{ install_path }}/ansible/roles/{{ item }} dest=/etc/ansible/roles/{{ item }} state=link"

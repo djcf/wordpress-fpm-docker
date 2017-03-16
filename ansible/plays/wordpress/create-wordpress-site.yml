@@ -21,18 +21,24 @@
     prompt: "\n\nEnter the site administrator's email address for the purposes of WP account password recovery. The new admin account password will be sent to this address by Wordpress"
     private: no
   vars:
-    group_fpm: false
+    group_fpm: true
+    ssl_host: false
+    lets_encrypt: false
+    force_letsencrypt: false
   become: true
   pre_tasks:
     - debug:
-        var: group_fpm
+        var: "{{ item }}"
+      with_items:
+        - group_fpm
+        - ssl_host
   roles:
-  - domain-munging
+  - { role: domain-munging, tags: ['always'] }
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
-  - container-environments
   - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
-  - apps-wordpress-create
+  - { role: apps-wordpress-create, tags: ['wordpress'] }
   - vhost-renew
   - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
-  - apps-wordpress-install-new
-  - site-diagnostics
+  - { role: apps-wordpress-install-new, tags: ['wordpress'] }
+#  - site-diagnostics
+  - play-audit

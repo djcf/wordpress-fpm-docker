@@ -1,0 +1,34 @@
+---
+# tasks file for add-sftp-user
+- name: Create new SFTP user or modify existing users shell
+  user:
+    name: "{{ primary_subdomain }}"
+    groups: www-data,mail,sftp-only
+    shell: /bin/nologin
+    home: "/var/www/{{ primary_subdomain }}"
+    password: "{{ lookup('password', primary_subdomain + '-password.txt' length=12') }}"
+
+- name: ensure chroot jail exists
+  file:
+    path: "/var/www/{{ primary_subdomain }}"
+    state: directory
+
+- name: ensure wp-content directory has correct owner
+  file:
+    path: "/var/www/{{ primary_subdomain }}"
+    mode: 0750
+    owner: "{{ primary_subdomain }}"
+    group: www-data
+    recurse: true
+
+- name: ensure chroot jail has correct owner
+  file:
+    path: "/var/www/{{ primary_subdomain }}"
+    mode: 0770
+    owner: root
+    recurse: false
+
+
+- name: Report on generated password
+  debug:
+    msg: "The password for user `{{ primary_subdomain }}` is/was changed to `{{ lookup('password', primary_subdomain + '-password.txt' length=12') }}`"

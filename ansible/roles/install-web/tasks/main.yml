@@ -9,6 +9,11 @@
 - include: cronable.yml
   tags: cron
 
+- include: sftp.yml
+  tags:
+    - ftp
+    - sftp
+
 - include: docker.yml
   tags: docker
   when: use_docker_assembly

@@ -11,3 +11,7 @@ docker_volume_lbls:
   - "docker_vhost_config"
   - "docker_ssl_certs"
   - "docker_group_php_pools"
+letsencrypt_account_dir: /etc/pki/cert/private
+letsencrypt_account_key: "{{ letsencrypt_account_dir }}/account.key"
+admin_email: "admin@lists.noflag.org.uk"
+install_path: /usr/local/web

@@ -1,0 +1,3 @@
+---
+# defaults file for play-audit
+audit_filename: last_run

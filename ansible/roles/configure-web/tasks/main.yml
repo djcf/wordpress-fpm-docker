@@ -14,4 +14,4 @@
 
 - include: install-nginx-configs.yml
   tags:
-    - configs
+    - config

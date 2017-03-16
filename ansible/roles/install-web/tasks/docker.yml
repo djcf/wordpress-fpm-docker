@@ -8,7 +8,7 @@
 # This fixes two issues in to completely unrelated pieces of software
 ## FOR FUCKS SAKE!!! 
 - name: Start docker assembly (work around for both vagrant plugin issue AND ansible docker-py issue)
-  command: "docker-compose -f {{ install_path }}/docker/docker-compose.yml up -d"
+  shell: "cd {{ install_path }}/docker; /usr/local/bin/docker-compose up -d"
 
 #- assert:
 #  that:

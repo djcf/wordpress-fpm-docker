@@ -1,0 +1,24 @@
+---
+- name: Add a group only for SFTP users
+  group: name=sftp-only
+
+- name: Remove default SFTP server
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: Subsystem sftp /usr/lib/openssh/sftp-server
+    state: absent
+  notify: restart ssh
+
+- name: Use internal SFTP server
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Subsystem sftp internal-sftp
+      Match Group sftp-only
+        ChrootDirectory /var/www/%u
+        X11Forwarding no
+        AllowTcpForwarding no
+        ForceCommand internal-sftp
+        AuthorizedKeysFile /var/www/%u/.ssh/authorized_keys
+        PasswordAuthentication yes
+  notify: restart ssh

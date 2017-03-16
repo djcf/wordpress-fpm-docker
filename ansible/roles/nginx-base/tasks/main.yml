@@ -5,3 +5,5 @@
     lets_encrypt: false
   when:
     - '"{{domain_host}}" in primary_domain'
+    - force_letsencrypt is not defined
+  changed_when: false

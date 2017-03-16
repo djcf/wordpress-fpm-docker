@@ -23,7 +23,7 @@ server {
         access_log /dev/stdout;
         error_log stderr error;
 
-    {% if ssl_host and lets_encrypt %}
+    {% if lets_encrypt %}
         location /.well-known/ {
             alias /var/www/letsencrypt-challenge/.well-known/?;
             try_files $uri index.html =404;
@@ -31,7 +31,9 @@ server {
     {% endif %}
 
     {% if ssl_host and ssl_method == "redirect" %}
-        return 301 https://$host$request_uri;
+        location / {
+            return 301 https://$host$request_uri;
+        }
     {% else %}
         root /var/www/{{ primary_subdomain }}/public_html;
         {% if use_php is defined and use_php %}
@@ -51,7 +53,7 @@ server {
         {% endif %}
     {% endif %}
 
-    {% if custom_vhost_exists|succeeded %}
+    {% if custom_vhost_exists is defined and custom_vhost_exists|succeeded %}
         include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 
@@ -67,18 +69,21 @@ server {
         access_log /dev/stdout;
         error_log stderr error;
 
-    {% if lets_encrypt %}
-        ssl_certificate /etc/nginx/certs/{{ primary_domain }}.crt;
-        ssl_certificate_key /etc/nginx/certs/{{ primary_domain }}.key;
+    {% if lets_encrypt and lets_encrypt_cert_exists %}
+        ssl_certificate /etc/letsencrypt/live/{{ primary_domain }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ primary_domain }}/privkey.pem;
+        ssl_trusted_certificate /etc/letsencrypt/live/{{ primary_domain }}/chain.pem;
+        ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;
     {% else %}
-        {% if local_ssl_cert|succeeded and local_ssl_key|succeeded %}
+    {% if use_own_certificate %}
         ssl_certificate /etc/nginx/certs/{{ primary_subdomain }}.crt;
         ssl_certificate_key /etc/nginx/certs/{{ primary_subdomain }}.key;
-        {% else %}
+        ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;
+    {% else %}
         ssl_certificate /etc/nginx/certs/{{ default_cert }}.crt;
         ssl_certificate_key /etc/nginx/certs/{{ default_cert }}.key;
-        {% endif %}
         ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;
+    {% endif %}
     {% endif %}
 
         include inc/ssl.conf;
@@ -99,7 +104,7 @@ server {
         {% endfor %}
     {% endif %}
 
-    {% if custom_vhost_exists|succeeded %}
+    {% if custom_vhost_exists is defined and custom_vhost_exists|succeeded %}
         include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 

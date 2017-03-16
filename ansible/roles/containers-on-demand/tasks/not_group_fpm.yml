@@ -17,3 +17,6 @@
     group_fpm: false
     socket_name: "{{ primary_subdomain }}/vhost.fpm-waker" # e.g. /var/run/docker-apps/mydomain.org/fpm-waker.sock
     parent_container: "{{ primary_subdomain }}.fpm"
+  tags:
+    - vhost
+    - all

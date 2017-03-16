@@ -1,0 +1,16 @@
+---
+# tasks file for play-audit
+# - name: Write vars to web directory if applicable
+#   copy:
+#     content: "{{ hostvars[inventory_hostname] | to_yaml }}"
+#     dest: "/var/www/{{ primary_subdomain }}/{{ audit_filename }}.yml"
+#   when: primary_subdomain is defined
+
+# - name: Fetch last run variables
+#   fetch:
+#     src: "/var/www/{{ primary_subdomain }}/{{ audit_filename }}.yml"
+#     dest: "{{ audit_filename }}-results.yml"
+
+# - name: The following vars were used in this play
+#   debug:
+#     var: "{{ hostvars[inventory_hostname] | to_yaml }}"

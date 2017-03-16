@@ -8,3 +8,4 @@ ENVIRONMENT=live
 WEBROOT={{ webroot }}
 HTTP_USER_AGENT_HTTPS={{ ssl_host | ternary("ON", "OFF") }}
 WP_DEBUG=false
+CONTAINER_TYPE={{ group_fpm | ternary("group_fpm", "on_demand")}}

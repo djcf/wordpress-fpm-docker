@@ -1,0 +1,1243 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"lets",
+				"letsencrypt-challenge"
+			],
+			[
+				"p",
+				"primary_subdomain"
+			],
+			[
+				"nginx",
+				"nginx_config_inc"
+			],
+			[
+				"le",
+				"le_challenge"
+			],
+			[
+				"pri",
+				"primary_domain"
+			],
+			[
+				"wp",
+				"wp-content"
+			],
+			[
+				"HTTP",
+				"HTTP_HOST"
+			],
+			[
+				"en",
+				"env_file"
+			],
+			[
+				"has",
+				"has_wpconfig_include_file"
+			],
+			[
+				"env",
+				"env_path"
+			],
+			[
+				"inst",
+				"install_path"
+			],
+			[
+				"is",
+				"is_vagrant"
+			],
+			[
+				"cus",
+				"custom_vhost_exists"
+			],
+			[
+				"docker",
+				"docker_volumes"
+			],
+			[
+				"va",
+				"vagrant"
+			],
+			[
+				"fish",
+				"fish_users"
+			],
+			[
+				"test",
+				"test_success"
+			],
+			[
+				"ng",
+				"nginx_config"
+			],
+			[
+				"work",
+				"worker_connections"
+			],
+			[
+				"db",
+				"dbdump_exists"
+			],
+			[
+				"conta",
+				"container_always_active"
+			],
+			[
+				"default",
+				"default_cert"
+			],
+			[
+				"cert",
+				"certificate"
+			],
+			[
+				"with_",
+				"with_items"
+			],
+			[
+				"u",
+				"undefined"
+			],
+			[
+				"loca",
+				"local_ssl_key"
+			],
+			[
+				"mysq",
+				"mysql_pw_file"
+			],
+			[
+				"failed",
+				"failed_when"
+			],
+			[
+				"salts",
+				"salts_file"
+			],
+			[
+				"cou",
+				"country_code"
+			],
+			[
+				"mys",
+				"mysql_pw_file"
+			],
+			[
+				"mysql",
+				"mysql_root_password"
+			],
+			[
+				"root",
+				"root_password"
+			],
+			[
+				"with",
+				"with_nested"
+			],
+			[
+				"vol",
+				"volumes"
+			],
+			[
+				"vo",
+				"volumes_list"
+			],
+			[
+				"sites",
+				"sites-enabled"
+			],
+			[
+				"read",
+				"read_password"
+			],
+			[
+				"generat",
+				"generated_password"
+			],
+			[
+				"adm",
+				"admin_user"
+			],
+			[
+				"site",
+				"site_title"
+			],
+			[
+				"db_p",
+				"db_password"
+			],
+			[
+				"vh",
+				"vhost_exists"
+			],
+			[
+				"sal",
+				"salts_file_exists"
+			],
+			[
+				"wp-con",
+				"wp-config"
+			],
+			[
+				"db_use",
+				"db_user_exists"
+			],
+			[
+				"sec",
+				"secrets_volume_exists"
+			],
+			[
+				"system",
+				"system_users"
+			],
+			[
+				"syste",
+				"system_users"
+			],
+			[
+				"cont",
+				"container_name"
+			],
+			[
+				"mess",
+				"messagesLoader"
+			],
+			[
+				"in",
+				"inboxBtn"
+			],
+			[
+				"dro",
+				"dropdown-header"
+			],
+			[
+				"show",
+				"show_picture"
+			],
+			[
+				"user",
+				"user_profile"
+			],
+			[
+				"log",
+				"logout_url"
+			],
+			[
+				"categ",
+				"category"
+			],
+			[
+				"cat",
+				"categories"
+			],
+			[
+				"cate",
+				"category"
+			],
+			[
+				"get_cate",
+				"get_categories"
+			],
+			[
+				"twit",
+				"twitteronly"
+			],
+			[
+				"twitter",
+				"twitter-only"
+			],
+			[
+				"drupal",
+				"drupalschemeuri"
+			],
+			[
+				"drus",
+				"drush_log"
+			],
+			[
+				"drush",
+				"drush_prompt"
+			],
+			[
+				"get",
+				"getcwd"
+			],
+			[
+				"field",
+				"field_lang"
+			],
+			[
+				"fie",
+				"field_info"
+			],
+			[
+				"ent",
+				"entity_wrapper"
+			],
+			[
+				"node",
+				"node_values"
+			],
+			[
+				"enti",
+				"entity_metadata_wrapper"
+			],
+			[
+				"exis",
+				"existing_node"
+			],
+			[
+				"voca",
+				"vocabularystr"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"node_",
+				"node_values"
+			],
+			[
+				"fiel",
+				"field_name"
+			],
+			[
+				"fi",
+				"field_name"
+			],
+			[
+				"is_nu",
+				"is_numeric"
+			],
+			[
+				"exp",
+				"explicit_values"
+			],
+			[
+				"array_",
+				"array_combine"
+			],
+			[
+				"int",
+				"intval"
+			],
+			[
+				"get_body",
+				"get_body_interactively"
+			],
+			[
+				"dr",
+				"drush_createcontent_create_term"
+			],
+			[
+				"safe",
+				"safe_summary"
+			],
+			[
+				"inter",
+				"interactive"
+			],
+			[
+				"dru",
+				"drush_log"
+			],
+			[
+				"auto",
+				"automate"
+			],
+			[
+				"au",
+				"automate"
+			],
+			[
+				"node_t",
+				"node_tags_array"
+			],
+			[
+				"voc",
+				"vocabulary_name"
+			],
+			[
+				"vocab",
+				"vocabulary"
+			],
+			[
+				"tar",
+				"target_id"
+			],
+			[
+				"revi",
+				"revision_timestamp"
+			],
+			[
+				"term",
+				"term_id"
+			],
+			[
+				"fields",
+				"fields_added"
+			],
+			[
+				"field_",
+				"field_name"
+			],
+			[
+				"fied",
+				"fields_added"
+			],
+			[
+				"machi",
+				"machine_name"
+			],
+			[
+				"nul",
+				"nullable_options"
+			],
+			[
+				"tag",
+				"tag_name"
+			],
+			[
+				"uni",
+				"unidecode"
+			],
+			[
+				"utf",
+				"utf-8"
+			],
+			[
+				"split",
+				"splitTerms"
+			],
+			[
+				"sou",
+				"sourceIDs"
+			],
+			[
+				"so",
+				"sourceIDs"
+			],
+			[
+				"conf",
+				"configData"
+			],
+			[
+				"write",
+				"writeJSON"
+			],
+			[
+				"art",
+				"article"
+			],
+			[
+				"cre",
+				"createTerm"
+			],
+			[
+				"sa",
+				"safe_value"
+			],
+			[
+				"nod",
+				"node_type"
+			],
+			[
+				"mach",
+				"machine_name"
+			],
+			[
+				"de",
+				"description"
+			],
+			[
+				"author",
+				"author_id"
+			],
+			[
+				"arti",
+				"article_data"
+			],
+			[
+				"auth",
+				"author_data"
+			],
+			[
+				"SEA",
+				"SEAuthors"
+			],
+			[
+				"cs",
+				"csAuthor"
+			],
+			[
+				"json",
+				"jsonFile"
+			],
+			[
+				"jso",
+				"jsonFile"
+			],
+			[
+				"delete",
+				"delete_all"
+			],
+			[
+				"commo",
+				"commonspace_db_dev"
+			],
+			[
+				"wri",
+				"writeJSON"
+			],
+			[
+				"aut",
+				"authorIDs"
+			],
+			[
+				"csA",
+				"csArticle"
+			],
+			[
+				"DB",
+				"DbMappingsSE"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "todo.txt",
+			"settings":
+			{
+				"buffer_size": 802,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/roles/vhost-renew/tasks/main.yml",
+			"settings":
+			{
+				"buffer_size": 1693,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/roles/common/defaults/main.yml",
+			"settings":
+			{
+				"buffer_size": 478,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/roles/vhost-renew/tasks/configure-local-ssl-files.yml",
+			"settings":
+			{
+				"buffer_size": 1269,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/plays/wordpress/create-wordpress-site.yml",
+			"settings":
+			{
+				"buffer_size": 2230,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ansible/roles/vhost-renew/templates/vhost.j2",
+			"settings":
+			{
+				"buffer_size": 3751,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "ren",
+		"selected_items":
+		[
+			[
+				"ren",
+				"File: Rename"
+			],
+			[
+				"instal ",
+				"Package Control: Install Package"
+			],
+			[
+				"rename",
+				"File: Rename"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/daniel/Workspace/nfg-web",
+		"/home/daniel/Workspace/nfg-web/ansible",
+		"/home/daniel/Workspace/nfg-web/ansible/plays",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/wordpress",
+		"/home/daniel/Workspace/nfg-web/ansible/roles",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/common",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/common/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/defaults",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/play-audit",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/play-audit/defaults",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/play-audit/tasks",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/defaults",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks",
+		"/home/daniel/Workspace/nfg-web/docker",
+		"/home/daniel/Workspace/nfg-web/docker/apps",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/templates",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard",
+		"/home/daniel/Workspace/nfg-web/docs"
+	],
+	"file_history":
+	[
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks/letsencrypt.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks/sign-letsencrypt-certificate.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks/generate-letsencrypt-certificate.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks/configure-local-ssl-files.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/pre-install.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/common/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/cronable.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/play-audit/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/play-audit/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/common/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/docs/A Note on System Identifiers.md",
+		"/home/daniel/Workspace/nfg-web/docker/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/templates/nginx.tmpl",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/proxy.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-archives/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/install-nginx-configs.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/templates/vhost.j2",
+		"/home/daniel/Workspace/nfg-web/ansible/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/ansible.cfg",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/letsencrypt-challenge/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-archives/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/noflag-hosts.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/letsencrypt-challenge/.well-known/index.html",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/archive-host.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-import/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/alba/import.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/alba/vars.yml.j2",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/alba/from-alba/tripod.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/sql/import-database.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/ansible/plays/sql/import-database.yml",
+		"/home/daniel/Workspace/site-monitor/site-monitor.sh",
+		"/home/daniel/Workspace/site-monitor/monitored-sites.txt",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/nginx-base/tasks/add-php-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/inventory.yml",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/README.md",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/chids.sh",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/create-users.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/templates/nginx.conf.j2",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/renew-vhost.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/create-static-site.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/renew-fpm-container.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/container-environments/templates/container-environment.j2",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/www.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/group-php-fpm/templates/php-pool.j2",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/nginx.conf",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/wp-config.php",
+		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress-Troubleshooting.md",
+		"/home/daniel/Workspace/nfg-web/docker/apps/wordpress/hardening.sh",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/hardening.sh",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/hardening.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/system/install-web.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/fpm@.service",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/mysql.service",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/system/install-archives.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/system/configure-web.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/domain-munging/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/site-export/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-install-new/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/todo.txt",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/wordpress/create-wordpress-site.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/group-php-fpm/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/container-environments/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-base/defaults/main.yml",
+		"/home/daniel/Workspace/nfg-web/docker/switchboard/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/README.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.1-Installation-And-Vagrant.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/mysql",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/vhost-config.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/config-inc/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/plays/wordpress/import-wordpress-site.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-archives/files/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/docker.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/docker.ym",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-archives/files/default_site.conf",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/default_site.conf",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/ssl-certs.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/general_settings.conf",
+		"/home/daniel/Workspace/nfg-web/docker/hardening.sh",
+		"/home/daniel/Workspace/nfg-web/docker/dockergen/nginx.tmpl",
+		"/home/daniel/Workspace/nfg-web/docs/Where-to-find-stuff.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.6-Services.md",
+		"/home/daniel/Downloads/A-Z GMO 2.0 - GMO 2.0 A-Z.json",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/config-inc/proxy.conf",
+		"/home/daniel/Workspace/nfg-web/docker/fpm/Dockerfile",
+		"/home/daniel/Workspace/nfg-web/docs/1.2-On-Demand-Containers.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-general/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/requirements.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/.gitignore",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/switchboard.service",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/fpm-waker@.service",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/upstream-cockpit.conf",
+		"/home/daniel/Workspace/nfg-web/docs/1.3-Group-FPM.md",
+		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress.md",
+		"/home/daniel/Workspace/nfg-web/docs/MySQL.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/renew-fpm.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/meta/main.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/view-on-demand-containers.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitport.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/waitsock.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin/create-fpm.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron/backup-sql.sh",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/systemd.services/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/on-demand/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/cron/pause-on-demand-containers.sh",
+		"/home/daniel/Workspace/synthbio_database/docker-compose.yml",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/tasks/vhost-config.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/conf.d/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/fpm/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/configure-web/files/nginx/sites-enabled/README.md",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/defaults/main.yml"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"|suc",
+			"|failed",
+			"letsencrypt",
+			"use_ssl",
+			"ssl_host",
+			"env_file",
+			"apk",
+			"_SERVER",
+			"HTTP_HOST",
+			"mysubdomain.noflag.org.uk",
+			"root",
+			"stdout v",
+			"vhost",
+			"NOTES ",
+			"WEBSITES/SOURCES/REFERENCES #1",
+			"vhost",
+			"Uz",
+			"'",
+			"/var/lib/w",
+			"/usr/src",
+			"/var/lib/wordpress",
+			"wp_path",
+			"mydomain.org",
+			"text/html",
+			"keepalive",
+			"text/html",
+			"vhost",
+			"doman",
+			"_log",
+			"_",
+			"memory_",
+			"dhparam",
+			"access",
+			"log",
+			"access_log",
+			"server_name _",
+			"error_log",
+			"use_php",
+			".createdb",
+			"{{ image }}",
+			"_db",
+			"env",
+			"db_",
+			"{{ image }}",
+			"limit",
+			"env",
+			"php3",
+			"check",
+			"90",
+			"'username'",
+			"stat",
+			"include:",
+			"become: yes",
+			"ssl_ce",
+			"web",
+			"nginc",
+			"docker_nginc_config_inc",
+			"_inc",
+			"vhost_co",
+			"sites_en",
+			"sites-enabled",
+			"vhost-config",
+			"nginx-config",
+			"nginx-config-inc",
+			"\"",
+			"-",
+			"create",
+			"createdb",
+			"{{ database }}",
+			"sqldb.noflag.org.uk",
+			"db_user",
+			"\\'",
+			"\\\"",
+			"\\'",
+			"/etc/",
+			"ENV",
+			"ABSPATH",
+			"PANTHEON_ENVIRONMENT",
+			"bin/wp",
+			"creates.",
+			"detatch",
+			"http",
+			"create wordpre",
+			"domain",
+			".rc",
+			"\"sqldb.noflag.org.uk\"",
+			"param",
+			"\\\\U0000",
+			"/etc/nginx",
+			".\n",
+			"with_items: system_users",
+			"create",
+			"pre",
+			"logout_ur",
+			"$label",
+			"iframe",
+			"United Republic of Tanzania",
+			"united rep",
+			"created",
+			"node",
+			"'",
+			"node/",
+			"bitly_v3_shorten",
+			"tid",
+			"@",
+			"$warning",
+			"public",
+			"echo",
+			"get_file_reference",
+			"explode",
+			"map",
+			"split(",
+			"fopen(",
+			"set_field_reference",
+			"summary",
+			"timesta",
+			"update",
+			"is_new",
+			"save(",
+			"get_new_entity",
+			"get_options",
+			"erro",
+			"set_field_reference",
+			"'type'",
+			"sources",
+			"field_source",
+			"actioned",
+			"get_simple_"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"lets_encrypt",
+			"ssl_host",
+			"_ENV",
+			"HOSTNAME",
+			"NOTES",
+			"REFERENCES",
+			"\"",
+			"{{ phproot }}",
+			"phproot",
+			"$argv",
+			"$1",
+			"{{ docker_image }}",
+			"mydomain_org_",
+			"mydomain_org",
+			"{{ docker_image }}",
+			"",
+			"nginx",
+			"docker_nginx_config_inc",
+			"sites_enabled",
+			"vhost_config",
+			"nginc_config",
+			"nginc_config_inc",
+			"",
+			"'",
+			"\\\"",
+			"ENVIRONMENT",
+			"creates-",
+			"detach",
+			"\"{{ database }} \"",
+			"with_items: \"{{ system_users }}\"",
+			"Tanzania",
+			"'created'",
+			"'node'",
+			"",
+			"https://www.twitter.com/",
+			"function",
+			"public ",
+			"public",
+			"$node_values",
+			"$",
+			"$this->node_values",
+			"user_prompt()",
+			"$node_values['",
+			"['",
+			"$values",
+			"drush_log",
+			"",
+			"os.getenv"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "todo.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 802,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "ansible/roles/vhost-renew/tasks/main.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1693,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1012,
+								1012
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "ansible/roles/common/defaults/main.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 478,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								449,
+								449
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "ansible/roles/vhost-renew/tasks/configure-local-ssl-files.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1269,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1117,
+								1117
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "ansible/plays/wordpress/create-wordpress-site.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2193,
+								2193
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "ansible/roles/vhost-renew/templates/vhost.j2",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3751,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1733,
+								1733
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 328.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "nfg-web.sublime-project",
+	"replace":
+	{
+		"height": 66.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 370.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

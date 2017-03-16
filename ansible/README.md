@@ -14,6 +14,15 @@ The actual logic for these tasks is contained within ansible roles, in the roles
 
 Most roles have extremely-configurable settings, with sane defaults. All options and their defaults are included in var_files, which you can edit before running the play.
 
+## AVAILABLE INVENTORIES
+
+`noflag-infrastructure.yml` contains a complete list of the organization's hosts, sorted by role.
+
+`archive-host.yml` contains only archive.noflag.org.uk, which is useful if you want to install/configure a webhost there, instead of on the main server.
+
+`../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory`is available if you are using vagrant
+
+
 ## INSTALLATION
 
 If you are running against a newly-provisioned server, you need to run plays/system/install-web.yml and plays/system/configure-web.yml. These in turn have some requirements in ansible-galaxy, which you must install first. Run the following commands:

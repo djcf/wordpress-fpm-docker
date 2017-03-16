@@ -19,24 +19,20 @@
     - fish
     - docker
     - systemd-docker
-    - letsencrypt
-  tags:
-    - apt
+    - python-pip
+    - etckeeper
 
-# - name: install certain python modules for docker
-#   pip:
-#     name: "{{ item.name }}"
-#     version: "{{ item.version }}"
-#     state: present
-#   with_items:
-#   - { name: docker, version: 2.0.0 }
-#   - { name: docker-py, version: 1.10.6 }
-
+- name: install certain python modules for docker
+  pip:
+    name: "{{ item }}"
+#    version: "{{ item.version }}"
+    state: present
+  with_items:
+  - docker-py
+  - docker-compose
 
 - name: run apt-get upgrade
   apt: upgrade=full
-  tags:
-    - update
 
 - name: Change user shell
   user:
@@ -45,8 +41,6 @@
   with_items: "{{ fish_users }}"
   when: fish_users is defined
   ignore_errors: true
-  tags:
-    - shell
 
 - name: Copy convenience scripts
   copy:
@@ -54,14 +48,12 @@
     dest: /usr/local/bin
   with_items:
     - docker-clean.sh
-  tags:
-    - bins
 
 - name: host should have latest version of docker-compose
-  shell: curl -L https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m) > /usr/bin/docker-compose && chmod +x /usr/bin/docker-compose
-  tags:
-    - bins
-    - aptfixes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.11.2/run.sh
+    dest: /usr/local/bin/docker-compose
+    mode: 0744
 
 # Possible instability with docker-daemon and GRPC
 # - name: Install docker-squash

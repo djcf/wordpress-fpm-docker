@@ -16,6 +16,7 @@
 - name: Set db_user
   set_fact:
     db_user: "{{ escaped_base }}_user"
+    system_user: "{{ escaped_base }}_user"
   when:
     - base_id is defined
     - db_user is not defined

@@ -9,3 +9,14 @@
 
 - name: The following facts are now available for use by ansible
   debug: var=docker_volumes
+
+- name: check if host is a vagrant
+  stat: path=/vagrant
+  changed_when: false
+  register: is_vagrant
+
+- name: set fact about host vagrancy
+  set_fact:
+    is_vagrant: true
+    install_path: /vagrant
+  when: is_vagrant.stat.exists

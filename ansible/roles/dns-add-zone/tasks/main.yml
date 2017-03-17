@@ -1,0 +1,24 @@
+---
+# tasks file for dns-add-zone
+# from https://github.com/Nosmoht/ansible-module-powerdns
+- powerdns_zone:
+    name: zone01.noflag.org.uk
+    nameservers: "{{ nameservers }}"
+    kind: master
+    state: present
+    pdns_host: "{{ pdns_host }}"
+    pdns_port: "{{ pdns_port }}"
+    pdns_api_key: "{{ pdns_key }}"
+
+- powerdns_record:
+    name: "{{ primary_subdomain }}"
+    zone: zone01.noflag.org.uk
+    state: "{{ state }}"
+    type: A
+    content: www.noflag.org.uk. # Or IP?
+    pdns_host: "{{ pdns_host }}"
+    pdns_port: "{{ pdns_port }}"
+    pdns_api_key: "{{ pdns_key }}"
+
+- include: add-additional-zones.yml
+  when: domain_host not in primary_domain

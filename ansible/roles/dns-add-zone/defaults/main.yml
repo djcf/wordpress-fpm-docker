@@ -1,0 +1,8 @@
+---
+# defaults file for dns-add-zone
+state: present
+nameservers:
+  - ns1.noflag.org.uk
+  - ns2.noflag.org.uk
+pdns_host: pdns.noflag.org.uk
+pdns_port: 80

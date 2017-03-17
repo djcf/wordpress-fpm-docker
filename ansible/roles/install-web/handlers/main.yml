@@ -5,3 +5,6 @@
 
 - name: reload sysctl
   command: sysctl -p /etc/sysctl.d/99-sysctl.conf
+
+- name: restart sshd
+  service: name=sshd state=restarted

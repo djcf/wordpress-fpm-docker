@@ -82,7 +82,13 @@ else:
         // content warnings.
         if (isset($_ENV['HTTP_USER_AGENT_HTTPS']) && $_ENV['HTTP_USER_AGENT_HTTPS'] == 'ON') {
             $scheme = 'https';
+            $_SERVER['HTTPS']='on';
         }
+        if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $scheme = 'https';
+            $_SERVER['HTTPS']='on';
+        }
+
         define('WP_HOME', $scheme . '://' . $_ENV['HTTP_HOST']);
         define('WP_SITEURL', $scheme . '://' . $_ENV['HTTP_HOST']);
     }
@@ -154,7 +160,7 @@ if (isset($_ENV['WP_DEBUG']) && ($_ENV['WP_DEBUG'] == "true")) {
 
 /* That's all, stop editing! Happy Pressing. */
 
-
+define( 'WP_AUTO_UPDATE_CORE', false );
 
 
 /** Absolute path to the WordPress directory. */

@@ -3,14 +3,20 @@
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: "** Primary subdomain **\nALL websites must have a primary subdomain associated with them and parked to the domain host.\nThis is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. It will be used as a unique key to identify this user's domain.\n\nFor example, for 'example.noflag.org.uk', enter 'example'. \n\nEnter a primary subdomain"
+    prompt: >
+      ** Primary subdomain ** ALL websites must have a primary subdomain associated with them and parked to the domain host.
+      This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
+      It will be used as a unique key to identify this user's domain.
+      For example, for 'example.noflag.org.uk', enter 'example'.
     private: no
-  - name: "primary_domain"
-    prompt: "\n\n** Primary domain **\nIf the website has a primary top-level domain associated with it you may enter it now, or press enter to use the primary subdomain. \n\nIf you do enter a value, a www. alias will automatically be added as a subdomain. \n\nEnter a primary domain for Wordpress (or press enter): "
-    private: no
-    default: ""
+  # - name: "primary_domain"
+  #   prompt: "\n\n** Primary domain **\nIf the website has a primary top-level domain associated with it you may enter it now, or press enter to use the primary subdomain. \n\nIf you do enter a value, a www. alias will automatically be added as a subdomain. \n\nEnter a primary domain for Wordpress (or press enter): "
+  #   private: no
+  #   default: ""
   - name: "domains"
-    prompt: "\n\n** Extra domains **\nIf the website has alias domains of any kind, enter them now, separated by a space"
+    prompt: >
+      ** Extra domains ** If the website has alias domains of any kind, enter them now, separated by a space.
+      will become the primary domain or just press enter to use the primary_subdomain"
     private: no
     default: ""
   - name: "site_title"
@@ -18,7 +24,9 @@
     private: no
     default: "My new website"
   - name: "admin_email"
-    prompt: "\n\nEnter the site administrator's email address for the purposes of WP account password recovery. The new admin account password will be sent to this address by Wordpress"
+    prompt: >
+      Enter the site administrator's email address for the purposes of WP account password recovery. 
+      The new admin account password will be sent to this address by Wordpress
     private: no
   vars:
     group_fpm: true
@@ -41,4 +49,4 @@
   - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
   - { role: apps-wordpress-install-new, tags: ['wordpress'] }
 #  - site-diagnostics
-  - play-audit
+#  - play-audit

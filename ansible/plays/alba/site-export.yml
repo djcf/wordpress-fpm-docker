@@ -44,7 +44,10 @@
     # login_password: "{{ alba_mysql_root_password }}"
 
 - name: Zip site content and database
-  shell: "cd {{ wp_path}}; zip -r website.zip database.sql.gz wp-content creates={{ wp_path }}/website.zip"
+  shell: zip -r website.zip database.sql.gz wp-content
+  args:
+    creates: "{{ wp_path }}/website.zip"
+    chdir: "{{ wp_path}}"
 
 - name: Download site content and database
   fetch:

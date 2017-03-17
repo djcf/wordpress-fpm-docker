@@ -16,14 +16,20 @@
   set_fact:
     domain_list: "{{ domains.split(' ') }}"
   when:
-    - domain_list
-    - domains != ""
+    - 'domains != ""'
 
 - name: Set primary_domain if empty
   set_fact:
     primary_domain: "{{ secondary_domain }}"
   when:
-    - primary_domain == ""
+    - 'primary_domain == ""'
+
+- name: Set primary_domain if not empty
+  set_fact:
+    primary_domain: "{{ domain_list | first }}"
+  when:
+    - 'primary_domain != ""'
+    - domain_list
 
 ## primary_domain now validated
 
@@ -31,18 +37,19 @@
   set_fact:
     domain_list: "{{ domain_list }} + [ 'www.{{ primary_domain }}' ]"
   when:
-    - 'domain_host not in primary_domain'
+    - '"noflag.org.uk" not in primary_domain'
     - '"www." not in primary_domain'
 
 - name: Add primary_domain to domain_list
   set_fact:
     domain_list: "{{ domain_list }} + [ '{{ primary_domain }}' ]"
+  when: primary_domain not in domain_list
 
 - name: Add secondary domain to domain_list
   set_fact:
     domain_list: "{{ domain_list }} + [ '{{ secondary_domain }}' ]"
-  when:
-    - 'domain_host not in primary_domain'
+  when: secondary_domain not in domain_list
+#    - 'domain_host not in primary_domain'
 
 - name: The following domains will be created for this site
   debug:

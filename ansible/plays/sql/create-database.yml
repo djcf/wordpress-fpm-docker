@@ -29,4 +29,3 @@
       - db_password == "random"
   roles:
     - sql-create-database
-    - { role: container-environments, when: env_path != "" }

@@ -12,7 +12,7 @@
 
 - name: Set path to database file (not user upload and no import_file supplied)
   set_fact:
-    import_file: "/var/www/{{ primary_subdomain }}/database.sql.gz"
+    import_file: "/var/www/{{ primary_subdomain }}/public_html/database.sql.gz"
   when: 
     - primary_subdomain is defined
     - import_file is not defined

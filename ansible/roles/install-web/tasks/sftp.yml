@@ -7,11 +7,13 @@
     path: /etc/ssh/sshd_config
     line: Subsystem sftp /usr/lib/openssh/sftp-server
     state: absent
+    validate: '/usr/sbin/sshd -T -f %s'
   notify: restart ssh
 
 - name: Use internal SFTP server
   blockinfile:
     path: /etc/ssh/sshd_config
+    validate: '/usr/sbin/sshd -T -f %s'
     block: |
       Subsystem sftp internal-sftp
       Match Group sftp-only

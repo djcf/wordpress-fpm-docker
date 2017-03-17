@@ -3,21 +3,31 @@
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: "Enter a primary subdomain to be used as a unique key for the site on the server. For example for a website named 'test.noflag.org.uk', enter 'test'"
+    prompt: >
+      Enter a primary subdomain to be used as a unique key for the site on the server. 
+      For example for a website named 'test.noflag.org.uk', enter 'test'
     private: no
   - name: "domains"
-    prompt: "If applicable, enter a list of domain aliases separated by a space. A www. SUBDOMAIN WILL NOT BE CREATED UNLESS SPECIFIED. For example, 'example.org www.example.org'"
+    prompt: >
+      If applicable, enter a list of domain aliases separated by a space. 
+      A www. will be automatically added. 
+      For example, 'example.org www.example.org'
     default: ""
     private: no
   - name: "site_dump_file"
-    prompt: "Enter the file name containing a zipped archive of the site. It should be structured such that the sql dump is named database.sql.gz, and is gzipped in the root of the archive which also contains the wp-content directory"
+    prompt: >
+      Enter the file name containing a zipped archive of the site. 
+      It should be structured such that the sql dump is named database.sql.gz, 
+      and is gzipped in the root of the archive which also contains the wp-content directory
+      It MUST be in the same directory as the playbook you are executing, i.e. ansible/plays/wordpress
     private: no
   become: true
+  vars:
+    group_fpm: false
   roles:
   - domain-munging
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
   - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
-  - container-environments
   - vhost-renew
   - apps-wordpress-create
   - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }

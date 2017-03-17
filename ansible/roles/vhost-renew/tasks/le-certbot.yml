@@ -31,8 +31,6 @@
   command: "letsencrypt certonly --webroot --webroot-path /var/www/letsencrypt-challenge/ --email admin@lists.noflag.org.uk --agree-tos -d {{ letsencrypt_domain_list }}"
   args:
     creates: "/etc/letsencrypt/live/{{ primary_domain }}/fullchain.pem"
-  when:
-    - letsencrypt_all_domains is defined
 
 - name: Turn on SSL again
   set_fact:

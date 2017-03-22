@@ -1,0 +1,26 @@
+---
+- name: Make domain play easier to read
+  set_fact:
+    zone: "{{ item.0 }}"
+    domain: "{{ item.1 }}"
+
+- name: "Add zone {{ zone }}"
+  powerdns_zone:
+    name: "{{ zone }}"
+    nameservers: "{{ nameservers }}"
+    kind: master
+    state: present
+    pdns_host: "{{ pdns_host }}"
+    pdns_port: "{{ pdns_port }}"
+    pdns_api_key: "{{ pdns_key }}"
+
+- name: "Add domain record {{ domain }}"
+  powerdns_record:
+    name: "{{ domain }}"
+    zone: "{{ zone }}"
+    state: "{{ state }}"
+    type: A
+    content: "{{ web_server }}" # Or IP?
+    pdns_host: "{{ pdns_host }}"
+    pdns_port: "{{ pdns_port }}"
+    pdns_api_key: "{{ pdns_key }}"

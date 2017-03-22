@@ -23,7 +23,7 @@ See the `docs` directory for system architecture and trouble-shooting.
 
 #### How do I use it?
 
-You perform routine tasks with Ansible. See the `ansible` directory for playbooks and accompanying documentation. In general, you will find that ** every directory has its own README.md file, describing *exactly* what functions files in that directory perform and how to modify them.**
+You perform routine tasks with Ansible. See the `ansible` directory for playbooks and accompanying documentation. In general, you will find that ** every directory has its own README.md file, describing *exactly* what functions files in that directory perform and how to modify them.** Don't forget to follow the installation instructions for the ansible roles.
 
 If you want to run it locally using Vagrant, please read `docs/installation and vagrant` next.
 

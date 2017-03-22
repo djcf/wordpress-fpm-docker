@@ -31,6 +31,8 @@ If you are running against a newly-provisioned server, you need to run plays/sys
 	ansible-playbook -i $inventory plays/system/install-web.yml
 	ansible-playbook -i $inventory plays/system/configure-web.yml
 
+Ansible galaxy does /not/ install the required ansible module which is used to talk to the powerdns server. That's a git submodule in ./lib, instead. Make sure to pull the submodule if you didn't already -- just run `git submodule update --recursive`
+
 ## USAGE EXAMPLES
 
 You must use these plays with a valid inventory. I usually set the inventory to the $inventory variable, for example "set inventory (pwd)/hosts/local" will run against the local host, or ../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory to run against a vagrant virtual machine.

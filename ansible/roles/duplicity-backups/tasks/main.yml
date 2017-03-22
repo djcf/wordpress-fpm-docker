@@ -1,17 +1,18 @@
 ---
 - name: A .boto with gs credentials must exist in /root/.boto
-  stat: src=/root/.boto
+  stat: path=/root/.boto
   register: boto_creds_exist
-  failed_when: not boto_creds_exist.stat.exists
+  failed_when: boto_creds_exist.stat.exists == False
 
 - name: Install imporant utilities
   apt:
     name: "{{ item }}"
     state: present
   with_items:
-    - duplicity
-    - gnupg
+    - gnupg2
     - libgfshare-bin
+    - python-boto
+#    - duplicity
 
 - name: Check for an existing gpg key
   command: "gpg --list-secret-keys {{ gpg_email }}"
@@ -20,36 +21,33 @@
   ignore_errors: true
   become: true
 
+- name: Make key template file
+  template:
+    src: keyfile.j2
+    dest: /root/.gnupg/settings
+
 - name: Generate key
   shell: |
     rm -rf /root/.gnupg/key-parts
     mkdir -p /root/.gnupg/key-parts /var/backups/duplicity
     export GNUPGHOME=/root/.gnupg
-    echo Generating a basic OpenPGP key
-    cat >/root/.gnupg/settings <<EOF
-      Key-Type: DSA
-      Key-Length: 4096
-      Name-Real: {{ gpg_name }}
-      Name-Comment: Used primarily for backup encryption on {{ inventory_hostname }}
-      Name-Email: {{ gpg_email }}
-      Expire-Date: 0
-      %commit
-      %echo done
-    EOF
-    gpg --batch --generate-key settings
+    gpg --homedir /root/.gnupg --batch --gen-key /root/.gnupg/settings
   when: key_exists|failed
 
 - name: Export key for splitting
   shell: |
-    gpg --export-secret-keys --armour {{ gpg_email }} > /root/.gnupg/key-parts/{{ inventory_hostname }}.asc
-    gpg --export-secret-keys --armour {{ gpg_email }} > /root/.gnupg/{{ inventory_hostname }}.asc"
-  creates: "/root/.gnupg/key-parts/{{ inventory_hostname }}.asc"
+    export GNUPGHOME=/root/.gnupg
+    gpg --homedir /root/.gnupg --export-secret-keys --armour {{ gpg_email }} > /root/.gnupg/key-parts/{{ inventory_hostname }}.asc
+    gpg --homedir /root/.gnupg --export-secret-keys --armour {{ gpg_email }} > /root/.gnupg/{{ inventory_hostname }}.asc
+  args: "creates=/root/.gnupg/key-parts/{{ inventory_hostname }}.asc"
 
 - name: Split key for backup
   shell: |
+    rm -rf /root/.gnupg/key-parts
     gfsplit -n {{ threshold }} -m {{ sharecount }} /root/.gnupg/key-parts/{{ inventory_hostname }}.asc
     rm -f /root/.gnupg/key-parts/{{ inventory_hostname }}.asc
-  args: chdir=/root/.gnupg/key-parts
+  args:
+    chdir: /root/.gnupg/key-parts
   when: key_exists|failed
 
 - name: Fetch key parts from host
@@ -57,24 +55,25 @@
 
 - name: Schedule a weekly cron-task for backups
   cron:
-    name: daily duplicity backup of this host
+    name: weekly duplicity backup of this host
     minute: 0
     hour: 4
-    dow: 0
-    job: "$(which duplicity) --encrypt-key {{ gpg_email }} {{ daily_options }} {{ paths }} gs://{{ bucket }}/{{ inventory_hostname }}"
+    dow: 1
+    job: "export PASSPHRASE=''; $(which duplicity) --encrypt-key {{ gpg_email }} --include {{ paths | join(' --include ') }} gs://{{ bucket }}/{{ inventory_hostname }} {{ daily_options }}"
 
 - name: Schedule a monthly cron-task for backups
   cron:
-    name: weekly duplicity backup of this host
+    name: monthly duplicity backup of this host
     minute: 0
     hour: 0
-    dom: 0
-    job: "$(which duplicity) --encrypt-key {{ gpg_email }} {{ weekly_options }} {{ paths }} gs://{{ bucket }}/{{ inventory_hostname }}"
+    day: 1
+    job: "export PASSPHRASE=''; $(which duplicity) --encrypt-key {{ gpg_email }} --include {{ paths | join(' --include ') }} gs://{{ bucket }}/{{ inventory_hostname }} {{ weekly_options }}"
 
-- name: Schedule a monthly cron-task for removing full backups
+- name: Schedule a yearly cron-task for removing full backups
   cron:
-    name: weekly duplicity removal of old backup
+    name: yearly duplicity removal of old backups
     minute: 0
     hour: 0
-    dom: 3
-    job: "$(which duplicity) {{ removal_options }} gs://{{ bucket }}/{{ inventory_hostname }}"
+    day: 2
+    month: 1
+    job: "export PASSPHRASE=''; $(which duplicity) gs://{{ bucket }}/{{ inventory_hostname }} {{ removal_options }}"

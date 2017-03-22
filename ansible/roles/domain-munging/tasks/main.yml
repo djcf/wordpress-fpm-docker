@@ -31,11 +31,24 @@
     - 'primary_domain != ""'
     - domain_list
 
+- name: Get domain zones when zones were entered
+  set_fact:
+    zone_list: "{{ zones.split(' ') }}"
+  when:
+    - 'zones != ""'
+
+- name: Make zone list like domain list when no zones were entered
+  set_fact:
+    zone_list: "{{ domain_list }}"
+  when:
+    - 'zones == ""'
+
 ## primary_domain now validated
 
 - name: Add a www. subdomain alias when using a top-level domain
   set_fact:
     domain_list: "{{ domain_list }} + [ 'www.{{ primary_domain }}' ]"
+    zone_list: "{{ zone_list }} + [ '{{ primary_domain }}' ]"
   when:
     - '"noflag.org.uk" not in primary_domain'
     - '"www." not in primary_domain'
@@ -43,19 +56,21 @@
 - name: Add primary_domain to domain_list
   set_fact:
     domain_list: "{{ domain_list }} + [ '{{ primary_domain }}' ]"
+    zone_list: "{{ zone_list }} + [ '{{ primary_domain }}' ]"
   when: primary_domain not in domain_list
 
 - name: Add secondary domain to domain_list
   set_fact:
     domain_list: "{{ domain_list }} + [ '{{ secondary_domain }}' ]"
+    zone_list: "{{ zone_list }} + [ '{{ domain_host }}'] "
   when: secondary_domain not in domain_list
 #    - 'domain_host not in primary_domain'
 
-- name: The following domains will be created for this site
+- name: The following domains and/or zones will be created for this site
   debug:
     var: "{{ item }}"
   with_items:
     - primary_domain
     - primary_subdomain
     - domain_list
-
+    - zone_list

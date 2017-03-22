@@ -3,3 +3,4 @@
 - src: galexrt.cockpit
 #- src: tersmitten.fail2ban
 - src: infOpen.fail2ban
+- src: tersmitten.duplicity

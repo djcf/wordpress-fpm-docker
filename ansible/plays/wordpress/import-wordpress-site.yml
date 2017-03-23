@@ -3,30 +3,31 @@
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: >
+    prompt: |
       Enter a primary subdomain to be used as a unique key for the site on the server. 
       For example for a website named 'test.noflag.org.uk', enter 'test'
     private: no
   - name: "domains"
-    prompt: >
+    prompt: |
       If applicable, enter a list of domain aliases separated by a space. 
       A www. will be automatically added. 
       For example, 'example.org www.example.org'
     default: ""
     private: no
   - name: "site_dump_file"
-    prompt: >
+    prompt: |
       Enter the file name containing a zipped archive of the site. 
       It should be structured such that the sql dump is named database.sql.gz, 
       and is gzipped in the root of the archive which also contains the wp-content directory
       It MUST be in the same directory as the playbook you are executing, i.e. ansible/plays/wordpress
     private: no
   - name: "zones"
-    prompt: >
+    prompt: |
       ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
       A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
       There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
-      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
+      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones.
+    private: no
   become: true
   vars:
     group_fpm: false

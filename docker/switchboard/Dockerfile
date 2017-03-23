@@ -13,4 +13,4 @@ RUN deluser `getent passwd 33 | cut -d: -f1` && addgroup -g 33 -S www-data && \
 
 WORKDIR /etc/nginx
 
-HEALTHCHECK CMD curl --fail http://localhost || exit 1
+HEALTHCHECK CMD curl --fail http://127.0.0.1 || exit 1

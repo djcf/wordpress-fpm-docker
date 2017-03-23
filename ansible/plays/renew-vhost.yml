@@ -3,28 +3,36 @@
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: >
+    prompt: |
       *** Primary subdomain **
       ALL websites must have a primary subdomain associated with them and parked to the domain host.
       This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
       It will be used as a unique key to identify this user's domain.
       For example, for 'example.noflag.org.uk', enter 'example'.
-      Enter a primary subdomain"
+      Enter a primary subdomain
     private: no
   # - name: "primary_domain"
   #   prompt: "\n\n** Primary domain **\nIf the website has a primary top-level domain associated with it you may enter it now, or press enter to use the primary subdomain. \n\nIf you do enter a value, a www. alias will automatically be added as a subdomain. \n\nEnter a primary domain for Wordpress (or press enter): "
   #   private: no
   #   default: ""
   - name: "domains"
-    prompt: >
+    prompt: |
       ** Extra domains **
       If the website has alias domains of any kind, enter them now, separated by a space. 
-      The first top-level domain entered will become the primary domain if relevent and a www. subdomain automatically added"
+      The first top-level domain entered will become the primary domain if relevent and a www. subdomain automatically added
     private: no
     default: ""
+  - name: "zones"
+    prompt: |
+      ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
+      A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
+      There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
+      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
+    private: no
   become: true
   vars:
     group_fpm: false
+    ssl_host: true
   roles:
   - domain-munging
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }

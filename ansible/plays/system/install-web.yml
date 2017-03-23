@@ -2,5 +2,5 @@
 - hosts: all
   become: true
   roles:
-    - marvinpinto.docker
+#    - marvinpinto.docker
     - configure-web

@@ -3,7 +3,7 @@
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: >
+    prompt: |
       ** Primary subdomain ** ALL websites must have a primary subdomain associated with them and parked to the domain host.
       This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
       It will be used as a unique key to identify this user's domain.
@@ -14,7 +14,7 @@
   #   private: no
   #   default: ""
   - name: "domains"
-    prompt: >
+    prompt: |
       ** Extra domains ** If the website has alias domains of any kind, enter them now, separated by a space.
       will become the primary domain or just press enter to use the primary_subdomain"
     private: no
@@ -24,16 +24,17 @@
     private: no
     default: "My new website"
   - name: "admin_email"
-    prompt: >
+    prompt: |
       Enter the site administrator's email address for the purposes of WP account password recovery. 
       The new admin account password will be sent to this address by Wordpress
     private: no
   - name: "zones"
-    prompt: >
+    prompt: |
       ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
       A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
       There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
       If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
+    private: no
   vars:
     group_fpm: false
     ssl_host: true

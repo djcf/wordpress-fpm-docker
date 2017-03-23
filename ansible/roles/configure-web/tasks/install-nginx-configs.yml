@@ -27,7 +27,7 @@
   notify: reload nginx
 
 - name: Copy health-check to default web dir
-  shell: echo 'Switchboard OK' > /var/www/html/index.html creates=/var/www/html/index.html
+  shell: echo 'Welcome to nginx on {{ inventory_hostname }}. No vhost or default vhost matched.' > /var/www/html/index.html creates=/var/www/html/index.html
 
 - name: Copy README for htpasswd
   copy:

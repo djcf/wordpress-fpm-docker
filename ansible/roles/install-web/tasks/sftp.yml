@@ -4,15 +4,16 @@
 
 - name: Remove default SFTP server
   lineinfile:
-    path: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config
     line: Subsystem sftp /usr/lib/openssh/sftp-server
     state: absent
     validate: '/usr/sbin/sshd -T -f %s'
-  notify: restart ssh
+    backup: true
+  notify: restart sshd
 
 - name: Use internal SFTP server
   blockinfile:
-    path: /etc/ssh/sshd_config
+    dest: /etc/ssh/sshd_config
     validate: '/usr/sbin/sshd -T -f %s'
     block: |
       Subsystem sftp internal-sftp
@@ -23,4 +24,4 @@
         ForceCommand internal-sftp
         AuthorizedKeysFile /var/www/%u/.ssh/authorized_keys
         PasswordAuthentication yes
-  notify: restart ssh
+  notify: restart sshd

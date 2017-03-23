@@ -12,6 +12,14 @@
     prompt: "By default, this play will *not* remove web content from the host. Would you like to do that now? (type anything other than 'no')"
     default: "no"
     private: no
+  - name: "zones"
+    prompt: |
+      ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
+      A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
+      There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
+      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
+    private: no
+
   roles:
     - domain-munging
     - site-archive

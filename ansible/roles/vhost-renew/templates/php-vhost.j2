@@ -6,6 +6,7 @@
 
     # Pass all .php files onto a php-fpm/php-fcgi server.
     location ~ \.php$ {
+        set $no_cache 0;
         expires 5m;
 
         {% if phproot is defined %}
@@ -35,8 +36,8 @@
 
     }
 
-    {% if group_fpm is defined and group_fpm %}
-    location /wp-content/ {
-        root {{ user_wp_content_dir }};
-    }
+    {% if user_wp_content_dir is defined %}
+      location ^~ /wp-content {
+        alias {{ user_wp_content_dir }};
+      }
     {% endif %}

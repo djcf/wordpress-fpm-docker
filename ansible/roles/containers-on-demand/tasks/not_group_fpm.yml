@@ -11,6 +11,12 @@
     - reload nginx
     - reload fpm
 
+- name: Quick fix for user_wp_content_dir when its undefined
+  set_fact:
+    user_wp_content_dir: /var/www/{{ primary_subdomain }}/public_html/wp-content
+  when:
+    - user_wp_content_dir is not defined
+
 - name: Set facts relating to on-demand containers
   set_fact:
     vhost_prefix: on-demand
@@ -19,10 +25,10 @@
     parent_container: "{{ primary_subdomain }}.fpm"
     fpm_user: www-data
     webroot: /usr/src/wordpress
-    server_block_extra: >
-      location ^~ /wp-content {
-        alias {{ user_wp_content_dir }};
-      }
+    # server_block_extra: |
+    #   location ^~ /wp-content {
+    #     alias {{ user_wp_content_dir }};
+    #   }
 
   tags:
     - vhost

@@ -55,6 +55,6 @@
       A vhost for {{ primary_subdomain }} 
       ({{ ssl_host|ternary('http','https') }}://{{ primary_domain }}) 
       {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at 
-      {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+      {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf
   tags:
     - vhost

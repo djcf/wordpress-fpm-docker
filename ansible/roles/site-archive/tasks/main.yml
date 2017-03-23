@@ -1,15 +1,15 @@
 ---
 - name: Crawl remote site
   command: >
-    mkdir -p /var/www/{{ primary_subdomain }}/ && \
-    wget --mirror \
-      --convert-links \
-      --adjust-extension \
-      --page-requisites \
-      --no-parent \
-      --directory-prefix=/var/www/{{ primary_subdomain }}/ \
-      --no-check-certificate \
-      --level=5 \
+    mkdir -p /var/www/{{ primary_subdomain }}/ &&
+    wget --mirror
+      --convert-links
+      --adjust-extension
+      --page-requisites
+      --no-parent
+      --directory-prefix=/var/www/{{ primary_subdomain }}/
+      --no-check-certificate
+      --level=5
     http://{{ primary_domain }}
   creates: "/var/www/{{ primary_subdomain }}/{{ primary_domain }}"
   delegate_to: "{{ archive_host }}"

@@ -35,10 +35,10 @@
       There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
       If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
   vars:
-    group_fpm: true
-    ssl_host: false
-    lets_encrypt: false
-    force_letsencrypt: false
+    group_fpm: false
+    ssl_host: true
+    lets_encrypt: true
+#    force_letsencrypt: false
   become: true
   pre_tasks:
     - debug:

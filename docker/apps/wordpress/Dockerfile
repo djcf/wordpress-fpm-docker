@@ -18,7 +18,9 @@ RUN apk add --update ssmtp mariadb-client fcgi && \
 	rm -rf /usr/local/etc/php-fpm.d && mkdir -p /usr/local/etc/php-fpm.d && \
 	deluser www-data && deluser `getent passwd 33 | cut -d: -f1`  && addgroup -g 33 -S www-data && \
 	adduser -D -u 33 -s /bin/false -h /usr/src/wordpress -G www-data www-data && \ 
-	chmod +x /usr/local/bin/minify.sh && /usr/local/bin/minify.sh
+	chmod +x /usr/local/bin/minify.sh && /usr/local/bin/minify.sh && \
+	chown -R www-data:www-data /usr/src/wordpress && chmod -R 0444 /usr/src/wordpress && \
+	find /usr/src/wordpress -type d -exec chmod 755 {} +
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 

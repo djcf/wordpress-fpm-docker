@@ -6,7 +6,7 @@
 
 - name: ensure wp-content directory has correct owner
   file:
-    path: "{{ webroot }}"
+    path: "{{ user_site_dir }}"
     mode: 0750
     owner: www-data
     group: www-data

@@ -43,6 +43,7 @@
     owner: "{{ fpm_user }}"
     group: www-data
     recurse: true
+    state: directory
 
 - name: Remove fpm container
   docker_container:
@@ -58,7 +59,7 @@
 # This fixes two issues in two completely unrelated pieces of software
 ## FOR FUCKS SAKE!!! 
 - name: Re-create docker container (workaround)
-  shell: /usr/local/bin/docker-compose up -d
+  command: "docker-compose -f {{ install_path }}/docker/docker-compose.yml up -d"
   args: "chdir={{ install_path }}/docker" 
 # Don't use this: unnessesary code duplication
 # - name: Re-create fpm container

@@ -21,9 +21,16 @@
       and is gzipped in the root of the archive which also contains the wp-content directory
       It MUST be in the same directory as the playbook you are executing, i.e. ansible/plays/wordpress
     private: no
+  - name: "zones"
+    prompt: >
+      ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
+      A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
+      There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
+      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
   become: true
   vars:
     group_fpm: false
+    ssl_host: false
   roles:
   - domain-munging
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }

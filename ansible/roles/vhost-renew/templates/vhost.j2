@@ -35,7 +35,7 @@ server {
             return 301 https://$host$request_uri;
         }
     {% else %}
-        root /var/www/{{ primary_subdomain }}/public_html;
+        root {{ webroot }};
         {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
         {% else %}
@@ -57,6 +57,10 @@ server {
         include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
     {% endif %}
 
+
+    {% if server_block_extra is defined %}
+    {{ server_block_extra }}
+    {% endif %}
 }
 
 {% if ssl_host %}
@@ -88,7 +92,7 @@ server {
 
         include inc/ssl.conf;
 
-        root /var/www/{{ primary_subdomain }}/public_html;
+        root {{ webroot }};
     {% if use_php is defined and use_php %}
         {% include "php-vhost.j2" %}
     {% else %}

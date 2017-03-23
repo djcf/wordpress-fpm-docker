@@ -1,0 +1,53 @@
+- name: Set base id for container-environment
+  set_fact:
+    base_id: "{{ primary_subdomain }}"
+  when:
+    - base_id is not defined
+    - primary_subdomain is defined
+
+- name: Set escaped base from base id
+  set_fact:
+    escaped_base: "{{ base_id | regex_replace('\\.', '_') }}"
+  when:
+    - base_id is defined
+
+- name: Set db_user
+  set_fact:
+    db_user: "{{ escaped_base }}_user"
+#    system_user: "{{ escaped_base }}_user"
+  when:
+    - base_id is defined
+    - db_user is not defined
+
+- name: Set db_name
+  set_fact:
+    db_name: "{{ escaped_base }}_sql"
+  when:
+    - base_id is defined
+    - db_name is not defined
+
+# export GENERATED_PASSWORD=$(shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20)
+- name: Generate random database password if ENV does not exist
+  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
+  register: generated_password
+  when:
+    - mysql_pwd is undefined
+
+- name: Store generated password
+  set_fact:
+    mysql_pwd: "{{ generated_password.stdout }}"
+  when:
+    - mysql_pwd is undefined
+
+# Shell: scp env $host:/var/www/$domain/.env
+- name: Copy env vars for container to host
+  template:
+    src: container-environment.j2
+    dest: "{{ env_path }}"
+    owner: root
+    group: root
+    mode: 0660
+  # Is it more important to respect the existing file, or rewrite it from the default template?
+  # Remove when: directive to always rewrite existing file when template changes
+  # If so, May cause bug with generated_password ?
+  # If template changes, remove .env file manually

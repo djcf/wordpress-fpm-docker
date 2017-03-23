@@ -1,37 +1,11 @@
 ---
 # ???
-- name: Set base id for container-environment
-  set_fact:
-    base_id: "{{ primary_subdomain }}"
-  when:
-    - base_id is not defined
-    - primary_subdomain is defined
-
-- name: Set escaped base from base id
-  set_fact:
-    escaped_base: "{{ base_id | regex_replace('\\.', '_') }}"
-  when:
-    - base_id is defined
-
-- name: Set db_user
-  set_fact:
-    db_user: "{{ escaped_base }}_user"
-    system_user: "{{ escaped_base }}_user"
-  when:
-    - base_id is defined
-    - db_user is not defined
-
-- name: Set db_name
-  set_fact:
-    db_name: "{{ escaped_base }}_sql"
-  when:
-    - base_id is defined
-    - db_name is not defined
+- include: set_facts.yml
 
 - name: project directory should exist
-  file: "path=/var/www/{{ primary_subdomain }} state=directory recurse=true"
+  file: "path={{ user_site_dir }} state=directory recurse=true"
   when:
-    - primary_subdomain is defined
+    - user_site_dir is defined
 
 # Shell: if [ -e /var/www/$domain/.env ]
 - name: ENV file should exist
@@ -40,47 +14,8 @@
   failed_when: not environment_exists.stat.exists
   ignore_errors: yes
 
-# export GENERATED_PASSWORD=$(shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20)
-- name: Generate random database password if ENV does not exist
-  local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
-  register: generated_password
-  when:
-    - environment_exists|failed
-    - db_password is undefined
-
-- name: Store generated password if ENV does not exist
-  set_fact:
-    db_password: "{{ generated_password.stdout }}"
-  when:
-    - environment_exists|failed
-    - db_password is undefined
-
-- name: Read password from environment if it exists
-  shell: "source {{ env_path }}; echo $DB_PASSWORD"
-  register: read_password
-  when:
-    - environment_exists|succeeded
-    - db_password is undefined
-  args:
-    executable: /bin/bash
-
-- name: Store read password
-  set_fact:
-    db_password: "{{ read_password.stdout }}"
-  when:
-    - environment_exists|succeeded
-    - db_password is undefined
-
-# Shell: scp env $host:/var/www/$domain/.env
-- name: Copy env vars for container to host
-  template:
-    src: container-environment.j2
-    dest: "{{ env_path }}"
-    owner: root
-    group: root
-    mode: 0660
+- include: environment_not_exists.yml
   when: environment_exists|failed
-  # Is it more important to respect the existing file, or rewrite it from the default template?
-  # Remove when: directive to always rewrite existing file when template changes
-  # If so, May cause bug with generated_password ?
-  # If template changes, remove .env file manually
+
+# - include: environment_exists.yml
+#   when: environment_exists|succeeded

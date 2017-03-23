@@ -1,12 +1,17 @@
 ---
 # tasks file for base-sql
-- include: tasks-find-mysql-root-password.yml
+#- include: tasks-find-mysql-root-password.yml
+
+- name: Set user_site_dir
+  set_fact:
+    user_site_dir: /var/www/{{ primary_subdomain }}
+  when: primary_subdomain is defined
 
 - name: guess .env path (when primary_subdomain is defined and env_path is undefined)
   set_fact:
-    env_path: "/var/www/{{ primary_subdomain }}/.env"
+    env_path: "{{ user_site_dir }}/.env"
   when:
-    - primary_subdomain is defined
+    - user_site_dir is defined
     - env_path is undefined
 
 - name: try to find an .env file to load database details from
@@ -18,3 +23,8 @@
   when:
     - env_path is defined
     - env_file_exists.stat.exists
+
+- name: Decide whether to use the SQL root user or not
+  set_fact:
+    env_path: "{{ mysql_root_password_file }}"
+  when: (env_path is not defined) or (env_path == "") or (env_file_exists.stat.exists == False)

@@ -8,10 +8,9 @@
     networks:
       - name: docker_sqlnet
         links:
-          - "{{ db_host }}:mysql"
-    command: "mysql -f -h\"mysql\" -P\"{{ db_port }}\" -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; DROP USER '{{ db_user }}'@'%';\""
-    env:
-      MYSQL_PWD: "{{mysql_root_password}}"
+          - "{{ sqldb }}:{{ mysql_host }}"
+    command: "mysql -f -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; DROP USER '{{ db_user }}'@'%';\""
+    env_file: "{{ mysql_root_password_file }}"
     cleanup: yes
     detach: no
 

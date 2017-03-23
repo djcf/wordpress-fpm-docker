@@ -8,7 +8,7 @@
     - name: "db_name"
       prompt: "Enter a database name"
       private: no
-    - name: "db_password"
+    - name: "mysql_pwd"
       prompt: "Enter a database password (or type 'random')"
       default: "random"
       private: no
@@ -23,13 +23,13 @@
     local_action: shell tr -d -c "a-zA-Z0-9" < /dev/urandom | head -c 20
     register: generated_password
     when:
-      - db_password == "random"
+      - mysql_pwd == "random"
 
   - name: Store generated password
     set_fact:
-      db_password: "{{ generated_password.stdout }}"
+      mysql_pwd: "{{ generated_password.stdout }}"
     when:
-      - db_password == "random"
+      - mysql_pwd == "random"
   roles:
     - sql-create-database
     - { role: container-environments, when: env_path != "" }

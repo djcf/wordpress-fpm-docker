@@ -15,22 +15,22 @@
 # If you want to know which options a program supports, run the program
 # with the "--help" option.
 
-# The following options will be passed to all MariaDB clients
+# The following options will be passed to all MySQL clients
 [client]
 {% if mysql_root_password is defined %}
 password	= {{ mysql_root_password }}
 {% else %}
 #password   = password
 {% endif %}
-port		= {{ db_port }}
-socket		= {{ db_socket }}
+port		= {{ mysql_tcp_port }}
+socket		= {{ mysql_unix_port }}
 
 # Here follows entries for some specific programs
 
-# The MariaDB server
+# The MySQL server
 [mysqld]
-port		= {{ db_port }}
-socket		= {{ db_socket }}
+port		= {{ mysql_tcp_port }}
+socket		= {{ mysql_unix_port }}
 skip-external-locking
 key_buffer_size = 256M
 max_allowed_packet = 1M

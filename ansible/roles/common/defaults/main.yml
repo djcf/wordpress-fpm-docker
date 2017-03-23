@@ -1,6 +1,6 @@
 ---
 switchboard: switchboard
-group_fpm_container: group-wordpress.fpm
+group_fpm_container: group-wordpress.fpm # the name of the group fpm container
 default_cert: default
 domain_host: "noflag.org.uk"
 docker_volume_lbls:
@@ -15,3 +15,6 @@ letsencrypt_account_dir: /etc/pki/cert/private
 letsencrypt_account_key: "{{ letsencrypt_account_dir }}/account.key"
 admin_email: "admin@lists.noflag.org.uk"
 install_path: /usr/local/web
+mysql_host: sqldb.{{ domain_host }} # the SQL db hostname as it appears to a container, i.e. the host alias assigned by docker. giving it a standard DNS eases admin burden later
+sqldb: sqldb.{{ domain_host }} # the sqldb container name as it appears to the host. again, using a standard DNS is wise.
+mysql_tcp_port: 3306

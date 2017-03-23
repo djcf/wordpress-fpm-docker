@@ -25,13 +25,13 @@ else:
     define('DB_USER', $_ENV['DB_USER']);
 
     /** MySQL database password */
-    define('DB_PASSWORD', $_ENV['DB_PASSWORD']);
+    define('DB_PASSWORD', $_ENV['MYSQL_PWD']);
 
-    if ($_ENV['DB_HOST'] == "localhost") {
+    if ($_ENV['MYSQL_HOST'] == "localhost") {
         define('DB_HOST', 'localhost');
 	} else {
 		   /** MySQL hostname; on Pantheon this includes a specific port number. */
-	    define('DB_HOST', $_ENV['DB_HOST'] . ':' . $_ENV['DB_PORT']);
+	    define('DB_HOST', $_ENV['MYSQL_HOST'] . ':' . $_ENV['MYSQL_TCP_PORT']);
 	}
     /** Database Charset to use in creating database tables. */
     define('DB_CHARSET', 'utf8');
@@ -123,8 +123,9 @@ endif;
  * You can have multiple installations in one database if you give each a unique
  * prefix. Only numbers, letters, and underscores please!
  */
-if (isset($_ENV['WP_CONTENT_DIR'])) {
-    $table_prefix = $_ENV['WP_CONTENT_DIR'];
+
+if (isset($_ENV['WP_PREFIX']) && ($_ENV['WP_PREFIX'] != "")) {
+    $table_prefix = $_ENV['WP_PREFIX'];
 } else {
     $table_prefix = 'wp_';
 }
@@ -138,7 +139,7 @@ if (isset($_ENV['WP_CONTENT_DIR'])) {
  * language support.
  */
 
-if (isset($_ENV['WPLANG'])) {
+if (isset($_ENV['WPLANG']) && ($_ENV['WPLANG'] != "")) {
     define('WPLANG', $_ENV['WPLANG']);
 } else {
     define('WPLANG', "");

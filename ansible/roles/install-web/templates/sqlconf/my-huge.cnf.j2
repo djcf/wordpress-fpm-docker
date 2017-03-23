@@ -22,15 +22,15 @@ password	= {{ mysql_root_password }}
 {% else %}
 #password   = password
 {% endif %}
-port		= {{ db_port }}
-socket		= {{ db_socket }}
+port		= {{ mysql_tcp_port }}
+socket		= {{ mysql_unix_port }}
 
 # Here follows entries for some specific programs
 
 # The MySQL server
 [mysqld]
-port		= {{ db_port }}
-socket		= {{ db_socket }}
+port		= {{ mysql_tcp_port }}
+socket		= {{ mysql_unix_port }}
 skip-external-locking
 key_buffer_size = 384M
 max_allowed_packet = 1M

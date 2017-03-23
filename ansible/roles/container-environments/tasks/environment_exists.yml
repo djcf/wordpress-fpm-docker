@@ -1,0 +1,13 @@
+- name: Read password from environment if it exists
+  shell: "source {{ env_path }}; echo $MYSQL_PWD"
+  register: read_password
+  when:
+    - mysql_pwd is undefined
+  args:
+    executable: /bin/bash
+
+- name: Store read password
+  set_fact:
+    mysql_pwd: "{{ read_password.stdout }}"
+  when:
+    - mysql_pwd is undefined

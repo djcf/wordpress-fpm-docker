@@ -1,11 +1,14 @@
 DB_USER={{ db_user }}
-DB_HOST={{ db_host }}
-DB_PORT={{ db_port }}
+MYSQL_HOST={{ mysql_host }}
+MYSQL_TCP_PORT={{ mysql_tcp_port }}
 DB_NAME={{ db_name }}
-DB_PASSWORD={{ db_password }}
+MYSQL_PWD={{ mysql_pwd }}
 PRIMARY_SUBDOMAIN={{ primary_subdomain }}
 ENVIRONMENT=live
 WEBROOT={{ webroot }}
 HTTP_USER_AGENT_HTTPS={{ ssl_host | ternary("ON", "OFF") }}
 WP_DEBUG=false
 CONTAINER_TYPE={{ group_fpm | ternary("group_fpm", "on_demand")}}
+{% if wp_prefix is defined %}
+WP_PREFIX={{ wp_prefix }}_
+{% endif %}

@@ -7,11 +7,10 @@
     image: "{{ mysql_image }}"
     networks:
       - name: docker_sqlnet
-        link: "{{ db_host }}"
-    command: "mysqldump -h\"{{ db_host }}\" -P\"{{ db_port }}\" -uroot {{ db_name }} | gzip -9 > {{ dump_path }}"
+        link: "{{ sqldb }}"
+    command: "mysqldump -u$DB_USER {{ db_name }} | gzip -9 > {{ dump_path }}"
     volumes:
       - "{{ dump_path }}:{{ dump_path }}"
-    env:
-      MYSQL_PWD: "{{mysql_root_password}}"
+    env_file: "{{ env_file }}"
     cleanup: yes
     detach: no

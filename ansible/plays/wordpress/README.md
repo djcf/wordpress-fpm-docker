@@ -6,7 +6,7 @@ Operations:
 1. Munge the domain inputs into a sensible format
 2. If applicable, upload SSL certificates from local computer
 3. Template apps-wordpress-create/templates/vhost.j2 to /var/lib/docker/volumes/docker_sites-enabled/_data/$prefix/$primary_subdomain.conf
-4. Generate and save values for $db_name, $db_password, $db_user to /var/$primary_subdomain/.env
+4. Generate and save values for $db_name, $mysql_pwd, $db_user to /var/$primary_subdomain/.env
 5. Create a wordpress fpm container if the website should be started on_demand OR
 5. Template out a new php-pool to the php-fpm-group container if going into shared hosting and create a new user inside that container. Change ownership of wp-content files accordingly.
 6. Test to see if a database exists with the values in the .env file and can be connected to then
@@ -40,7 +40,7 @@ Operations:
 1. Munge the domain inputs into a sensible format
 2. If applicable, upload SSL certificates from local computer
 3. Template apps-wordpress-create/templates/vhost.j2 to /var/lib/docker/volumes/docker_sites-enabled/_data/$prefix/$primary_subdomain.conf
-4. Generate and save values for $db_name, $db_password, $db_user to /var/$primary_subdomain/.env
+4. Generate and save values for $db_name, $mysql_pwd, $db_user to /var/$primary_subdomain/.env
 5. Create a wordpress fpm container if the website should be started on_demand OR
 5. Template out a new php-pool to the php-fpm-group container if going into shared hosting and create a new user inside that container. Change ownership of wp-content files accordingly.
 6. Test to see if a database exists with the values in the .env file and can be connected to then

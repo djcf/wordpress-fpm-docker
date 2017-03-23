@@ -1,4 +1,13 @@
 ---
+- include: install-nginx-configs.yml
+  tags:
+    - config
+    - nginx
+
+- include: store-root-password.yml
+  tags:
+    - database
+
 - name: Allow root user to access from any host (drop root user first)
   command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
   ignore_errors: true
@@ -11,7 +20,3 @@
   tags:
     - database
     - fixes
-
-- include: install-nginx-configs.yml
-  tags:
-    - config

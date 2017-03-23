@@ -6,8 +6,8 @@
   command: >
     docker run
     --net=docker_sqlnet
-    --env-file /var/www/{{ primary_subdomain }}/.env
-    --link {{ db_host }}
+    --env-file {{ env_path }}
+    --link {{ sqldb }}:{{ mysql_host }}
     --volumes-from {{ parent_container }}
     --rm {{ docker_image }}
     sh -c 
@@ -36,10 +36,11 @@
     image: "{{ docker_image }}"
     networks:
       - name: docker_sqlnet
-        link: "{{ db_host }}"
+        links:
+          - "{{ sqldb }}:{{ mysql_host }}"
     volumes_from:
       - "{{ parent_container }}"
-    env_file: "/var/www/{{ primary_subdomain }}/.env"
+    env_file: "{{ env_path }}"
     cleanup: yes
     detach: no
   when:

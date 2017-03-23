@@ -82,7 +82,7 @@
     networks:
       - name: docker_sqlnet
         links:
-        - "{{ db_host }}"
+        - "{{ sqldb }}:{{ mysql_host }}"
     volumes: "{{ volumes }}"
     detach: yes
     log_options:
@@ -100,7 +100,7 @@
     docker run 
       --env-file {{ env_path }} 
       --net=docker_sqlnet 
-      --link {{ db_host }}
+      --link {{ sqldb }}:{{ mysql_host }}
       --volumes-from {{ parent_container }}
       --rm
       {{ docker_image }} 

@@ -52,10 +52,10 @@ pm.status_path = /status
 security.limit_extensions = .php .php3 .php4 .php5 .php7 .phtml
 
 env[DB_USER] = {{ db_user }}
-env[DB_PASSWORD] = {{ db_password }}
+env[MYSQL_PWD] = {{ mysql_pwd }}
 env[DB_NAME] = {{ db_name }}
-env[DB_HOST] = {{ db_host }}
-env[DB_PORT]= {{ db_port }}
+env[MYSQL_HOST] = {{ mysql_host }}
+env[MYSQL_TCP_PORT]= {{ mysql_tcp_port }}
 env[ENVIRONMENT] = live
 ; env[HTTP_USER_AGENT_HTTPS] = {{ ssl_host | ternary('ON', 'OFF') }}
 env[WP_CONTENT_DIR] = {{ user_wp_content_dir }}

@@ -1,0 +1,13 @@
+- name: set user_site_dir
+  set_fact:
+    user_site_dir: "/var/www/{{ primary_subdomain }}"
+  when:
+    - user_site_dir is not defined
+    - primary_subdomain is defined
+
+- name: set env path
+  set_fact:
+    env_path: "{{ user_site_dir }}/.env"
+  when:
+    - env_path is not defined
+    - primary_subdomain is defined

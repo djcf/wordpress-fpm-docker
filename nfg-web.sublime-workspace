@@ -519,6 +519,14 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "ansible/roles/apps-wordpress-create/tasks/main.yml",
+			"settings":
+			{
+				"buffer_size": 3668,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -579,6 +587,8 @@
 		"/home/daniel/Workspace/nfg-web",
 		"/home/daniel/Workspace/nfg-web/ansible",
 		"/home/daniel/Workspace/nfg-web/ansible/roles",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create",
+		"/home/daniel/Workspace/nfg-web/ansible/roles/apps-wordpress-create/tasks",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/files/bin",
@@ -593,6 +603,7 @@
 	],
 	"file_history":
 	[
+		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress-Troubleshooting.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/templates/php-vhost.j2",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/vhost-renew/templates/vhost.j2",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/install-web/tasks/wordpress-admins.yml",
@@ -665,7 +676,6 @@
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-base/tasks/alpine-tasks-find-mysql-root-password-from-docker.old.yml",
 		"/home/daniel/Workspace/nfg-web/docs/1.8-MySQL.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/containers-on-demand/tasks/main.yml",
-		"/home/daniel/Workspace/nfg-web/docs/1.7-Wordpress-Troubleshooting.md",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-create-database/meta/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/sql-import-database/meta/main.yml",
 		"/home/daniel/Workspace/nfg-web/ansible/roles/group-php-fpm/tasks/main.yml",
@@ -941,8 +951,39 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "ansible/roles/apps-wordpress-create/tasks/main.yml",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 3668,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2338,
+								2338
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 840.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

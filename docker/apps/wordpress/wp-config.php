@@ -109,8 +109,8 @@ else:
     #endif;
 
     // FS writes aren't permitted in test or live, so we should let WordPress know to disable relevant UI
-    if ( in_array( $_ENV['ENVIRONMENT'], array( 'test', 'live' ) ) && ! defined( 'DISALLOW_FILE_MODS' ) ) :
-        define( 'DISALLOW_FILE_MODS', true );
+    if ( in_array( $_ENV['ENVIRONMENT'], array( 'test', 'live' ) ) && ! defined( 'DISALLOW_FILE_EDIT' ) ) :
+        define('DISALLOW_FILE_EDIT', true);
     endif;
 
 endif;

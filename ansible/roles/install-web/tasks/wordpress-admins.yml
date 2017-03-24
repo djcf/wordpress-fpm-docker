@@ -1,0 +1,20 @@
+---
+- name: Generate secret key
+  shell: date +%s | sha256sum | base64 | head -c 32
+  register: key
+
+- name: Template out one-time link generator
+  template:
+    src: autologin.sh.j2
+    dest: /usr/local/bin/autologin.sh
+    mode: 0770
+    owner: root
+    group: root
+
+- name: Template out autologin script
+  template:
+    src: autologin.php.j2
+    dest: /var/lib/wordpress/autologin.php
+    mode: 0770
+    owner: www-data
+    group: www-data

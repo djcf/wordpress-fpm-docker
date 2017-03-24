@@ -20,12 +20,12 @@
 - name: Set domains to request certs for (all available domains)
   set_fact:
     letsencrypt_domain_list: "{{ domain_list | join(' -d ') }}"
-  when: letsencrypt_all_domains is defined
+#  when: letsencrypt_all_domains is defined
 
-- name: Set domains to request certs for (usually primary_domain only)
-  set_fact:
-    letsencrypt_domain_list: "{{ primary_domain }}"
-  when: letsencrypt_all_domains is not defined
+# - name: Set domains to request certs for (usually primary_domain only)
+#   set_fact:
+#     letsencrypt_domain_list: "{{ primary_domain }}"
+#   when: letsencrypt_all_domains is not defined
 
 - name: run the letsencrypt certbot
   command: "letsencrypt certonly --webroot --webroot-path /var/www/letsencrypt-challenge/ --email admin@lists.noflag.org.uk --agree-tos -d {{ letsencrypt_domain_list }}"

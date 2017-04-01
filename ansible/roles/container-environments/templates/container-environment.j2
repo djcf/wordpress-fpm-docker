@@ -12,3 +12,5 @@ CONTAINER_TYPE={{ group_fpm | ternary("group_fpm", "on_demand")}}
 {% if wp_prefix is defined %}
 WP_PREFIX={{ wp_prefix }}_
 {% endif %}
+{% if primary_domain is defined %}
+HTTP_HOST={{ primary_domain }}

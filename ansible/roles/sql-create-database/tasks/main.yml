@@ -37,7 +37,7 @@
           - "{{ sqldb }}:{{ mysql_host }}"
    #command: "cat /tmp/createdb.sql | mysql -f -h{{ db_host }} -P{{ db_port }} -uroot -p$MYSQL_ROOT_PASSWORD"
     command: >
-      mysql -f -h"mysql" -uroot -e "
+      mysql -f -h"{{ mysql_host }}" -uroot -e "
         CREATE DATABASE IF NOT EXISTS {{ db_name }};
         GRANT ALL ON {{ db_name }}.* TO '{{ db_user }}'@'%' IDENTIFIED BY '{{ mysql_pwd }}';
       "

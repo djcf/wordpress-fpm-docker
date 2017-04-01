@@ -22,6 +22,7 @@
     - systemd-docker
     - python-pip
     - etckeeper
+    - logwatch
 
 - name: install certain python modules for docker
   pip:
@@ -29,7 +30,7 @@
 #    version: "{{ item.version }}"
     state: present
   with_items:
-  - docker-py
+  - docker
   - docker-compose
 
 - name: run apt-get upgrade

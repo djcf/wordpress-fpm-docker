@@ -47,12 +47,12 @@ The InstallShield(tm) Wizard will guide you through the rest of the setup proces
 		--extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk site_title="test" admin_email=email@address.org" \
 		plays/wordpress/create-wordpress-site.yml
 
-The Wizard assumes most sensible defaults, but you can turn any option off from the command-line. However,boolean variables are ** NOT ** parsed correctly through the command-line. If you need to do pass a boolean to override a default option you must pass the entire string as JSON.
+The Wizard assumes most sensible defaults, but you can turn any option off from the command-line. However, boolean variables are ** NOT ** parsed correctly through the command-line. If you need to do pass a boolean to override a default option you must pass the entire string as JSON.
 
 For example, to disable SSL on the new host, you need to run:
 
 	ansible-playbook -i $inventory \
- 		--extra-vars "{ 'ssl_host': false, 'domain': 'mydomain.org', 'primary_subdomain': 'mysubdomain.noflag.org.uk', 'site_title': 'test', 'admin_email': 'admin@example.org'}" \
- 		plays/wordpress/create-wordpress-site.yml
+ 		--extra-vars "{ 'ssl_host': false, 'domains': 'mydomain.org', 'primary_subdomain': 'mysubdomain.noflag.org.uk'}" \
+ 		plays/renew-vhost.yml
 
 For complete documentation, browse each play's directory.

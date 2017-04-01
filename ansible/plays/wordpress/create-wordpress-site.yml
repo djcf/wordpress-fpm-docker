@@ -37,8 +37,8 @@
     private: no
   vars:
     group_fpm: false
-    ssl_host: true
-    lets_encrypt: true
+    ssl_host: false
+    lets_encrypt: false
 #    force_letsencrypt: false
   become: true
   pre_tasks:

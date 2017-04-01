@@ -32,7 +32,7 @@
     cleanup: yes
     detach: no
     volumes: "{{ import_file }}:/tmp/database.sql.gz:ro"
-    name: "{{ primary_subdomain }}_sqlimport"
+    name: "{{ db_name }}_sqlimport"
   when:
     - env_path is defined
     - env_path != ""

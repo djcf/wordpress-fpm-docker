@@ -7,7 +7,7 @@
   with_items:
     - /etc/ansible/roles
     - /usr/local/cron
-    - "{{ letsencrypt_account_dir }}"
+#    - "{{ letsencrypt_account_dir }}"
 
 - name: configure systemd to activate docker containers
   copy: src={{ item }} dest=/etc/systemd/system/ owner=root group=root mode=655

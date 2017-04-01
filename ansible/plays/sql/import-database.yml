@@ -1,6 +1,7 @@
 ---
 # Usage: ansible-playbook --extra-vars "db_user=myuser db_password=xxx db_name=sqldb" import-database.yml
 - hosts: all
+  become: true
   vars_prompt:
     - name: "db_name"
       prompt: "Enter a database name"
@@ -11,5 +12,6 @@
     - name: "env_path"
       prompt: "If you supply a path to an existing .env file, the import role will try to use the details located in that file instead. This is *much* safer than using root. Path to .env file: "
       default: ""
+      private: no
   roles:
     - sql-import-database

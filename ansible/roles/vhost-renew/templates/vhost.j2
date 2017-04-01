@@ -5,12 +5,13 @@
     #
     # This is the vhost-descriptor for an on-demand container created using the ansible vhost-renew command.
     # If no traffic is received (monitored using docker logs --since command) in {{ container_sleeps_after }},
-    # a cron-script tells host systemd to sleep the container, using `systemctl stop vhost@{{ primary_subdomain }}.fpm`.
+    # a cron-script tells host systemd to sleep the container, using `systemctl stop fpm@{{ primary_subdomain }}.service`.
     # When a new connection is detected, systemd proxies the connection from nginx until the container has started again.
     #
     # OPTIONS:
-    # * To change the sleep value, just edit this vhost. {# (NB: *THIS* file is a vhost template *not* a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
-    # * To disable sleeping on this php-fpm container, move this vhost to ../web-apps (or any other directory except ./on-demand)
+    # * To change the sleep value, just edit this vhost. 
+    {# (NB: *THIS* file is a vhost template *not* a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
+    # * To disable sleeping on this php-fpm container, move this vhost to ../default (or any other directory except ./on-demand). It will still be picked up nginx. You do not need to do anything else.
     # * To move this website into the multi-user php-fpm-group container, re-run the renew-vhost play.
     #
 {% endif %}

@@ -5,13 +5,13 @@
 - name: Check to see if WP is installed already
   command: >
     docker run
-    --net=docker_sqlnet
-    --env-file {{ env_path }}
-    --link {{ sqldb }}:{{ mysql_host }}
-    --volumes-from {{ parent_container }}
-    --rm {{ docker_image }}
-    sh -c 
-      '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'
+        --net=docker_sqlnet
+        --env-file {{ env_path }}
+        --link {{ sqldb }}:{{ mysql_host }}
+        --volumes-from {{ parent_container }}
+        --rm {{ docker_image }}
+      sh -c 
+        '/usr/local/bin/wp core is-installed --allow-root --path={{ phproot }}'
   ignore_errors: yes
   failed_when: wp_was_installed.rc != 0
   register: wp_was_installed
@@ -43,6 +43,7 @@
     env_file: "{{ env_path }}"
     cleanup: yes
     detach: no
+    hostname: "{{ primary_domain }}"
   when:
     - wp_was_installed|failed
   tags:

@@ -1,4 +1,5 @@
 <?php
+// Allows noflag admins access to the Wordpress upgrade script
 function fail($msg, $valid_until) {
         echo "Autologin token $msg.<br>";
         echo "Token signed at: " . gmdate("Y-m-d\TH:i:s\Z", $valid_until) . "<br>";
@@ -6,8 +7,8 @@ function fail($msg, $valid_until) {
         die("Your authentication token $msg");
 }
 
-// Allows noflag admins access to the Wordpress upgrade script
-define('PRIVATE_KEY', '3d71877dcc910d79fcf753fe21307da7');
+define('PRIVATE_KEY', $_ENV['MYSQL_PWD']);
+
 $token = $_GET['token'];
 $valid_until = $_GET['valid'];
 $real_hash = hash_hmac('sha256', $valid_until, PRIVATE_KEY);
@@ -18,11 +19,14 @@ if ($real_hash != $token) {
 if (time() > $valid_until) {
 	fail("has expired", $valid_until);
 }
-
+if (isset($_ENV['WP_PREFIX']) && ($_ENV['WP_PREFIX'] != "")) {
+	$PREFIX = $_ENV['WP_PREFIX'];
+} else {
+	$PREFIX = "wp_";
+}
 require( dirname(__FILE__) . '/wp-load.php' );
 global $wpdb;
-$result = $wpdb->get_results("SELECT wp.id AS ID, wp.user_login AS user_login FROM wp_users wp INNER JOIN wp_usermeta um ON um.user_id=wp.ID WHERE um.meta_key='wp_capabilities' AND um.meta_value LIKE '%administr
-ator%'");
+$result = $wpdb->get_results("SELECT wp.id AS ID, wp.user_login AS user_login FROM " . $PREFIX . "users wp INNER JOIN " . $PREFIX . "usermeta um ON um.user_id=wp.ID WHERE um.meta_key='" . $PREFIX . "capabilities' AND um.meta_value LIKE '%administrator%'");
 $user =  new WP_User($result[0]->ID);
 wp_set_auth_cookie($result[0]->ID, true, '');
 wp_set_current_user($result[0]->ID);

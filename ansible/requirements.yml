@@ -4,3 +4,4 @@
 #- src: tersmitten.fail2ban
 - src: infOpen.fail2ban
 - src: tersmitten.duplicity
+- src: EHER.duplicity_backup

@@ -1,38 +1,27 @@
-Role Name
+group-php-fpm
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+This role creates a php pool for use by the `group-php-fpm` container. It is not nessessarily used by default for wordpress sites. Its opposite is the `containers-on-demand` role, with which it conflicts.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    pool_type: ondemand
+    pool_max_children: 6
+    pool_start_servers: 2 # only used when pool_type is dynamic
+    pool_min_spare_servers: 1 # only used when pool_type is dynamic
+    pool_max_spare_servers: 3 # only used when pool_type is dynamic
+    pool_process_idle_timeout: 10s # only used when pool_type is ondemand
+    pool_name: "{{ escaped_base }}" (filesystem-friendly escaped $primary_subdomain)
 
 Dependencies
 ------------
+  - common
+  - { role: container-environments }
+  - { role: container-remove, container_name: "{{ primary_subdomain }}.fpm" }
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+(`container-remove` ensures that no traces of an on-demand container exist for this website, if it was in use previously)
 
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+See Also
+----
+https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.3-Group-FPM.md

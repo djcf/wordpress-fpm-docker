@@ -11,8 +11,9 @@ docker_volume_lbls:
   - "docker_vhost_config"
   - "docker_ssl_certs"
   - "docker_group_php_pools"
-letsencrypt_account_dir: /etc/pki/cert/private
-letsencrypt_account_key: "{{ letsencrypt_account_dir }}/account.key"
+# Unused:
+# letsencrypt_account_dir: /etc/pki/cert/private 
+# letsencrypt_account_key: "{{ letsencrypt_account_dir }}/account.key"
 admin_email: "admin@lists.noflag.org.uk"
 install_path: /usr/local/web
 mysql_host: sqldb.{{ domain_host }} # the SQL db hostname as it appears to a container, i.e. the host alias assigned by docker. giving it a standard DNS eases admin burden later

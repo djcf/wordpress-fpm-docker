@@ -1,38 +1,30 @@
-Role Name
+apps-wordpress-create
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Creates a new wordpress container
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+`volumes`: The docker volumes which, by default, the new container should use.
 
-Dependencies
-------------
+Requirements
+-----------
+`apps-wordpress-base` and `container-environments`; the latter provides a .env file and exposes the location to subsequent roles as `env_path`. Any variables already defined in that .env file become facts available to ansible during the run.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Description
+-------------
 
-Example Playbook
-----------------
+First, we create a directory tree spanning usually to `/var/www/$domain/public_html/wp-content`. We then use rsync to ensure that all files in our template WP installation directory (`/var/lib/wordpress` on the host) also exist in `wp-content`. We do of course need to make sure the new permissions are correct.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Then we have to create a unique SALTS file. Since the SALTS file differs from vhost to vhost but the actual wp-config.php file doesn't, the SALTS file is external in our case. wordpress.com provide us with one ready made, we just have to download it and <?php tags. **Note: there's a potential attack-vector here from guessing what the WP server will say, and future work could avoid that by generating the SALTS file locally. (Of course we need to be careful not to overwrite one which is already there.)
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+We also have the potential to override `wp-config.php` files per host, which this role is responsible for taking care of, generally by adjusting the `volumes` mount-points for on-demand containers. This is dependent on whether the file `wp-config.php` exists in `/var/www/$domain/public_html` or just `wp-config-inc.php`. The former will completely overwrite the default `wp-config.php`, the latter will merely be included inside it. Generally the method of inclusion is using <?php include() statements inside the default `wp-config.php` file in which case the docker volume mounts expose the files to be accessed by php. In some cases the default file itself may be overwriten by the volume mount.
 
-License
--------
+A new wordpress container is created with the correct volume-mounts which is called {{ parent_container }} and is used for all subsequent docker container-based operations, including the database.
 
-BSD
+Finally, we run `wp db check` to see if a database exists with wordpress installed in it. It is the responsibility of the playbook to decide whether to use this information to create a new database and/or install wordpress.
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Example playbook
+---
+See `ansible/plays/wordpress/create-wordpress-site.yml`

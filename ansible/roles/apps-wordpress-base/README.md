@@ -1,38 +1,37 @@
-Role Name
+apps-wordpress-base
 =========
 
-A brief description of the role goes here.
+A simple role to provide default variables to other roles in the `apps-wordpress-*` family. Does nothing by itself.
 
-Requirements
-------------
+Role Variables Provided
+=========
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+    docker_image: "wordpress-php7.1-fpm-alpine-mod"
 
-Role Variables
---------------
+Which docker image to use by default for wordpress. It's based from the official docker image `wordpress-php7.1-fpm-alpine` which provides wordpress with php 7.1 and fpm running in alpine. We then modify it substantially using the Dockerfile in `docker/apps/wordpress`.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    admin_user: admin
+    site_title: "{{ primary_subdomain }}"
 
-Dependencies
-------------
+Defaults for Wordpress
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+    use_php: yes
 
-Example Playbook
-----------------
+Instructs the vhost template to write out /*.php directives using `vhost-renew/templates/php-vhost.j2`.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+    phproot: /usr/src/wordpress
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+This path is the default installation location for wordpress in alpine linux containers
 
-License
--------
+    extra_nginx_configs:
+      - inc/wordpress.conf
 
-BSD
+You can supply a list of files which should be included but don't forget that `inc/wordpress.conf` *is* a requirement of wordpress sites.
 
-Author Information
-------------------
+    salts_file: "{{ user_site_dir }}/public_html/salts.php"
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+SALTS are the part of the wp-config file which manages unique identifiers for cookies and uniquely-crypted password storage.
+
+    user_wp_content_dir: "{{ user_site_dir }}/public_html/wp-content"
+
+This path exists on the host. If the the group-fpm container is in use, it will exist in the container as well.

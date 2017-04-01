@@ -1,38 +1,29 @@
-Role Name
+container-environments
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Creates or loads a .env file to be used by container environments.
 
 Role Variables
 --------------
+These role variables are used populate the .env file:
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    DB_USER={{ db_user }}
+    MYSQL_HOST={{ mysql_host }}
+    MYSQL_TCP_PORT={{ mysql_tcp_port }}
+    DB_NAME={{ db_name }}
+    MYSQL_PWD={{ mysql_pwd }}
+    PRIMARY_SUBDOMAIN={{ primary_subdomain }}
+    ENVIRONMENT=live
+    WEBROOT={{ webroot }}
+    HTTP_USER_AGENT_HTTPS={{ ssl_host | ternary("ON", "OFF") }}
+    WP_DEBUG=false
+    CONTAINER_TYPE={{ group_fpm | ternary("group_fpm", "on_demand")}}
+    {% if wp_prefix is defined %}
+    WP_PREFIX={{ wp_prefix }}_
+    {% endif %}
+    {% if primary_domain is defined %}
+    HTTP_HOST={{ primary_domain }}
 
-Dependencies
-------------
+If `env_path` is not defined, the `env_path` is assumed to be `/var/www/$primary_subdomain/.env`
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+If the destination defined by `env_path` does not exist, random values are used for mysql_password and the db_user and db_name are taken from the `primary_subdomain`.

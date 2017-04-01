@@ -1,18 +1,11 @@
 Immediate tasks
 
-** DNS **
-* DNS master
-* DNS slaves set up by ansible play
-* Add/remove a global DNS record to an existing vhost / and update WP accordingly
-
-FINALLY
-	* document/cleanup
-	* tidy up roles
+* tidy up roles
+* WP update script
    
-WISHLIST
+## WISHLIST
 	* fail2ban reads docker logs and protects wp-admin
-	* php-group auto-tuning ?
-	* Ansible play logs an admin in transparently ??
+	* php-group auto-tuning ? (See below)
 	* Stats & Logging using docker logs (e.g. awstats)
     * {{ hostvars[inventory_hostname] | to_yaml }}
 
@@ -20,4 +13,3 @@ To read:
 https://easyengine.io/tutorials/php/fpm-sysctl-tweaking/
 http://linuxbsdos.com/2015/02/17/how-to-reduce-php-fpm-php5-fpm-ram-usage-by-about-50/
 https://ma.ttias.be/a-better-way-to-run-php-fpm/
-

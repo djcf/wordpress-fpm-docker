@@ -1,0 +1,13 @@
+# Shell: wget https://api.wordpress.org/secret-key/1.1/salt /var/www/$domain/public_html/wp-content/salts.php
+- name: Create new SALTS file (unique keys) for WP auths
+  get_url:
+    url: https://api.wordpress.org/secret-key/1.1/salt
+    dest: "{{ salts_file }}"
+
+# Shell: echo "<?php" | cat /var/www/$domain/public_html/salts.php > /var/www/$domain/public_html/salts.php
+- name: Salts file should be php file
+  lineinfile:
+    dest: "{{ salts_file }}"
+    regexp: '^php'
+    insertbefore: BOF
+    line: '<?php'

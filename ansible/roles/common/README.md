@@ -1,38 +1,52 @@
-Role Name
+common
 =========
 
-A brief description of the role goes here.
+This role provides defaults for use by nearly all other roles. It also gathers facts used by other roles, mainly relating to the location of specific docker named volumes. Its last purpose is to provide the handlers `reload nginx` and `reload fpm`
 
-Requirements
-------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Role variables
+============
 
-Role Variables
---------------
+    switchboard: switchboard
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+This is the name of the nginx container instance which manages vhosts and SSL.
 
-Dependencies
-------------
+    group_fpm_container: group-wordpress.fpm
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This is the name of the group fpm container
 
-Example Playbook
-----------------
+    default_cert: default
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+This is the root name of the default wildcard cert used by the host, stored in `/var/lib/docker/volumes/docker_ssl_certificates/_data`
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+    domain_host: "noflag.org.uk"
 
-License
--------
+This is the homepage of the organization which manages websites on this server. It's used mainly to second-guess user input and account for discrepencies in what they entered. It also appends to `primary_subdomain` to create permanent vhost subdomains which are assumed to be more permanent than top-level domains which a user might supply.
 
-BSD
+    docker_volume_lbls:
+      - "docker_sites_enabled"
+      - "docker_htpasswd"
+      - "docker_nginx_config"
+      - "docker_nginx_config_inc"
+      - "docker_vhost_config"
+      - "docker_ssl_certs"
+      - "docker_group_php_pools"
 
-Author Information
-------------------
+This is the list of named docker volumes whose absolute paths we want to provide to other roles.
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+    admin_email: "admin@lists.noflag.org.uk"
+    install_path: /usr/local/web
+
+This repository should be installed here so that admins may submit pull requests remotely, for manual invocations of `docker-compose` to find a docker-compose.yml file, and also because admins might choose to run ansible directly on the remote host.
+
+    mysql_host: sqldb.{{ domain_host }}
+
+The SQL database container hostname as it appears to a container, i.e. the host alias assigned by docker. Giving it a standard DNS may ease admin burden later if the SQLDB needed to be hosted elsewhere. `mysql_host` becomes an environment variable by way of the `container-environments` role's .env file where it is used by the `mysql_client` inside a container.
+
+    sqldb: sqldb.{{ domain_host }} 
+
+The sqldb container name as it appears to the host. Again, using a standard DNS is wise. There's no reason in theory that it should differ from `mysql_host`, above.
+
+    mysql_tcp_port: 3306
+
+Also becomes .env variable for use by mysql-client and other container applications.

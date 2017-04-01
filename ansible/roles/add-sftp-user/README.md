@@ -1,38 +1,35 @@
-Role Name
+add-sftp-user
 =========
 
-A brief description of the role goes here.
+This role adds an SFTP user so that that user can access their `wp-content` files. The new user is a member of the `sftp-only` group which is only allowed to perform SFTP operations. They are also a member of `www-data`, which is how their files and file mods are interfaceable with nginx and php-fpm.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+* The user's webspace must already exist, i.e. run `create-wordpress.yml` play first. `/var/www/$primary_subdomain` will be their chrooted (jailed) home directory
+* System SSH daemon must be set up with an `sftp-only` group which lists the internal SFTP server as the default shell and only allowed command. `roles/install-web` performs this automatically, thus it must be run first.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+`primary_subdomain` must be supplied as this is used to identify the user as their username.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: add-sftp-user, primary_subdomain: my_test_user }
 
-License
--------
+Known Issues
+----------------
+This role hasn't actually been tested yet. Please test it and remove this notice.
 
-BSD
+Suspected Issues
+---------------
+Permissions on the user's home directory may be an issue. Pay extra attention to the group perm if you get file permission errors. I believe directories may need to be executable.
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+daniel@noflag. PRs welcome.

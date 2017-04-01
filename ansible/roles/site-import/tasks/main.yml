@@ -2,7 +2,7 @@
 - name: Unzip site dump
   unarchive:
     src: "{{ playbook_dir }}/{{ site_dump_file }}"
-    dest: "/var/www/{{ primary_subdomain }}/public_html"
+    dest: "{{ user_site_dir }}"
 
 - name: ensure wp-content directory has correct owner
   file:

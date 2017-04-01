@@ -1,38 +1,18 @@
-Role Name
+containers-on-demand
 =========
 
-A brief description of the role goes here.
+This role doesn't actually perform any actions relating to containers, it simply sets up a good environment for containers to be run in. This includes remove all traces which related to the group-fpm container if that was being used to serve the website previously. It also gathers and sets facts which relate to on-demand containers for use by other ansible roles.
 
-Requirements
-------------
+It's counterpart is `group-php-fpm`, with which it conflicts.
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Role variables
+===
 
-Role Variables
---------------
+    container_sleeps_after: 20m
+    container_always_active: false
+    state: "{{ container_always_active|ternary('present', 'started') }}"
+    socket_name: "{{ primary_subdomain }}/vhost.fpm-waker" # e.g. /var/run/ docker-apps/mydomain.org/fpm-waker.sock
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+See also
+----
+https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md

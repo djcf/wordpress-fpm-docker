@@ -1,38 +1,32 @@
-Role Name
+sql-base
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Provides variables relating to SQL to other ansible roles.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    mysql_image: gists/mariadb #yobasystems/alpine-mariadb
 
-Dependencies
-------------
+The official maria images aren't on alpine (yet) so we use a third-party's. It has to be this one because we need it to generate a password on first-run and half of the images out there either don't support that or have had it broken by alpine's package manager.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+    db_socket: /run/mysqld/mysqld.db_socket
 
-Example Playbook
-----------------
+Unix sockets are in theory more efficient so there was a plan to have local SQL communication be performed using them. At the moment however we use plain old port 3306.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+    env_values:
+      - db_name
+      - mysql_pwd
+      - db_user
+      - mysql_unix_port
+      - mysql_host
+      - mysql_tcp_port
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+These variables are loaded into ansible from the `/var/www/$domain/.env` file.
 
-License
--------
+    mysql_root_password_file: /etc/mysql_root_password.txt
 
-BSD
+Todo
+---
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+The tasks relating to loading environment data should be refactored into `container-environments`.

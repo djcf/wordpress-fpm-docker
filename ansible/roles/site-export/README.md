@@ -1,38 +1,30 @@
-Role Name
+site-export
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Exports a full site archive including content.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+`sql-dump-database` creates the database dump before the site archive is created.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    # Usage: ansible-playbook --extra-vars "domain=mydomain.orgk" plays/wordpress/remove-wordpress.yml
+    - hosts: all
+      vars_prompt:
+        - name: "primary_subdomain"
+          prompt: "Enter the primary_subdomain you would like to export"
+          private: no
       roles:
-         - { role: username.rolename, x: 42 }
+        - { role: site-export, when: backup != "no", dump_path: "/var/www/{{ primary_subdomain }}/database.sql.gz" }
+      post_tasks:
+        - name: fetch site export
+          fetch:
+            src: "/var/www/{{ primary_subdomain }}/site_export.zip"
+            dest: "{{ primary_subdomain }}.zip"
 
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Known issues
+---
+Not tested due to ansible 2.3+ dependency.

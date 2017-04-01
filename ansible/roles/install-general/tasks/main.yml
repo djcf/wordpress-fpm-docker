@@ -51,6 +51,13 @@
   with_items:
     - docker-clean.sh
 
+- name: Install ctop
+  get_url:
+    url: https://github.com/bcicen/ctop/releases/download/v0.4.1/ctop-0.4.1-linux-amd64
+    dest: /usr/local/bin/ctop
+    remote_src: true
+    mode: 0744
+
 - name: host should have latest version of docker-compose
   get_url:
     url: https://github.com/docker/compose/releases/download/1.11.2/run.sh

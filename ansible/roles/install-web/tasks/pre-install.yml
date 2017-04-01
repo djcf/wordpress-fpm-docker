@@ -35,13 +35,6 @@
   ignore_errors: true
   #when: not is_vagrant
 
-- name: Install ctop
-  get_url:
-    url: https://github.com/bcicen/ctop/releases/download/v0.4.1/ctop-0.4.1-linux-amd64
-    dest: /usr/local/bin/ctop
-    remote_src: true
-    mode: 0744
-
 - name: copy letsencrypts challenge-response directory
   synchronize:
     src: "{{ role_path }}/files/letsencrypt-challenge"

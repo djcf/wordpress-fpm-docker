@@ -35,12 +35,14 @@
   set_fact:
     zone_list: "{{ zones.split(' ') }}"
   when:
+    - zones is defined
     - 'zones != ""'
 
 - name: Make zone list like domain list when no zones were entered
   set_fact:
     zone_list: "{{ domain_list }}"
   when:
+    - zones is defined
     - 'zones == ""'
 
 ## primary_domain now validated

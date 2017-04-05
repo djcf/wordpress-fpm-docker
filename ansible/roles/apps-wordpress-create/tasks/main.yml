@@ -7,7 +7,7 @@
 
 # Shell: if [ -e /var/www/$domain/public_html/salts.php ]
 - name: SALTS file should exist
-  stat: path="{{ salts_file }}"
+  stat: "path={{ salts_file }}"
   register: salts_file_exists
   ignore_errors: yes
   failed_when: not salts_file_exists.stat.exists
@@ -15,34 +15,7 @@
 - include: salts-file.yml
   when: salts_file_exists|failed
 
-# Shell: if [ -e /var/www/$domain/wp-config.php ]
-- name: See if a wp-config override exists
-  stat: path="/var/www/{{ primary_subdomain }}/wp-config.php"
-  register: has_wpconfig_file
-  ignore_errors: yes
-  tags:
-    - docker
-
-- name: Add wp-config include to volume mounts
-  set_fact:
-    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config-inc.php:/usr/src/wordpress/wp-config-inc.php:ro' ]"
-  when: has_wpconfig_include_file.stat.exists
-  tags:
-    - docker
-
-# Shell: if [ -e /var/www/$domain/wp-config.php ]
-- name: See if a wp-config include file exists
-  stat: path="/var/www/{{ primary_subdomain }}/wp-config-inc.php"
-  register: has_wpconfig_include_file
-  tags:
-    - docker
-
-- name: Add wp-config to volume mounts
-  set_fact:
-    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config.php:/usr/src/wordpress/wp-config.php:ro' ]"
-  when: has_wpconfig_file.stat.exists
-  tags:
-    - docker
+- include: wp-config-overrides.yml
 
 # shell: cp -r /var/lib/wordpress/wp-content/* /var/www/$domain/public_html/wp-content
 - name: sync wp-content directories

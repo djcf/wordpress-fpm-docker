@@ -1,21 +1,21 @@
 ---
 # Shell equivilent:
 # docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP DATABASE IF EXISTS $db_name; DROP USER '$db_user'@'%';
-- name: Remove database (docker run container)
-  docker_container:
-    name: "{{ db_name }}.removedb"
-    image: "{{ mysql_image }}"
-    networks:
-      - name: docker_sqlnet
-        links:
-          - "{{ sqldb }}:{{ mysql_host }}"
-    command: "mysql -f -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; DROP USER '{{ db_user }}'@'%';\""
-    env_file: "{{ mysql_root_password_file }}"
-    cleanup: yes
-    detach: no
+# - name: Remove database (docker run container)
+#   docker_container:
+#     name: "{{ db_name }}.removedb"
+#     image: "{{ mysql_image }}"
+#     networks:
+#       - name: docker_sqlnet
+#         links:
+#           - "{{ sqldb }}:{{ mysql_host }}"
+#     command: "mysql -f -uroot -e \"DROP DATABASE IF EXISTS {{ db_name }}; DROP USER '{{ db_user }}'@'%';\""
+#     env_file: "{{ mysql_root_password_file }}"
+#     cleanup: yes
+#     detach: no
 
-#- name: Remove database (existing container option)
-#  command: "docker exec {{ sqldb }} mysql -u root -e \"DROP DATABASE IF EXISTS {{ db_name }};\""
+- name: Remove database (existing container option)
+  command: "docker exec {{ sqldb }} mysql -u root -e \"DROP DATABASE IF EXISTS {{ db_name }};\""
 
-#- name: Remove db user (existing container option)
-#  command: "docker exec {{ sqldb }} mysql -u root -e \"DROP USER {{ db_user }}@'%';\""
+- name: Remove db user (existing container option)
+  command: "docker exec {{ sqldb }} mysql -u root -e \"DROP USER {{ db_user }}@'%';\""

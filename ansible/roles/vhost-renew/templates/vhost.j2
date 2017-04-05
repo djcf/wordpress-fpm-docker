@@ -92,7 +92,7 @@ server {
         {% endif %}
 
     {% else %}
-        {%if ssl_cert_exists %}
+        {%if ssl_cert_exists|succeeded %}
             ssl_certificate /etc/nginx/certs/{{ primary_subdomain }}.crt;
             ssl_certificate_key /etc/nginx/certs/{{ primary_subdomain }}.key;
             ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;

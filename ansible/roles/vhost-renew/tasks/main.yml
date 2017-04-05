@@ -17,14 +17,15 @@
     - ssl
   notify: reload nginx
   
-# - name: Try to find a certificate for the host if lets_encrypt is in use
-#   stat: "path={{ docker_volumes['docker_ssl_certs'] }}/{{ primary_domain }}.crt"
-#   register: remote_ssl_cert_exists
-#   ignore_errors: true
-#   changed_when: false
-#   tags:
-#     - lets_encrypt
-#     - ssl
+- name: Try to find a certificate for the host if lets_encrypt is in use
+  stat: "path={{ docker_volumes['docker_ssl_certs'] }}/{{ primary_domain }}.crt"
+  register: ssl_cert_exists
+  ignore_errors: true
+  changed_when: false
+  failed_when: not ssl_cert_exists.stat.exists
+  tags:
+    - lets_encrypt
+    - ssl
 
 - include: configure-local-ssl-files.yml
   when:
@@ -42,7 +43,9 @@
     - ssl
 
 - name: Copy vhost template to host
-  template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+  template:
+    src: vhost.j2
+    dest: "{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
 #    validate: "docker exec -it {{ switchboard }} nginx -t"
   notify: reload nginx
   register: vhost_was_installed

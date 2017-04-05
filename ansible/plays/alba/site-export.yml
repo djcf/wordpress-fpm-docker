@@ -55,9 +55,14 @@
     dest: "from-alba/{{ alba_user }}.zip"
     flat: true
 
-- name: Remove the site
+- name: Remove the site dump
   file: "path={{ wp_path }}/website.zip state=absent"
 
 - name: Generate a vars config to import the new site
   become: false
-  local_action: "template src='vars.yml' dest='from-alba/{{ alba_user }}.yml'"
+  local_action: "template src='{{ playbook_dir }}/vars.yml.j2' dest='{{ playbook_dir }}/from-alba/{{ alba_user }}.yml'"
+
+- name: reset play vars
+  set_fact:
+    wp_config_path: false
+    wp_path: false

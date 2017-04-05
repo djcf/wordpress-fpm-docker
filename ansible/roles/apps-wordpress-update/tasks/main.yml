@@ -1,2 +1,66 @@
 ---
-# tasks file for apps-wordpress-update
+- name: Get current WP version
+  command: docker run --rm {{ docker_image}}:latest wp --allow-root core version
+  register: wp_current_version
+
+- name: Set current version fact
+  set_fact:
+    current_version: "{{ wp_current_version.stdout }}"
+
+- name: Manage image tags
+  command: |
+    docker rmi {{ docker_image }}:old
+    docker tag {{ docker_image }}:latest {{docker_image}}:{{ current_version }}
+    docker tag {{ docker_image }}:latest {{ docker_image }}:old
+    docker rmi {{ docker_image }}:latest
+
+# Equivilent to shell command:
+# docker build -t wordpress:latest {{ path }}/wordpress
+- name: Build new WP image
+  docker_image:
+    name: "{{ docker_image }}"
+    path: "{{ path }}/apps/wordpress"
+    state: present
+    tag: latest
+
+- name: Get latest WP version
+  command: docker run --rm {{ docker_image}}:latest wp --allow-root core version
+  register: wp_latest_version
+
+- name: Set current version fact
+  set_fact:
+    latest_version: "{{ wp_latest_version.stdout }}"
+
+- name: Manage image tags
+  command: docker tag {{ docker_image }}:latest {{ docker_image }}:{{ latest_version }}
+
+- name: Get list of on-demand containers
+  command: /usr/local/bin/view-on-demand-containers.sh
+  register: od_containers
+
+- name: Get list of php-group containers
+  command: /usr/local/bin/view-php-group-websites.sh
+  register: group_containers
+
+- name: Remove group-wordpress container
+  docker_container:
+    name: group-wordpress.fpm
+    state: absent
+
+- name: Recreate group-wordpress container
+  command: "docker-compose up -d wordpress -f {{ install_path }}"
+
+- name: Execute database updates
+  command: >
+    docker run 
+      --rm 
+      --net docker_sqlnet
+      --volumes-from {{ item }}
+      --env-file /var/www/{{ item.split('.')[0] }}/.env
+      --link {{ sqldb }}:{{ mysql_host }} 
+      {{ docker_image }}:latest 
+        sh -c '
+          /usr/local/bin/wp --allow-root --path={{ php_root }} core update;
+          wp --allow-root plugin update --all
+        '
+  with_items: "{{ od_containers.stdout_lines }} + {{ group_containers.stdout_lines }}"

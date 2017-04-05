@@ -7,6 +7,7 @@
     private: no
   vars:
     group_fpm: false
+    ssl_host: false
   vars_files:
     - "{{ playbook_dir }}/from-alba/{{ site_import_file }}.yml"
   become: true
@@ -18,6 +19,6 @@
   - vhost-renew
   - apps-wordpress-create
   - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
-  - { role: site-import, site_dump_file: "{{ playbook_dir }}/from-alba/{{ zipped_filename }}" }
+  - { role: site-import, site_dump_file: "{{ zipped_filename }}" }
   - { role: sql-import-database, import_file: "/var/www/{{ primary_subdomain }}/public_html/database.sql.gz" }
 #  - site-diagnostics

@@ -1,0 +1,28 @@
+# Shell: if [ -e /var/www/$domain/wp-config.php ]
+- name: See if a wp-config override exists
+  stat: path="/var/www/{{ primary_subdomain }}/wp-config.php"
+  register: has_wpconfig_file
+  ignore_errors: yes
+  tags:
+    - docker
+
+- name: Add wp-config to volume mounts
+  set_fact:
+    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config.php:/usr/src/wordpress/wp-config.php:ro' ]"
+  when: has_wpconfig_file.stat.exists
+  tags:
+    - docker
+
+# Shell: if [ -e /var/www/$domain/wp-config.php ]
+- name: See if a wp-config include file exists
+  stat: path="/var/www/{{ primary_subdomain }}/wp-config-inc.php"
+  register: has_wpconfig_include_file
+  tags:
+    - docker
+
+- name: Add wp-config include to volume mounts
+  set_fact:
+    volumes: "{{ volumes }} + [ '/var/www/{{ primary_subdomain }}/public_html/wp-config-inc.php:/usr/src/wordpress/wp-config-inc.php:ro' ]"
+  when: has_wpconfig_include_file.stat.exists
+  tags:
+    - docker

@@ -4,32 +4,43 @@
 
 if [ "$#" -eq 0 ]; then
 	echo "This script removes and then re-creates a php-fpm container"
-	echo "It's not used automatically, but it can be used if you need to renew/refresh"
-	echo "the container, for example after modifying the environment"
+	echo "This is useful for example when updating wordpress or adding a wp-config override"
+	echo "As always, do NOT type a fully-qualified DOMAIN name as input"
+	echo "Instead, use the primary subDOMAIN key, e.g. 'example' in 'example.noflag.org.uk'"
 	echo ""
-	echo "As always, do NOT type a fully-qualified domain name as input"
-	echo "Instead, use the primary subdomain key, e.g. 'example' in 'example.noflag.org.uk'"
-	echo ""
-	echo "Important: Creating the contrainer manually will not by default map extra wp-config or wp-config-inc files"
-	echo "This probably isn't a problem, unless you're customizing wp-config"
-	echo "If this is a problem for you, just cat this script and ammend the volume mounts"
-	echo ""
-    echo "Useage: $0 PRIMARY_SUBDOMAIN"
+    echo "Useage: $0 PRIMARY_SUBDOMAIN [TAG=latest]"
     exit 1
 fi
 
-domain=$1
+DOMAIN="$1"
+if [ "$#" -eq 2 ]; then
+	TAG="$2"
+else
+	TAG="latest"
+fi
 
-systemctl stop fpm@$domain.service
-docker rm -f $domain.fpm
+if [ -f "/var/www/$DOMAIN/public_html/wp-config.php" ]; then
+	EXTRA_VOL_1="--volume /var/www/$DOMAIN/public_html/wp-config.php:/usr/src/wordpress/wp-config.php:ro"
+else
+	EXTRA_VOL_1=""
+fi
+if [ -f "/var/www/$DOMAIN/public_html/wp-config-inc.php" ]; then
+	EXTRA_VOL_2="--volume /var/www/$DOMAIN/public_html/wp-config-inc.php:/usr/src/wordpress/wp-config-inc.php:ro"
+else
+	EXTRA_VOL_2=""
+fi
+
+systemctl stop fpm@$DOMAIN.service
+docker rm -f $DOMAIN.fpm
 
 docker create \
-	--name $domain.fpm \
+	--name $DOMAIN.fpm \
 	--network docker_sqlnet \
-	--hostname=$domain.noflag.org.uk \
-	--env-file /var/www/$domain/.env \
+	--hostname=$DOMAIN.noflag.org.uk \
+	--env-file /var/www/$DOMAIN/.env \
+	$EXTRA_VOL_1 $EXTRA_VOL_2 \
 	--volume /etc/ssmtp:/etc/ssmtp:ro \
-	--volume /var/run/docker-apps/$domain:/var/run \
-	-v /var/www/$domain/public_html/wp-content:/usr/src/wordpress/wp-content \
-	-v /var/www/$domain/public_html/salts.php:/usr/src/wordpress/salts.php:ro \
-	wordpress-php7.1-fpm-alpine-mod
+	--volume /var/run/docker-apps/$DOMAIN:/var/run \
+	--volume /var/www/$DOMAIN/public_html/wp-content:/usr/src/wordpress/wp-content \
+	--volume /var/www/$DOMAIN/public_html/salts.php:/usr/src/wordpress/salts.php:ro \
+	wordpress-php7.1-fpm-alpine-mod:$TAG

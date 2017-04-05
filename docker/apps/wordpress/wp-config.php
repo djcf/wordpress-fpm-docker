@@ -158,9 +158,11 @@ if (isset($_ENV['WPLANG']) && ($_ENV['WPLANG'] != "")) {
  */
 
 if (isset($_ENV['WP_DEBUG']) && ($_ENV['WP_DEBUG'] == "true")) {
-     define('WP_DEBUG', true);   
+     define('WP_DEBUG', true); 
+     error_reporting(0);
 } else {
      define('WP_DEBUG', false);   
+     error_reporting(E_ALL);
 }
 
 /* That's all, stop editing! Happy Pressing. */

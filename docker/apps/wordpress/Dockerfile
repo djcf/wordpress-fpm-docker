@@ -1,4 +1,6 @@
-FROM wordpress:php7.1-fpm-alpine
+ARG TAG=php7.1-fpm-alpine
+ARG EDGE=FALSE
+FROM wordpress:$TAG
 
 # Add fix-user script to docker run command
 #COPY chids.sh /usr/local/bin/chids.sh
@@ -6,6 +8,8 @@ FROM wordpress:php7.1-fpm-alpine
 #COPY add-users.sh /usr/local/bin/add-users.sh
 #RUN sed -i 's/^exec "$@"/\/usr\/local\/bin\/create-users.sh\nexec "$@"/g' /usr/local/bin/docker-entrypoint.sh
 #RUN sed -ri 's/^www-data:x:82:82:/www-data:x:1000:1000:/' /etc/passwd
+
+RUN if $EDGE -eq "TRUE"; then cd /usr/src && wget https://wordpress.org/latest.zip; rm -rf wordpress; unzip latest.zip; fi
 
 ADD  https://gist.githubusercontent.com/djcf/bcd2f725652f46b4786e29ffdc32495c/raw /usr/local/bin/minify.sh
 COPY wp-cli.yml /

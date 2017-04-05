@@ -1,13 +1,13 @@
 ---
 - name: Crawl remote site
   command: >
-    mkdir -p /var/www/{{ primary_subdomain }}/ &&
+    mkdir -p /var/www/archives/{{ primary_subdomain }}/ &&
     wget --mirror
       --convert-links
       --adjust-extension
       --page-requisites
       --no-parent
-      --directory-prefix=/var/www/{{ primary_subdomain }}/
+      --directory-prefix=/var/www/archives/{{ primary_subdomain }}/
       --no-check-certificate
       --level=5
     http://{{ primary_domain }}

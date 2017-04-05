@@ -20,19 +20,19 @@ docker rmi $IMAGE:latest
 docker build $LATEST_WP_DIR -t $IMAGE:latest
 LATEST_VERSION=$(docker run --rm $IMAGE:latest wp --allow-root core version)
 docker tag $IMAGE:latest $IMAGE:$LATEST_VERSION
+docker rm -f group-wordpress.fpm
 while read -r container; do
 	echo "Updating $container to $LATEST_VERSION"
 	SUBDOMAIN=${v::-4}
 	/usr/local/bin/renew-fpm-container.sh $SUBDOMAIN
 	docker run --env-file /var/www/$SUBDOMAIN/.env --rm --volumes-from $container $IMAGE:latest sh -c 'wp --allow-root core update-db; wp --allow-root plugin update --all'
-done <<< $(/usr/local/bin/view-on-demand-containers.sh)
+done <<< $(docker ps --all --filter ancestor=wordpress-php7.1-fpm-alpine-mod:old --format "{{.Names}}")
+
 cd $LATEST_WP_DIR
 cd ../../
-docker rm -f group-wordpress.fpm
 docker-compose up -d wordpress
 while read -r container; do
 	echo "Updating $container to $LATEST_VERSION"
 	SUBDOMAIN=${v::-4}
-	/usr/local/bin/renew-fpm-container.sh $SUBDOMAIN
-	docker run --env-file /var/www/$SUBDOMAIN/.env --rm --volumes-from $container $IMAGE:latest sh -c 'wp --allow-root core update-db; wp --allow-root plugin update --all'
+	docker run --env-file /var/www/$SUBDOMAIN/.env --rm --volumes-from group-wordpress.fpm $IMAGE:latest sh -c 'wp --allow-root core update-db; wp --allow-root plugin update --all'
 done <<< $(/usr/local/bin/view-php-group-websites.sh)

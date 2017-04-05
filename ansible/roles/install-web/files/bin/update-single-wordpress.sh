@@ -7,24 +7,21 @@ if [ "$#" -ne 2 ]; then
     echo "If --bleeding is the last arg, the latest version of WP is fetched from wordpress.org instead of docker hub"
     echo "This is likely to be more recent than the official docker images"
     echo ""
-    echo "Useage: $0 CONTAINER_NAME TAG [--bleeding]"
-    echo "Example: ./update-single-wordpress.sh test 4.7.3-php7.1-fpm-alpine"
-    echo "Example: ./update-single-wordpress.sh test 4.7.3-php7.1-fpm-alpine --bleeding"
+    echo "Useage: $0 CONTAINER_NAME --bleeding"
+    echo "Example: ./update-single-wordpress.sh test --bleeding"
     exit 1
 fi
 
 IMAGE=wordpress-php7.1-fpm-alpine-mod
-TAG="$2"
-HUB_TAG="$2"
 CONTAINER_NAME="$1"
 EXTRA_ARGS=""
 
-if [ "$3" == "--bleeding" ]; then
+if [ "$2" == "--bleeding" ]; then
 	TAG="edge"
 	EXTRA_ARGS="--build-arg EDGE=TRUE"
 fi
 
-docker build $LATEST_WP_DIR -t $IMAGE:$TAG --build-arg TAG=$HUB_TAG $EXTRA_ARGS
+docker build $LATEST_WP_DIR -t $IMAGE:$TAG $EXTRA_ARGS
 NEW_VERSION=$(docker run --rm $IMAGE:$TAG wp --allow-root core version)
 OLD_VERSION=$(docker exec -it $CONTAINER_NAME.fpm sh -c 'wp --allow-root core version')
 

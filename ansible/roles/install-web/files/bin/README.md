@@ -15,16 +15,13 @@ This directory contains a collection of bash scripts which are used to illustrat
 
 **renew-fpm-container.sh** takes the complicated work out of removing and re-producing on-demand php-fpm containers
 
-Known issues: does not map custom wp-config and wp-config-inc files.
-
 **renew-fpm-socket.sh** fixes systemd's communication with the on-demand docker container by removing /var/run/docker-apps/$domain and re-starting the systemd units responsible for that directory
 
 **update-all-wordpress.sh** Updates all wordpress containers and sites to the latest version from http://hub.docker.com/_/wordpress.
 
 **update-single-wordpress.sh**: Experimental script to alter a docker container so that uses a different version of wordpress. If --bleeding, the wordpress source will be grabbed from wordpress.org/latest instead of docker hub. Usage:
 
-    $0 CONTAINER_NAME TAG [--bleeding]
-    ./update-single-wordpress.sh test.fpm 4.7.3-php7.1-fpm-alpine
+    $0 CONTAINER_NAME [--bleeding]
 
 **view-on-demand-containers.sh** simply lists on-demand containers and their kill times. If kill times are outstanding, lists that too. In -q mode, simply prints container names.
 

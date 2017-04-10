@@ -124,6 +124,19 @@ endif;
  * prefix. Only numbers, letters, and underscores please!
  */
 
+if (isset($_ENV['MAX_SIZE']) && ($_ENV['MAX_SIZE'] != "")) {
+	ini_set( 'upload_max_size' , $_ENV['MAX_SIZE'] );
+	ini_set( 'post_max_size', $_ENV['MAX_SIZE']);
+} else {
+	ini_set( 'upload_max_size' , '32M' );
+	ini_set( 'post_max_size', '32M');
+}
+if (isset($_ENV['MAX_EXECUTION_TIME']) && ($_ENV['MAX_EXECUTION_TIME'] != "")) {
+	ini_set( 'max_execution_time', $_ENV['MAX_EXECUTION_TIME'] );
+} else {
+	ini_set( 'max_execution_time', '180' );
+}
+
 if (isset($_ENV['WP_PREFIX']) && ($_ENV['WP_PREFIX'] != "")) {
     $table_prefix = $_ENV['WP_PREFIX'];
 } else {

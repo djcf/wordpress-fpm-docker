@@ -23,7 +23,8 @@ RUN apk add --update ssmtp mariadb-client fcgi && \
 	adduser -D -u 33 -s /bin/false -h /usr/src/wordpress -G www-data www-data && \ 
 	chmod +x /usr/local/bin/minify.sh && /usr/local/bin/minify.sh && \
 	chown -R www-data:www-data /usr/src/wordpress && chmod -R 0444 /usr/src/wordpress && \
-	find /usr/src/wordpress -type d -exec chmod 755 {} +
+	find /usr/src/wordpress -type d -exec chmod 755 {} + && \
+	ulimit -c 0
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 

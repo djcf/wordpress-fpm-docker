@@ -16,7 +16,6 @@
     - git
     - curl
     - wget
-    - dig
     - fish
     - docker
     - systemd-docker

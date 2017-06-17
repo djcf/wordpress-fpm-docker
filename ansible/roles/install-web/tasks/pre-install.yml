@@ -7,6 +7,7 @@
   with_items:
     - /etc/ansible/roles
     - /usr/local/cron
+    - /var/lib/wordpress
 #    - "{{ letsencrypt_account_dir }}"
 
 - name: configure systemd to activate docker containers
@@ -21,6 +22,9 @@
   - files/bin/*
   tags:
     - bins
+
+- name: copy autologin script
+  copy: src=autologin.php dest=/var/lib/wordpress/
 
 - name: increase system performance by adjusting sysctl
   copy: src=sysctl.conf dest=/etc/sysctl.d/99-sysctl.conf owner=root group=root mode=655

@@ -14,9 +14,9 @@
     - ftp
     - sftp
 
-- include: wordpress-admins.yml
-  tags:
-    - autologin
+#- include: wordpress-admins.yml
+#  tags:
+#    - autologin
 
 - include: docker.yml
   tags: docker

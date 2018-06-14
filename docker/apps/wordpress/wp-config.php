@@ -180,7 +180,7 @@ if (isset($_ENV['WP_DEBUG']) && ($_ENV['WP_DEBUG'] == "true")) {
 
 /* That's all, stop editing! Happy Pressing. */
 
-define( 'WP_AUTO_UPDATE_CORE', false );
+define( 'WP_AUTO_UPDATE_CORE', true );
 
 
 /** Absolute path to the WordPress directory. */

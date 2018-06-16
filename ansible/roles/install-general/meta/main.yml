@@ -8,6 +8,7 @@ galaxy_info:
 dependencies:
   - { role: MichaelRigart.aliases, become: true }
   - galexrt.cockpit
-  - infOpen.fail2ban
-  - mongrelion.docker
+  - angstwad.docker_ubuntu
+#  - infOpen.fail2ban
+#  - mongrelion.docker
 #  - tersmitten.fail2ban

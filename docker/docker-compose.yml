@@ -13,7 +13,7 @@ services:
   # drupal group fpm container
   image: drupal:7-fpm-alpine
   volumes:
-     - /var/run/docker-apps:/var/run
+    - /var/run/docker-apps:/var/run
 
   # wordpress group fpm container
   wordpress:
@@ -126,6 +126,32 @@ services:
     logging:
       options:
         max-size: 25k
+  ldap:
+    image: dweomer/openldap
+    volumes:
+      - ldap_config:/etc/openldap
+      - ldap_data:/var/lib/openldap
+#      - ./default-policy.ldif:/etc/openldap/modules/default_policy.ldif:ro
+#      - ./000-domain.ldif:/srv/openldap.d/000-domain.ldif:ro
+    restart: always
+    environment:
+      - LDAP_DOMAIN=ldap.common.scot
+      - LDAP_PASSWORD=752684859ad4093449c8b7265345e557
+#      - SLAPD_ADDITIONAL_SCHEMAS=ppolicy
+#      - SLAPD_ADDITIONAL_SCHEMAS=default_policy
+#      - SLAPD_ADDITIONAL_MODULES=ppolicy
+    hostname: ldap.common.scot
+  admin:
+    image: lcgc/phpldapadmin
+    environment:
+      - LDAP_HOST=ldap
+      - VIRTUAL_HOST=ldap.common.scot
+    links:
+      - ldap:ldap
+    networks:
+      - ldapnet
+
+
 
 volumes:
   # This is where the MariaDB database files are kept
@@ -162,3 +188,4 @@ volumes:
 
 networks:
   sqlnet:
+  ldapnet:

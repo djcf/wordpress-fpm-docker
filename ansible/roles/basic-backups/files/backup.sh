@@ -3,10 +3,10 @@ TODAY=`date '+%Y_%m_%d__%H_%M_%S'`;
 for VOLUME in $(/usr/local/bin/list-named-volumes.sh); do
 	rsync -av /var/lib/docker/volumes/$VOLUME/_data/ /var/backups/projects/latest/volumes/$VOLUME/
 done
-for PROJECT in $(ls /var/www); do
-	. /var/www/$PROJECT/.env
-	/usr/local/bin/export-sql $PROJECT | gzip -9 > /var/backups/projects/latest/sql/$DB_NAME.sql.gz
-done
+# for PROJECT in $(ls /var/www); do
+# 	. /var/www/$PROJECT/.env
+# 	/usr/local/bin/export-sql $PROJECT | gzip -9 > /var/backups/projects/latest/sql/$DB_NAME.sql.gz
+# done
 zip -r -9 /var/backups/projects/$TODAY.zip /var/backups/projects/latest
 gsutil push --dry-run /var/backups/projects/$TODAY.zip gs://backups.common.scot/$(hostname)/
 

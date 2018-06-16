@@ -10,11 +10,6 @@ version: '2'
 #
 
 services:
-  # drupal group fpm container
-  image: drupal:7-fpm-alpine
-  volumes:
-    - /var/run/docker-apps:/var/run
-
   # wordpress group fpm container
   wordpress:
     build: apps/wordpress
@@ -184,6 +179,10 @@ volumes:
     driver: local
   # This location contains the group pools for the always-active php-fpm instance (it is not used by the on-demand instances)
   group_php_pools:
+    driver: local
+  ldap_config:
+    driver: local
+  ldap_data:
     driver: local
 
 networks:

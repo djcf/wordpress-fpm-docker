@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
   # This Xenial box seems to work however
   config.vm.box = "nrclark/xenial64-minimal-libvirt"
 
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
+  config.vm.synced_folder ".", "/usr/local/web", type: "rsync",
     rsync__exclude: ".git/"
 
   # config.vm.provision "ansible" do |ansible|

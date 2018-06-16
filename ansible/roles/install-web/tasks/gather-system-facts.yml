@@ -27,7 +27,7 @@
     is_vagrant: true
     fish_users:
       - vagrant
-    install_path: /vagrant
+#    install_path: /vagrant
   when: is_vagrant.stat.exists
 
 - name: set fact -- number of worker_connections

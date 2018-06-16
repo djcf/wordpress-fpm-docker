@@ -32,12 +32,12 @@
   tags:
     - tweaks
 
-# - name: install this toolkit to a clear path on the remote host
-#   git:
-#     repo: "{{ remote_path}}"
-#     dest: "{{ install_path }}"
-#   ignore_errors: true
-  #when: not is_vagrant
+- name: install this toolkit to a clear path on the remote host
+  git:
+    repo: "{{ remote_path}}"
+    dest: "{{ install_path }}"
+  ignore_errors: true
+#  when: not is_vagrant
 
 - name: copy letsencrypts challenge-response directory
   synchronize:

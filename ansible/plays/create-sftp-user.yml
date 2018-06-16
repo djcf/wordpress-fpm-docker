@@ -1,5 +1,5 @@
 ---
-# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot" add-wordpress-vhost.yml
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"

@@ -6,7 +6,7 @@ if [ "$#" -eq 0 ]; then
 	echo "This script removes and then re-creates a php-fpm container"
 	echo "This is useful for example when updating wordpress or adding a wp-config override"
 	echo "As always, do NOT type a fully-qualified DOMAIN name as input"
-	echo "Instead, use the primary subDOMAIN key, e.g. 'example' in 'example.noflag.org.uk'"
+	echo "Instead, use the primary subDOMAIN key, e.g. 'example' in 'example.common.scot'"
 	echo ""
     echo "Useage: $0 PRIMARY_SUBDOMAIN [TAG=latest]"
     exit 1
@@ -36,7 +36,7 @@ docker rm -f $DOMAIN.fpm
 docker create \
 	--name $DOMAIN.fpm \
 	--network docker_sqlnet \
-	--hostname=$DOMAIN.noflag.org.uk \
+	--hostname=$DOMAIN.common.scot \
 	--env-file /var/www/$DOMAIN/.env \
 	$EXTRA_VOL_1 $EXTRA_VOL_2 \
 	--volume /etc/ssmtp:/etc/ssmtp:ro \

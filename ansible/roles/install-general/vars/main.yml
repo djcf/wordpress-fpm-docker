@@ -8,4 +8,4 @@ aliases_list:
   - user: admin
     alias: root
   - user: root
-    alias: admin@lists.noflag.org.uk
+    alias: admin@lists.common.scot

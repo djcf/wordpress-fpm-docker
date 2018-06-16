@@ -3,7 +3,7 @@ Migrating a site from alba
 
 1. Run plays/alba/export-from-alba.yml
 
-    ansible-playbook -i "alba.noflag.org.uk, " plays/alba/export-from-alba.yml
+    ansible-playbook -i "alba.common.scot, " plays/alba/export-from-alba.yml
 
 2. Enter the name of the alba user(s) with wordpress websites you would like to export when prompted
     
@@ -15,12 +15,12 @@ Migrating a site from alba
 
     cat plays/alba/from-alba/$alba-user.yml
     primary_subdomain: xxx
-    domains: xxx.noflag.org.uk
+    domains: xxx.common.scot
     zipped_filename: from-alba/xxx.zip
 
 6. If these details are correct, run `plays/alba/import.yml`
 
-    ansible-playbook -i "www2.noflag.org.uk, " plays/alba/import.yml
+    ansible-playbook -i "www2.common.scot, " plays/alba/import.yml
 
 7. Enter the name of the .yml file with variables from the desired export (usually the same as the alba username) when prompted.
 

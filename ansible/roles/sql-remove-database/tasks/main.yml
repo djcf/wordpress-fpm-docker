@@ -1,6 +1,6 @@
 ---
 # Shell equivilent:
-# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.noflag.org.uk -P3306 -uroot -e \"DROP DATABASE IF EXISTS $db_name; DROP USER '$db_user'@'%';
+# docker run --net=docker_sqlnet --link sqldb.common.scot:sqldb.common.scot -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysql -f -hsqldb.common.scot -P3306 -uroot -e \"DROP DATABASE IF EXISTS $db_name; DROP USER '$db_user'@'%';
 # - name: Remove database (docker run container)
 #   docker_container:
 #     name: "{{ db_name }}.removedb"

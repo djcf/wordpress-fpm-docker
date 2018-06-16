@@ -1,6 +1,6 @@
 ---
 # defaults file for domain-munging
-domain_host: noflag.org.uk
+domain_host: common.scot
 primary_domain: "{{ primary_subdomain }}.{{ domain_host }}"
 domain_list: []
 zone_list: []

@@ -78,7 +78,7 @@ If the setting you are changing is:
 
 ### The file I was told to change starts with repo:, what does this mean?
 
-`repo:` refers to this exact repository. It's canonically-mastered at https://labs.noflag.org.uk/Noflag/web-two-point-oh/, where you can clone it to any directory of your computer, make changes, then push back to labs. You can of course run ansible scripts from your local computer too.
+`repo:` refers to this exact repository. It's canonically-mastered at https://labs.common.scot/CommonWeal/web-two-point-oh/, where you can clone it to any directory of your computer, make changes, then push back to labs. You can of course run ansible scripts from your local computer too.
 
 If you are running a local test environment using vagrant, repo: will be located in `/vagrant`.
 

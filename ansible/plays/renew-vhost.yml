@@ -1,5 +1,5 @@
 ---
-# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk" add-wordpress-vhost.yml
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot" add-wordpress-vhost.yml
 - hosts: all
   vars_prompt:
   - name: "primary_subdomain"
@@ -8,7 +8,7 @@
       ALL websites must have a primary subdomain associated with them and parked to the domain host.
       This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
       It will be used as a unique key to identify this user's domain.
-      For example, for 'example.noflag.org.uk', enter 'example'.
+      For example, for 'example.common.scot', enter 'example'.
       Enter a primary subdomain
     private: no
   # - name: "primary_domain"

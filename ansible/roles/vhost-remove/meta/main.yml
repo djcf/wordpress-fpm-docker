@@ -1,7 +1,7 @@
 galaxy_info:
   author: daniel
   description: removes an nginx vhost
-  company: noflag
+  company: CommonWeal
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2
   galaxy_tags: []

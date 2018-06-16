@@ -6,7 +6,7 @@
     lets_encrypt_cert_exists: false
 
 - name: Copy temporary vhost template to host
-  template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+  template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}"
 #    validate: "docker exec -it {{ switchboard }} nginx -t"
   notify: reload nginx
   register: vhost_was_installed
@@ -28,7 +28,7 @@
 #   when: letsencrypt_all_domains is not defined
 
 - name: run the letsencrypt certbot
-  command: "letsencrypt certonly --webroot --webroot-path /var/www/letsencrypt-challenge/ --email admin@lists.noflag.org.uk --agree-tos -d {{ letsencrypt_domain_list }}"
+  command: "letsencrypt certonly --webroot --webroot-path /var/www/letsencrypt-challenge/ --email admin@lists.common.scot --agree-tos -d {{ letsencrypt_domain_list }}"
   args:
     creates: "/etc/letsencrypt/live/{{ primary_domain }}/fullchain.pem"
 

@@ -28,7 +28,7 @@
 #     data: "{{ le_challenge }}"
 
 # # - name: Copy vhost template to host with new SSL certificate
-# #   template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+# #   template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}"
 # # #    validate: "docker exec -it {{ switchboard }} nginx -t"
 # #   notify: reload nginx
 # #   tags:

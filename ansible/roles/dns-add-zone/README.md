@@ -9,9 +9,9 @@ Role Variables
     # defaults file for dns-add-zone
     state: present
     nameservers:
-      - ns1.noflag.org.uk
-      - ns2.noflag.org.uk
-    pdns_host: pdns.noflag.org.uk
+      - ns1.common.scot
+      - ns2.common.scot
+    pdns_host: pdns.common.scot
     pdns_port: 80
 
 Dependencies    

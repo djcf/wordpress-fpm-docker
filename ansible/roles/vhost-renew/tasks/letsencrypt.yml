@@ -24,7 +24,7 @@
 #     use_own_certificate: true
 
 # - name: Copy vhost template to host (first pass)
-#   template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+#   template: src=vhost.j2 dest="{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}"
 
 # - name: Reload nginx with new vhost
 #   command: docker exec switchboard nginx -s reload

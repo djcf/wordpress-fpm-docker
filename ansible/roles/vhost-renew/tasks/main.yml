@@ -1,6 +1,6 @@
 ---
 - name: Try to find a custom vhost file for inclusion
-  stat: "path={{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf"
+  stat: "path={{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}"
   register: custom_vhost_exists
   failed_when: not custom_vhost_exists.stat.exists
   ignore_errors: true
@@ -45,7 +45,7 @@
 - name: Copy vhost template to host
   template:
     src: vhost.j2
-    dest: "{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf"
+    dest: "{{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}"
 #    validate: "docker exec -it {{ switchboard }} nginx -t"
   notify: reload nginx
   register: vhost_was_installed
@@ -58,6 +58,6 @@
       A vhost for {{ primary_subdomain }} 
       ({{ ssl_host|ternary('http','https') }}://{{ primary_domain }}) 
       {{ vhost_was_installed.changed|ternary('has been installed','exists') }} at 
-      {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}.conf
+      {{ docker_volumes['docker_sites_enabled'] }}/{{ vhost_prefix }}/{{ primary_subdomain }}
   tags:
     - vhost

@@ -55,7 +55,7 @@ server {
     {% endif %}
 
     {% if custom_vhost_exists is defined and custom_vhost_exists|succeeded %}
-        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }};
     {% endif %}
 
 

@@ -9,4 +9,4 @@
     - zone_list
     - domain_list
   vars:
-    web_server: "www.noflag.org.uk."
+    web_server: "www.common.scot."

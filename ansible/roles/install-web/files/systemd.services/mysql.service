@@ -10,9 +10,9 @@ TimeoutStopSec=15
 NotifyAccess=all
 Type=notify
 RestartSec=10s
-#ExecStart=-/usr/bin/systemd-docker run --net docker_sqlnet --rm --name=sqldb.noflag.org.uk -v docker_sqldata:/var/lib/mysql yobasystems/alpine-mariadb
-ExecStart=-/usr/bin/systemd-docker start sqldb.noflag.org.uk
-ExecStop=-/usr/bin/systemd-docker stop sqldb.noflag.org.uk
+#ExecStart=-/usr/bin/systemd-docker run --net docker_sqlnet --rm --name=sqldb.common.scot -v docker_sqldata:/var/lib/mysql yobasystems/alpine-mariadb
+ExecStart=-/usr/bin/systemd-docker start sqldb.common.scot
+ExecStop=-/usr/bin/systemd-docker stop sqldb.common.scot
 
 [Install]
 WantedBy=multi-user.target

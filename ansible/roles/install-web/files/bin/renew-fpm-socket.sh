@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Resyncs systemd with docker's on-demand containers
-# See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+# See https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
 
 if [ "$#" -eq 0 ]; then
     echo "Useage: $0 DOMAIN"

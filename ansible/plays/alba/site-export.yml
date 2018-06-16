@@ -33,7 +33,7 @@
 - name: Set fact about subdomain
   set_fact:
     secondary_domain: " www.{{ domain_name }}"
-  when: "'noflag.org.uk' not in domain_name"
+  when: "'common.scot' not in domain_name"
 
 - name: Dump database to database.sql.gz
   mysql_db:

@@ -1,7 +1,7 @@
 galaxy_info:
   author: daniel
   description: import an SQL database file to an existing database
-  company: noflag
+  company: CommonWeal
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2
 

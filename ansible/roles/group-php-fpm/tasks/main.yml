@@ -76,7 +76,7 @@
 #       max-size: 25k
 #     networks:
 #       - name: docker_sqlnet
-#         links: sqldb.noflag.org.uk
+#         links: sqldb.common.scot
 #     env:
 #       WEBROOT: "/usr/src/wordpress"
 #       WP_DEBUG: "off"

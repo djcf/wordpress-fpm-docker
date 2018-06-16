@@ -2,7 +2,7 @@
 
 # Pauses on-demand containers after a certain time
 # Run by cron
-# See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+# See https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
 
 ON_DEMAND_CONTAINERS="/var/lib/docker/volumes/docker_sites_enabled/_data/on-demand"
 

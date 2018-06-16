@@ -10,4 +10,4 @@ ExecStart=/usr/bin/docker start -a %i.fpm
 ExecStartPost=/usr/local/bin/waitsock.sh /var/run/docker-apps/%i/php-fpm.sock
 
 ExecStop=/usr/bin/docker stop %i.fpm
-#Alias=%i.noflag.org.uk.service
+#Alias=%i.common.scot.service

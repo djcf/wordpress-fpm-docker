@@ -1,7 +1,7 @@
 galaxy_info:
   author: daniel
-  description: https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md
-  company: noflag
+  description: https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md
+  company: CommonWeal
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2
   galaxy_tags: []

@@ -52,7 +52,7 @@
     domain_list: "{{ domain_list }} + [ 'www.{{ primary_domain }}' ]"
     zone_list: "{{ zone_list }} + [ '{{ primary_domain }}' ]"
   when:
-    - '"noflag.org.uk" not in primary_domain'
+    - '"common.scot" not in primary_domain'
     - '"www." not in primary_domain'
 
 - name: Add primary_domain to domain_list

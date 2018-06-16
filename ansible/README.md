@@ -16,9 +16,9 @@ Most roles have extremely-configurable settings, with sane defaults. All options
 
 ## AVAILABLE INVENTORIES
 
-`noflag-infrastructure.yml` contains a complete list of the organization's hosts, sorted by role.
+`CommonWeal-infrastructure.yml` contains a complete list of the organization's hosts, sorted by role.
 
-`archive-host.yml` contains only archive.noflag.org.uk, which is useful if you want to install/configure a webhost there, instead of on the main server.
+`archive-host.yml` contains only archive.common.scot, which is useful if you want to install/configure a webhost there, instead of on the main server.
 
 `../.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory`is available if you are using vagrant
 
@@ -44,7 +44,7 @@ To install a new wordpress host:
 The InstallShield(tm) Wizard will guide you through the rest of the setup process but if you wanted to run the command in batch mode, you can supply the arguments directly:
 
 	ansible-playbook  -i $inventory \
-		--extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk site_title="test" admin_email=email@address.org" \
+		--extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot site_title="test" admin_email=email@address.org" \
 		plays/wordpress/create-wordpress-site.yml
 
 The Wizard assumes most sensible defaults, but you can turn any option off from the command-line. However, boolean variables are ** NOT ** parsed correctly through the command-line. If you need to do pass a boolean to override a default option you must pass the entire string as JSON.
@@ -52,7 +52,7 @@ The Wizard assumes most sensible defaults, but you can turn any option off from 
 For example, to disable SSL on the new host, you need to run:
 
 	ansible-playbook -i $inventory \
- 		--extra-vars "{ 'ssl_host': false, 'domains': 'mydomain.org', 'primary_subdomain': 'mysubdomain.noflag.org.uk'}" \
+ 		--extra-vars "{ 'ssl_host': false, 'domains': 'mydomain.org', 'primary_subdomain': 'mysubdomain.common.scot'}" \
  		plays/renew-vhost.yml
 
 For complete documentation, browse each play's directory.

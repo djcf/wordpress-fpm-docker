@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Proxies a unix socket until an application is ready
-# Used by systemd. See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+# Used by systemd. See https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
 
 tries=600
 

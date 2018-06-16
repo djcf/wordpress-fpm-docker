@@ -6,7 +6,7 @@ This role takes a canonical domain name and archives it using wget on the archiv
 Role Variables
 --------------
 
-    archive-host: bhagat.noflag.org.uk
+    archive-host: bhagat.common.scot
 
 The archive host to use.
 

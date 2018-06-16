@@ -2,7 +2,7 @@
 - hosts: web
   vars_prompt:
   - name: "primary_subdomain"
-    prompt: "** Primary subdomain **\nALL websites must have a primary subdomain associated with them and parked to the domain host.\nThis is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. It will be used as a unique key to identify this user's domain.\n\nFor example, for 'example.noflag.org.uk', enter 'example'. \n\nEnter a primary subdomain"
+    prompt: "** Primary subdomain **\nALL websites must have a primary subdomain associated with them and parked to the domain host.\nThis is to ensure the website is able to stay active even if control over the top-level domain is lost or expires. It will be used as a unique key to identify this user's domain.\n\nFor example, for 'example.common.scot', enter 'example'. \n\nEnter a primary subdomain"
     private: no
   - name: "domains"
     prompt: "If the website has alias domains of any kind, enter them now, separated by a space. For example, 'example.org www.example.org'. www. aliases will NOT be added unless specified"

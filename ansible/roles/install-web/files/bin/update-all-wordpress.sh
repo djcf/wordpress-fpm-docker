@@ -26,7 +26,7 @@ while read -r container; do
 	echo "Updating $container to $LATEST_VERSION"
 	SUBDOMAIN=${container::-4}
 	/usr/local/bin/renew-fpm-container.sh $SUBDOMAIN
-	docker run --env-file /var/www/$SUBDOMAIN/.env --rm --volumes-from $container --network=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk $IMAGE:latest sh -c 'wp --allow-root core update-db; wp --allow-root plugin update --all'
+	docker run --env-file /var/www/$SUBDOMAIN/.env --rm --volumes-from $container --network=docker_sqlnet --link sqldb.common.scot:sqldb.common.scot $IMAGE:latest sh -c 'wp --allow-root core update-db; wp --allow-root plugin update --all'
 done <<< $(docker ps --all --filter ancestor=wordpress-php7.1-fpm-alpine-mod:old --format "{{.Names}}")
 
 #cd $LATEST_WP_DIR

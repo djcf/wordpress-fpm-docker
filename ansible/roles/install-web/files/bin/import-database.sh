@@ -14,7 +14,7 @@ if [[ $2 == *".gz"* ]]; then
 	docker run \
 		--env "FILE=/tmp/database.sql.gz" \
 		--net=docker_sqlnet \
-		--link sqldb.noflag.org.uk:sqldb.noflag.org.uk \
+		--link sqldb.common.scot:sqldb.common.scot \
 		--env-file $1 \
 		--volume $2:/tmp/database.sql.gz:ro \
 		-it \
@@ -27,7 +27,7 @@ else
 		--env "FILE=/tmp/database.sql" \
 		--net=docker_sqlnet \
 		--env-file $1 \
-		--link sqldb.noflag.org.uk:sqldb.noflag.org.uk \
+		--link sqldb.common.scot:sqldb.common.scot \
 		--volume $2:/tmp/database.sql:ro \
 		-it \
 		--rm gists/mariadb \

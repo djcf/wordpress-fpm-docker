@@ -1,6 +1,6 @@
 ## How does this fit into the system?
 
-Read this first: https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+Read this first: https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
 
 This file contains systemd's service descriptors for the webhost. They live in /etc/systemd/system/ and are automatically put there by ansible.
 
@@ -12,7 +12,7 @@ to the MysQL service running in docker.
 
 See also a list of useful systemd commands: https://www.dynacont.net/documentation/linux/Useful_SystemD_commands/ and even more detail: https://www.digitalocean.com/community/tutorials/how-to-configure-a-linux-service-to-start-automatically-after-a-crash-or-reboot-part-1-practical-examples.  For more information about running docker containers as systemd processes, check here http://container-solutions.com/running-docker-containers-with-systemd/, here https://goldmann.pl/blog/2014/07/30/running-docker-containers-as-systemd-services/
 
-Each php vhost's fpm containers are also activated by service descriptor proxies in this location, configured by ansible. See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/ansible/plays for those playbooks.
+Each php vhost's fpm containers are also activated by service descriptor proxies in this location, configured by ansible. See https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/ansible/plays for those playbooks.
 
 What is a service descriptor proxy?
 

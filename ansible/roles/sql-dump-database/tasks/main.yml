@@ -1,6 +1,6 @@
 ---
 # Shell equivilent:
-# docker run --net=docker_sqlnet --link sqldb.noflag.org.uk:sqldb.noflag.org.uk -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysqldump -hsqldb.noflag.org.uk -P3306 -uroot $db_name | gzip > /tmp/dump/$db_name.sql.gz
+# docker run --net=docker_sqlnet --link sqldb.common.scot:sqldb.common.scot -e "MYSQL_PWD=1234" --rm mariadb sh -c 'mysqldump -hsqldb.common.scot -P3306 -uroot $db_name | gzip > /tmp/dump/$db_name.sql.gz
 - name: Export database
   docker_container:
     name: "{{ db_name }}.dumpdb"

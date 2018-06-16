@@ -13,4 +13,4 @@ The opposite of sites running in their own on-demand php-fpm container is sites 
 
 ## More information:
 
-https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md

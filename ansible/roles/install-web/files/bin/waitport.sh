@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Proxies a TCP port until an application is ready
-# Unused. See https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
+# Unused. See https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.2-On-Demand-Containers.md
 
 host=$1
 port=$2

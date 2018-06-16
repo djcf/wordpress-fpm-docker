@@ -21,4 +21,4 @@ Since `configure-web` lists `install-web` as a requirement, it suffices simply t
 See also
 ---
 
-https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md
+https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md

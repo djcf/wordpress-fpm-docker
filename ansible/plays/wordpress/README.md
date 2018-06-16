@@ -27,7 +27,7 @@ Non-interactive:
 Non-interactive, with access to all variables:
 
 ansible-playbook  -i $inventory \
-	--extra-vars "domain=mydomain.org subdomain=mysubdomain.noflag.org.uk site_title="test" admin_email=email@address.org" \
+	--extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot site_title="test" admin_email=email@address.org" \
 	plays/wordpress/create-wordpress-site.yml
 
 Import a wordpress site

@@ -53,7 +53,7 @@
     - docker
 
 # Shell equivilent
-# docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.noflag.org.uk --volumes-from $parent_container --rm wordpress-php7.1-fpm-alpine-mod sh -c \
+# docker run --net=docker_sqlnet --env-file /var/www/$domain/.env --link sqldb.common.scot --volumes-from $parent_container --rm wordpress-php7.1-fpm-alpine-mod sh -c \
 #   '/usr/local/bin/wp --allow-root --path=/usr/src/wordpress db check'
 - name: Check to see if WP database exists
   command: >

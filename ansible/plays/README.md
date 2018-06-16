@@ -1,7 +1,7 @@
 Renew a vhost
 ===============
 
-This process is designed for when you already have a php-container environment set up but you need to renew the vhost which serves the site. For example, if you are adding a new top-level domain (`example.org`) to an existing website (`example.noflag.org.uk`) or removing one, or adding an SSL certificate, etc.
+This process is designed for when you already have a php-container environment set up but you need to renew the vhost which serves the site. For example, if you are adding a new top-level domain (`example.org`) to an existing website (`example.common.scot`) or removing one, or adding an SSL certificate, etc.
 
 Operations: 
 

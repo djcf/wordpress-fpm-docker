@@ -24,4 +24,4 @@ Dependencies
 
 See Also
 ----
-https://labs.noflag.org.uk/Noflag/web-two-point-oh/src/master/docs/1.3-Group-FPM.md
+https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.3-Group-FPM.md

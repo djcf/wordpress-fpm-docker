@@ -1,5 +1,5 @@
 <?php
-// Allows noflag admins access to the Wordpress upgrade script
+// Allows CommonWeal admins access to the Wordpress upgrade script
 function fail($msg, $valid_until) {
         echo "Autologin token $msg.<br>";
         echo "Token signed at: " . gmdate("Y-m-d\TH:i:s\Z", $valid_until) . "<br>";

@@ -19,7 +19,7 @@ This is the name of the group fpm container
 
 This is the root name of the default wildcard cert used by the host, stored in `/var/lib/docker/volumes/docker_ssl_certificates/_data`
 
-    domain_host: "noflag.org.uk"
+    domain_host: "common.scot"
 
 This is the homepage of the organization which manages websites on this server. It's used mainly to second-guess user input and account for discrepencies in what they entered. It also appends to `primary_subdomain` to create permanent vhost subdomains which are assumed to be more permanent than top-level domains which a user might supply.
 
@@ -34,7 +34,7 @@ This is the homepage of the organization which manages websites on this server. 
 
 This is the list of named docker volumes whose absolute paths we want to provide to other roles.
 
-    admin_email: "admin@lists.noflag.org.uk"
+    admin_email: "admin@lists.common.scot"
     install_path: /usr/local/web
 
 This repository should be installed here so that admins may submit pull requests remotely, for manual invocations of `docker-compose` to find a docker-compose.yml file, and also because admins might choose to run ansible directly on the remote host.

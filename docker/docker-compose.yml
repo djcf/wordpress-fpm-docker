@@ -31,7 +31,6 @@ services:
     environment:
       WEBROOT: "/usr/src/wordpress"
       WP_DEBUG: "off"
-    restart: never
 
   drupal:
     build: apps/drupal
@@ -52,7 +51,6 @@ services:
       - database:sqldb.common.scot
     environment:
       WEBROOT: "/usr/src/drupal"
-    restart: never
 
   # switchboard manages vhosts
   switchboard:
@@ -136,7 +134,10 @@ services:
 #      - SLAPD_ADDITIONAL_SCHEMAS=default_policy
 #      - SLAPD_ADDITIONAL_MODULES=ppolicy
     hostname: ldap.common.scot
-  admin:
+    container_name: ldap.common.scot
+    networks:
+      - ldapnet
+  ldap_admin:
     image: lcgc/phpldapadmin
     environment:
       - LDAP_HOST=ldap
@@ -145,6 +146,8 @@ services:
       - ldap:ldap
     networks:
       - ldapnet
+      - default
+    container_name: admin.ldap.common.scot
 
 
 

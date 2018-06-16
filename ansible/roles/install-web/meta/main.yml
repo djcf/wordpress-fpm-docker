@@ -1,5 +1,5 @@
 galaxy_info:
-  author: daniel
+  author: danielle
   description: https://labs.common.scot/CommonWeal/web-two-point-oh/src/master/docs/1.1-Installation-And-Vagrant.md
   company: CommonWeal
   license: license (GPLv2, CC-BY, etc)
@@ -7,3 +7,4 @@ galaxy_info:
   galaxy_tags: []
 dependencies:
   - install-general
+  - basic-backups

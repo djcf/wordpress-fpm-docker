@@ -36,7 +36,29 @@ services:
     environment:
       WEBROOT: "/usr/src/wordpress"
       WP_DEBUG: "off"
-    restart: always
+    restart: never
+
+  drupal:
+    build: apps/drupal
+    image: drupal-php7.1-fpm-alpine-mod
+    container_name: group-drupal.fpm
+    volumes:
+      - group_php_pools:/usr/local/etc/php-fpm.d:ro
+      - /var/www:/var/www
+      - /var/run/docker-apps:/var/run
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    logging:
+      options:
+        max-size: 25k
+    networks:
+      - sqlnet
+    links:
+      - database:sqldb.common.scot
+    environment:
+      WEBROOT: "/usr/src/drupal"
+    restart: never
+
   # switchboard manages vhosts
   switchboard:
     # optionally build the image instead of pulling nginx from repo:

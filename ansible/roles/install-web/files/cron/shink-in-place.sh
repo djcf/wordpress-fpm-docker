@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Purpose: batch image resizer
-# Author: daniel
+# Author: danielle
 
 # absolute path to image folder
 FOLDER=/var/www

@@ -1,0 +1,40 @@
+---
+# Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot" add-wordpress-vhost.yml
+- hosts: all
+  vars_prompt:
+  - name: "primary_subdomain"
+    prompt: |
+      ** Primary subdomain ** ALL websites must have a primary subdomain associated with them and parked to the domain host.
+      This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
+      It will be used as a unique key to identify this user's domain.
+      For example, for 'example.common.scot', enter 'example'.
+    private: no
+  become: true
+  vars:
+    backup_dir: /var/backups/projects
+    source_dir: "{{ backup_dir }}/civi.common.scot/backups/latest/civicrm_app"
+    dest_dir: /var/import
+    source_host: hume.common.scot
+    dest_host: default
+    db_name: "{{ primary_subdomain }}"
+- hosts: "{{ source_host }}"
+  tasks:
+    - name: Synchronize directories
+      synchronize:
+        src: "{{ source_dir }}"
+        dest: "{{ dest_dir }}"
+        mode: pull
+      delegate_to: "{{ dest_host }}"
+- hosts: "{{ dest_host }}"
+  roles:
+    - { role: sql-import-database, db_name: "{{ db_name }}_drupal", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/civicrm.sql" }
+    - { role: sql-import-database, db_name: "{{ db_name }}_civicrm", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/drupal.sql" }
+  tasks:
+    synchronize:
+      src: "{{ dest_dir }}/civicrm_app/{{ item }}"
+      dest: "{{ primary_subdomain }}_{{ item }}"
+      delegate_to: "{{ dest_host }}"
+      with_items:
+        - public_scripts
+        - sites
+        - private

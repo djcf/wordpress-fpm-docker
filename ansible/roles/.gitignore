@@ -6,3 +6,5 @@ tersmitten.fail2ban
 infOpen.fail2ban
 tersmitten.duplicity
 EHER.duplicity_backup
+wtanaka.gcloud-sdk
+mongrelion.docker

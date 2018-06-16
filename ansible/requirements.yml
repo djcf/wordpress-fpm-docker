@@ -5,3 +5,5 @@
 - src: infOpen.fail2ban
 - src: tersmitten.duplicity
 - src: EHER.duplicity_backup
+- src: wtanaka.gcloud-sdk
+- src: mongrelion.docker

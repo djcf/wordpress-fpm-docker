@@ -28,13 +28,13 @@
       Enter the site administrator's email address for the purposes of WP account password recovery. 
       The new admin account password will be sent to this address by Wordpress
     private: no
-  - name: "zones"
-    prompt: |
-      ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
-      A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
-      There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
-      If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
-    private: no
+  # - name: "zones"
+  #   prompt: |
+  #     ** Domain zones ** If any domains entered above have zones other than the primary zone, enter them here. 
+  #     A zone is ussually equvilent to the top-level domain in a hierachy (e.g. for 'extra domain' "test.example.org", the zone is 'example.org')
+  #     There must be a 1-1 mapping with the extra domains you entered s.t. each extra domain corresponds to a zone in this list.
+  #     If you press enter without typing a zone, either the primary zone will be used or all extra domains entered will also become zones."
+  #   private: no
   vars:
     group_fpm: false
     ssl_host: false

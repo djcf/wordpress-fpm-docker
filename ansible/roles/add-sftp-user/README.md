@@ -32,4 +32,4 @@ Permissions on the user's home directory may be an issue. Pay extra attention to
 Author Information
 ------------------
 
-danielle@CommonWeal. PRs welcome.
+daniellele@CommonWeal. PRs welcome.

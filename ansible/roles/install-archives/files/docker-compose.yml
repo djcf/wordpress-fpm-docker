@@ -5,7 +5,7 @@ version: '2'
 # Pre-builds wordpress-php for all sites globally to speed up runtime
 # Last part is optional for this process.
 # If using a separate mysql server, mysql part is not recomended
-# @author daniel
+# @author danielle
 
 #
 

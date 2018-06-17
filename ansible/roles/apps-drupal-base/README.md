@@ -1,38 +1,24 @@
-Role Name
+apps-wordpress-base
 =========
 
-A brief description of the role goes here.
+A simple role to provide default variables to other roles in the `apps-wordpress-*` family. Does nothing by itself.
 
-Requirements
-------------
+Role Variables Provided
+=========
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+    docker_image: "drupal7-php7.1-fpm-alpine-mod"
 
-Role Variables
---------------
+Which docker image to use by default for drupal. It's based from the official docker image `drupal-php7.1-fpm-alpine` which provides drupal with php 7.1 and fpm running in alpine. We then modify it substantially using the Dockerfile in `docker/apps/drupal`.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+    use_php: yes
 
-Dependencies
-------------
+Instructs the vhost template to write out /*.php directives using `vhost-renew/templates/php-vhost.j2`.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+    phproot: /var/www/html
 
-Example Playbook
-----------------
+This path is the default installation location for drupal in alpine linux containers
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+    extra_nginx_configs:
+      - inc/drupal.conf
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+You can supply a list of files which should be included but don't forget that `inc/drupal.conf` *is* a requirement of drupal sites.

@@ -13,7 +13,6 @@
     name: "{{ primary_subdomain }}.fpm"
     image: "{{ docker_image }}"
     state: "{{ state }}"
-    hostname: "{{ primary_domain }}"
     networks:
       - name: docker_sqlnet
         links:
@@ -23,6 +22,7 @@
     log_options:
       max_size: 500k
     env_file: "{{ env_path }}"
+    hostname: "fpm.{{primary_subdomain}}.{{ primary_domain }}"
   tags:
     - docker
 
@@ -47,7 +47,7 @@
 - name: Install Drupal database
   docker_container:
     command: >
-      drush site-install
+      drush site-install --db-url=mysql://$DB_USER:$MYSQL_PWD@$MYSQL_HOST:$MYSQL_TCP_PORT/$DB_NAME
     name: "{{ primary_subdomain }}-installer"
     image: "{{ docker_image }}"
     networks:
@@ -59,4 +59,4 @@
     env_file: "{{ env_path }}"
     cleanup: yes
     detach: no
-    hostname: "fpm.{{primary_subdomain}}.{{ primary_domain }}"
+    hostname: "installer.{{primary_subdomain}}.{{ primary_domain }}"

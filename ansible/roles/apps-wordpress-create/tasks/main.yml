@@ -38,7 +38,7 @@
     name: "{{ parent_container }}"
     image: "{{ docker_image }}"
     state: "{{ state }}"
-    hostname: "{{ primary_domain }}"
+    hostname: "fpm.{{ primary_subdomain }}.{{ primary_domain }}"
     networks:
       - name: docker_sqlnet
         links:

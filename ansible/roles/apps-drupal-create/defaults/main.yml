@@ -1,2 +1,8 @@
 ---
 # defaults file for apps-drupal-create
+volumes:
+  - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
+  - "/etc/ssmtp:/etc/ssmtp:ro"
+  - "{{ primary_subdomain }}_scripts:{{ phproot }}/scripts/common"
+  - "{{ primary_subdomain }}_sites:{{ phproot }}/sites"
+  - "{{ primary_subdomain }}_private:/buildkit/app/private"

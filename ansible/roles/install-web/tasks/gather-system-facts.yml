@@ -17,6 +17,12 @@
   when:
     - ansible_memtotal_mb|int >= 3000
 
+- name: set fact -- rigsize (huge)
+  set_fact:
+    rigsize: "4g"
+  when:
+    - ansible_memtotal_mb|int >= 4000
+
 - name: check if host is a vagrant
   stat: path=/vagrant
   changed_when: false

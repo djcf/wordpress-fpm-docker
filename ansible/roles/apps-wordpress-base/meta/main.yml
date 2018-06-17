@@ -1,6 +1,6 @@
 galaxy_info:
   author: danielle
-  description: provides default variables for apps-wordpress roles
+  description: provides default variables for apps-wordpress-* roles
   company: CommonWeal
   license: license (GPLv2, CC-BY, etc)
   min_ansible_version: 1.2

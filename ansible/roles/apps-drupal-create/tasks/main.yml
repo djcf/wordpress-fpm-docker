@@ -1,12 +1,12 @@
 ---
 # tasks file for apps-drupal-create
-- name: Project directories should exist
-  docker_volume:
-    name: "{{ item }}"
-  with_items:
-    - "{{ primary_subdomain }}_sites"
-    - "{{ primary_subdomain }}_public_scripts"
-    - "{{ primary_subdomain }}_private"
+# - name: Project volumes should exist
+#   docker_volume:
+#     name: "{{ item }}"
+#   with_items:
+#     - "{{ primary_subdomain }}_sites"
+#     - "{{ primary_subdomain }}_public_scripts"
+#     - "{{ primary_subdomain }}_private"
 
 - name: Create Drupal container for new site
   docker_container:

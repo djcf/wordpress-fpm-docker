@@ -34,7 +34,7 @@ services:
 
   drupal:
     build: apps/drupal
-    image: drupal-php7.1-fpm-alpine-mod
+    image: drupal7-php7.1-fpm-alpine-mod
     container_name: group-drupal.fpm
     volumes:
       - group_php_pools:/usr/local/etc/php-fpm.d:ro

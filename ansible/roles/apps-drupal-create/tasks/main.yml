@@ -8,6 +8,38 @@
 #     - "{{ primary_subdomain }}_public_scripts"
 #     - "{{ primary_subdomain }}_private"
 
+- name: Project directory should exist
+  file:
+    path: "{{ user_site_dir }}/public_html/scripts"
+    state: directory
+    recurse: yes
+
+# shell: cp -r /var/lib/wordpress/wp-content/* /var/www/$domain/public_html/wp-content
+# - name: sync scripts directories
+#   command: "rsync -a --stats /var/lib/drupal-7.59/scripts/ {{ user_site_dir }}/public_html/scripts"
+#   changed_when: '"files transferred: 0" not in drupal_scripts_rsync.stdout'
+#   register: drupal_scripts_rsync
+
+# shell: cp -r /var/lib/wordpress/wp-content/* /var/www/$domain/public_html/wp-content
+- name: sync sites directories
+  command: "rsync -a --stats /var/lib/drupal-7.59/sites/ {{ user_site_dir }}/public_html/sites"
+  changed_when: '"files transferred: 0" not in drupal_sites_rsync.stdout'
+  register: drupal_sites_rsync
+
+# shell: cp -r /var/lib/wordpress/wp-content/* /var/www/$domain/public_html/wp-content
+# - name: sync private directories
+#   command: "rsync -a --stats /var/lib/drupal-7.59/sites/ {{ user_site_dir }}/public_html/private"
+#   changed_when: '"files transferred: 0" not in drupal_private_rsync.stdout'
+#   register: drupal_private_rsync
+
+- name: ensure wp-content directory has correct owner
+  file:
+    path: "{{ user_site_dir }}"
+    mode: 0750
+    owner: www-data
+    group: www-data
+    recurse: true
+
 - name: Create Drupal container for new site
   docker_container:
     name: "{{ primary_subdomain }}.fpm"
@@ -26,28 +58,33 @@
   tags:
     - docker
 
-# - name: Check to see if Drupal database exists
-#   command: >
-#     docker run 
-#       --env-file {{ env_path }} 
-#       --net=docker_sqlnet 
-#       --link {{ sqldb }}:{{ mysql_host }}
-#       --volumes-from {{ parent_container }}
-#       --rm
-#       {{ docker_image }} 
-#       sh -c 
-#         '/usr/local/bin/wp db check --allow-root --path={{ phproot }}'
-#   ignore_errors: yes
-#   failed_when: db_exists.rc != 0
-#   register: db_exists
-#   changed_when: false
-#   tags:
-#     - database
+- name: Check to see if Drupal database exists
+  command: >
+    docker run 
+      --env-file {{ env_path }} 
+      --net=docker_sqlnet 
+      --link {{ sqldb }}:{{ mysql_host }}
+      --volumes-from {{ parent_container }}
+      --rm
+      {{ docker_image }} 
+      sh -c 
+        'drush sql-conf'
+  ignore_errors: yes
+  failed_when: db_exists.rc != 0
+  register: db_exists
+  changed_when: false
+  tags:
+    - database
+
+- include_role:
+    name: sql-create-database
+  when: db_exists is failed
+  tags: ['database']
 
 - name: Install Drupal database
   docker_container:
     command: >
-      drush site-install --db-url=mysql://$DB_USER:$MYSQL_PWD@$MYSQL_HOST:$MYSQL_TCP_PORT/$DB_NAME
+      drush site-install -y --db-url=mysql://{{ db_user }}:{{ mysql_pwd }}@{{ mysql_host }}:{{ mysql_tcp_port }}/{{ db_name }}
     name: "{{ primary_subdomain }}-installer"
     image: "{{ docker_image }}"
     networks:
@@ -60,3 +97,5 @@
     cleanup: yes
     detach: no
     hostname: "installer.{{primary_subdomain}}.{{ primary_domain }}"
+  when:
+    db_exists is failed

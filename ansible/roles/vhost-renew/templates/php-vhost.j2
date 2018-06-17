@@ -1,5 +1,7 @@
     location / {
-        try_files $uri $uri/ /index.php?$args;
+        #try_files $uri $uri/ /index.php?$args;
+         try_files $uri $uri/ /index.php?$query_string;
+        # from the docs: args and query_string are the same.
     }
 
     index index.php index.html index.htm;
@@ -36,9 +38,3 @@
         fastcgi_cache_valid 200 60m;
 
     }
-
-    {% if user_wp_content_dir is defined %}
-      location ^~ /wp-content {
-        alias {{ user_wp_content_dir }};
-      }
-    {% endif %}

@@ -55,7 +55,7 @@
 
 - name: Alternative | Add Docker repository key
   shell: "curl -sSL {{ apt_key_url }} | sudo apt-key add -"
-  when: add_repository_key|failed
+  when: add_repository_key is failed
 
 - name: HTTPS APT transport for Docker repository
   apt:

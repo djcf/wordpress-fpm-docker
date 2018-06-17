@@ -23,7 +23,9 @@ We also have the potential to override `wp-config.php` files per host, which thi
 
 A new wordpress container is created with the correct volume-mounts which is called {{ parent_container }} and is used for all subsequent docker container-based operations, including the database.
 
-Finally, we run `wp db check` to see if a database exists with wordpress installed in it. It is the responsibility of the playbook to decide whether to use this information to create a new database and/or install wordpress.
+Then, we run `wp db check` to see if a database exists with wordpress installed in it. It is the responsibility of the playbook to decide whether to use this information to create a new database and/or install wordpress.
+<!-- 
+Finally we check to see if the wordpress database is installed already using `wp core is-installed`, and then we install it using `wp core install` if not. -->
 
 Example playbook
 ---

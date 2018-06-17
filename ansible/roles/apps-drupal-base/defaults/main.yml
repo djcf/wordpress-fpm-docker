@@ -5,5 +5,7 @@ admin_user: admin
 site_title: "{{ primary_subdomain }}"
 use_php: yes
 phproot: /var/www/html # this path is the default installation location for wordpress in alpine linux containers
+user_site_dir: "/var/www/{{ primary_subdomain }}"
+webroot: /usr/src/drupal7
 extra_nginx_configs:
   - inc/drupal.conf

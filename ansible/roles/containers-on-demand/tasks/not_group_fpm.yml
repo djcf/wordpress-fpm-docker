@@ -11,11 +11,11 @@
     - reload nginx
     - reload fpm
 
-- name: Quick fix for user_wp_content_dir when its undefined
-  set_fact:
-    user_wp_content_dir: /var/www/{{ primary_subdomain }}/public_html/wp-content
-  when:
-    - user_wp_content_dir is not defined
+# - name: Quick fix for user_wp_content_dir when its undefined
+#   set_fact:
+#     user_wp_content_dir: /var/www/{{ primary_subdomain }}/public_html/wp-content
+#   when:
+#     - user_wp_content_dir is not defined
 
 - name: Set facts relating to on-demand containers
   set_fact:
@@ -24,12 +24,7 @@
     socket_name: "{{ primary_subdomain }}/vhost.fpm-waker" # e.g. /var/run/docker-apps/mydomain.org/fpm-waker.sock
     parent_container: "{{ primary_subdomain }}.fpm"
     fpm_user: www-data
-    webroot: /usr/src/wordpress
-    # server_block_extra: |
-    #   location ^~ /wp-content {
-    #     alias {{ user_wp_content_dir }};
-    #   }
-
+#    webroot: /usr/src/wordpress
   tags:
     - vhost
     - all

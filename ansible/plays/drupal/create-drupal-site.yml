@@ -35,8 +35,6 @@
   - { role: domain-munging, tags: ['always'] }
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
   # - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
-  - vhost-renew
-  - { role: sql-create-database, tags: ['database'] }
   - { role: apps-drupal-create, tags: ['drupal'] }
 #  - site-diagnostics
 #  - play-audit

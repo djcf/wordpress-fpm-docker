@@ -7,3 +7,4 @@ galaxy_info:
   galaxy_tags: []
 dependencies:
   - apps-drupal-base
+  - vhost-renew

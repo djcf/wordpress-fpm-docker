@@ -15,7 +15,7 @@
   ignore_errors: yes
 
 - include: environment_not_exists.yml
-  when: environment_exists|failed
+  when: environment_exists is failed
 
 # - include: environment_exists.yml
-#   when: environment_exists|succeeded
+#   when: environment_exists is succeeded

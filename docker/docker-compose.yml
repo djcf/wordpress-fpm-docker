@@ -75,6 +75,7 @@ services:
       - ssl_certs:/etc/nginx/certs:ro
       - /var/www:/var/www:ro
       - /var/lib/wordpress:/usr/src/wordpress:ro
+      - /var/lib/drupal-7.59:/usr/src/drupal7:ro
     logging:
       options:
         max-size: 25k

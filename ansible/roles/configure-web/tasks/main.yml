@@ -11,21 +11,21 @@
   ignore_errors: yes
 
 - include: store-root-password.yml
-  when: mysql_pw_file|failed
+  when: mysql_pw_file is failed
   tags:
     - database
 
 - name: Allow root user to access from any host (drop root user first)
   command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
   ignore_errors: true
-  when: mysql_pw_file|failed
+  when: mysql_pw_file is failed
   tags:
     - database
     - fixes
 
 - name: Allow root user to access from any host
   command: docker exec {{ sqldb }} mysql -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY '{{ mysql_root_password }}'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-  when: mysql_pw_file|failed
+  when: mysql_pw_file is failed
   tags:
     - database
     - fixes

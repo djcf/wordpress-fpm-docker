@@ -72,6 +72,24 @@
   tags:
     - wordpress
 
+- name: install a 'ghost' d7 directory for nginx to test file existence against during requests
+  unarchive:
+    src: https://ftp.drupal.org/files/projects/drupal-7.59.zip
+    dest: /var/lib
+    remote_src: true
+    creates: /var/lib/drupal-7.59
+  tags:
+    - drupal
+
+- name: install a 'ghost' d8 directory for nginx to test file existence against during requests
+  unarchive:
+    src: https://ftp.drupal.org/files/projects/drupal-8.5.4.zip
+    dest: /var/lib
+    remote_src: true
+    creates: /var/lib/drupal-8.5.4
+  tags:
+    - drupal
+
 - name: Template out the best-matching MySQL configuration file
   template: "src=sqlconf/my-{{ rigsize }}.cnf.j2 dest={{ install_path }}/docker/sqldb/my.cnf"
   tags:

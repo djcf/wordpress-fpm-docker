@@ -11,7 +11,7 @@
     # OPTIONS:
     # * To change the sleep value, just edit this vhost. 
     {# (NB: *THIS* file is a vhost template *not* a vhost. DO NOT ACCIDENTALLY EDIT THIS TEMPLATE INSTEAD) #}
-    # * To disable sleeping on this php-fpm container, move this vhost to ../default (or any other directory except ./on-demand). It will still be picked up nginx. You do not need to do anything else.
+    # * To disable sleeping on this php-fpm container, move this vhost to ../default (or any other directory except ./on-demand). It will still be picked up by nginx. You do not need to do anything else.
     # * To move this website into the multi-user php-fpm-group container, re-run the renew-vhost play.
     #
 {% endif %}
@@ -54,7 +54,7 @@ server {
         {% endif %}
     {% endif %}
 
-    {% if custom_vhost_exists is defined and custom_vhost_exists|succeeded %}
+    {% if custom_vhost_exists is defined and custom_vhost_exists is succeeded %}
         include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }};
     {% endif %}
 
@@ -92,7 +92,7 @@ server {
         {% endif %}
 
     {% else %}
-        {%if ssl_cert_exists|succeeded %}
+        {%if ssl_cert_exists is succeeded %}
             ssl_certificate /etc/nginx/certs/{{ primary_subdomain }}.crt;
             ssl_certificate_key /etc/nginx/certs/{{ primary_subdomain }}.key;
             ssl_dhparam /etc/nginx/certs/{{ primary_subdomain }}.dhparam.pem;
@@ -122,8 +122,8 @@ server {
         {% endfor %}
     {% endif %}
 
-    {% if custom_vhost_exists is defined and custom_vhost_exists|succeeded %}
-        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }}.conf;
+    {% if custom_vhost_exists is defined and custom_vhost_exists is succeeded %}
+        include {{ docker_volumes['docker_vhost_config'] }}/{{ primary_subdomain }};
     {% endif %}
 
 }

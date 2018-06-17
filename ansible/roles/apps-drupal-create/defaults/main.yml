@@ -6,3 +6,10 @@ volumes:
   - "{{ primary_subdomain }}_scripts:{{ phproot }}/scripts/common"
   - "{{ primary_subdomain }}_sites:{{ phproot }}/sites"
   - "{{ primary_subdomain }}_private:/buildkit/app/private"
+server_block_extra: |
+  location ^~ /scripts/common/ {
+    alias /var/www/{{ primary_subdomain }}/public_html/scripts;
+  }
+  location ^~ /sites/ {
+    alias /var/www/{{ primary_subdomain }}/public_html/sites;
+  }

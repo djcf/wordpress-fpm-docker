@@ -52,8 +52,5 @@
   - { role: containers-on-demand, when: not group_fpm, tags: ['docker'] }
   - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
   - { role: apps-wordpress-create, tags: ['wordpress'] }
-  - vhost-renew
-  - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
-  - { role: apps-wordpress-install-new, tags: ['wordpress'] }
 #  - site-diagnostics
 #  - play-audit

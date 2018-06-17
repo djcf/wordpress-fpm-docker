@@ -16,20 +16,20 @@
 - name: Upload SSL certificate into vhost when using SSL but not lets_encrypt
   copy: src="{{ primary_subdomain }}.crt" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.crt"
   when:
-    - local_ssl_key|succeeded
-    - local_ssl_cert|succeeded
+    - local_ssl_key is succeeded
+    - local_ssl_cert is succeeded
   notify: reload nginx
 
 - name: Upload SSL key into vhost when using SSL but not lets_encrypt
   copy: src="{{ primary_subdomain }}.key" dest="{{ docker_volumes['docker_ssl_certs'] }}/{{ primary_subdomain }}.key"
   when:
-    - local_ssl_key|succeeded
-    - local_ssl_cert|succeeded
+    - local_ssl_key is succeeded
+    - local_ssl_cert is succeeded
   notify: reload nginx
 
 - name: Set fact about SSL certificates
   set_fact:
     use_own_certificate: true
   when:
-    - local_ssl_key|succeeded
-    - local_ssl_cert|succeeded
+    - local_ssl_key is succeeded
+    - local_ssl_cert is succeeded

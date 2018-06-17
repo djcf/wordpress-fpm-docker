@@ -38,7 +38,7 @@
   - { role: group-php-fpm, when: group_fpm, tags: ['docker'] }
   - vhost-renew
   - apps-wordpress-create
-  - { role: sql-create-database, when: db_exists|failed, tags: ['database'] }
+  - { role: sql-create-database, when: db_exists is failed, tags: ['database'] }
   - site-import
   - sql-import-database
 #  - site-diagnostics

@@ -14,9 +14,9 @@ Which docker image to use by default for drupal. It's based from the official do
 
 Instructs the vhost template to write out /*.php directives using `vhost-renew/templates/php-vhost.j2`.
 
-    phproot: /var/www/html
+    phproot: /usr/src/drupal7
 
-This path is the default installation location for drupal in alpine linux containers
+This path is the default installation location for drupal in alpine linux containers. Since d7 installs to /var/www/html, we have to symlink it here first. That's so that `switchboard` container can provide the correct container-agnostic path to the d7 fpm service.
 
     extra_nginx_configs:
       - inc/drupal.conf

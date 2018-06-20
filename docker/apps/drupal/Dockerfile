@@ -2,7 +2,8 @@ FROM drupal:7-fpm-alpine
 ADD  https://gist.githubusercontent.com/djcf/bcd2f725652f46b4786e29ffdc32495c/raw /usr/local/bin/minify.sh
 
 #delgroup `getent group 33 | cut -d: -f1`
-RUN apk add --update ssmtp mariadb-client fcgi && \
+RUN apk add --update ssmtp mariadb-client fcgi coreutils && \
+	ln -s /var/www/html /usr/src/drupal7 && \
 	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
 	php composer-setup.php && \
 	php -r "unlink('composer-setup.php');" && \

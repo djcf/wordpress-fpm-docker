@@ -14,25 +14,25 @@
     backup_dir: /var/backups/projects
     source_dir: "{{ backup_dir }}/civi.common.scot/backups/latest/civicrm_app"
     dest_dir: /var/import
-    source_host: hume.common.scot
-    dest_host: default
     db_name: "{{ primary_subdomain }}"
-- hosts: "{{ source_host }}"
+    final_dest: "/var/www/{{ primary_subdomain }}/public_html"
+- hosts: master
   tasks:
     - name: Synchronize directories
       synchronize:
         src: "{{ source_dir }}"
         dest: "{{ dest_dir }}"
         mode: pull
-      delegate_to: "{{ dest_host }}"
-- hosts: "{{ dest_host }}"
+      delegate_to: default
+- hosts: default
   roles:
     - { role: sql-import-database, db_name: "{{ db_name }}_drupal", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/civicrm.sql" }
     - { role: sql-import-database, db_name: "{{ db_name }}_civicrm", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/drupal.sql" }
   tasks:
-    synchronize:
-      src: "{{ dest_dir }}/civicrm_app/{{ item }}"
-      dest: "{{ primary_subdomain }}_{{ item }}"
+    - name: move into position
+      synchronize:
+        src: "{{ dest_dir }}/civicrm_app/{{ item }}"
+        dest: "{{ final_dest }}/{{ item }}"
       delegate_to: "{{ dest_host }}"
       with_items:
         - public_scripts

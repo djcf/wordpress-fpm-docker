@@ -1,0 +1,22 @@
+---
+# defaults file for system
+rigsize: small
+is_vagrant: false
+install_path: /etc/docker/web
+#remote_path: https://github.com/djcf/wordpress-fpm-docker.git
+mysql_tcp_port: 3306
+mysql_unix_port: /run/mysqld/mysqld.sock
+use_docker_assembly: true
+basicbackups: true
+aliases_list:
+  - user: postmaster
+    alias: root
+  - user: webmaster
+    alias: root
+  - user: admin
+    alias: root
+  - user: root
+    alias: admin@lists.common.scot
+usesftp: false
+d7version: 7.59
+d8version: 8.5.4

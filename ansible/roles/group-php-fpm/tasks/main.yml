@@ -52,15 +52,15 @@
 
 # - name: Start the docker assembly
 #   docker_service:
-#     project_src: "{{ install_path }}/docker"
+#     project_src: "{{ install_path }}"
 
 # This above code should work but doesnt.
 # So we need to run docker-compose manually for now.
 # This fixes two issues in two completely unrelated pieces of software
 ## FOR FUCKS SAKE!!! 
 - name: Re-create docker container (workaround)
-  command: "docker-compose -f {{ install_path }}/docker/docker-compose.yml up -d"
-  args: "chdir={{ install_path }}/docker" 
+  command: "docker-compose -f {{ install_path }}/docker-compose.yml up -d"
+  args: "chdir={{ install_path }}" 
 # Don't use this: unnessesary code duplication
 # - name: Re-create fpm container
 #   docker_container:

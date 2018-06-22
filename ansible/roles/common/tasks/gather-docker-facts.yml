@@ -18,5 +18,5 @@
 - name: set fact about host vagrancy
   set_fact:
     is_vagrant: true
-    install_path: /vagrant
+#    install_path: /vagrant
   when: is_vagrant.stat.exists

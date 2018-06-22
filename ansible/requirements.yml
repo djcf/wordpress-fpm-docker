@@ -1,9 +1,9 @@
-- src: marvinpinto.docker
-- src: MichaelRigart.aliases
-- src: galexrt.cockpit
+#- src: marvinpinto.docker
+#- src: MichaelRigart.aliases
+#- src: galexrt.cockpit
 #- src: tersmitten.fail2ban
-- src: infOpen.fail2ban
-- src: tersmitten.duplicity
-- src: EHER.duplicity_backup
-- src: wtanaka.gcloud-sdk
-- src: mongrelion.docker
+#- src: infOpen.fail2ban
+#- src: tersmitten.duplicity
+#- src: EHER.duplicity_backup
+#- src: wtanaka.gcloud-sdk
+#]- src: mongrelion.docker

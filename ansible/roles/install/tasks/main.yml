@@ -1,0 +1,48 @@
+---
+- include: install-general.yml
+  tags: general
+
+# tasks file for system
+- include: gather-system-facts.yml
+  tags: web
+
+- include: pre-install.yml
+  tags:
+    - preinstall
+    - web
+
+- include: cronable.yml
+  tags:
+    - cron
+    - web
+
+- include: sftp.yml
+  tags:
+    - ftp
+    - sftp
+    - web
+  when: usesftp
+
+#- include: wordpress-admins.yml
+#  tags:
+#    - autologin
+
+- include: docker.yml
+  tags:
+    - docker
+    - web
+  when: use_docker_assembly
+
+- name: load variables
+  include_vars: "{{ role_path }}/../{{ item }}/defaults/main.yml"
+  with_items:
+    - common
+    - sql-base
+
+- include_role: name=sql-base
+  tags:
+    - web
+    - sql
+
+- include: configure.yml
+  tags: web

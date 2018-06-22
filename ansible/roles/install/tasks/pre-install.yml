@@ -1,0 +1,158 @@
+---
+- name: ensure that various directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: true
+  with_items:
+#    - /etc/ansible/roles
+    - /usr/local/cron
+    - /var/lib/wordpress
+#    - "{{ letsencrypt_account_dir }}"
+
+- name: configure systemd to activate docker containers
+  copy: src={{ item }} dest=/etc/systemd/system/ owner=root group=root mode=655
+  with_fileglob:
+  - files/systemd.services/*
+  notify: reload systemd
+
+- name: copy admin scripts to /usr/local/bin
+  copy: src={{ item }} dest=/usr/local/bin owner=root group=root mode=655
+  with_fileglob:
+  - files/bin/*
+  tags:
+    - bins
+
+- name: copy autologin script
+  copy: src=autologin.php dest=/var/lib/wordpress/
+
+- name: increase system performance by adjusting sysctl
+  copy: src=sysctl.conf dest=/etc/sysctl.d/99-sysctl.conf owner=root group=root mode=655
+  notify: reload sysctl
+  tags:
+    - tweaks
+
+# - name: install this toolkit to a clear path on the remote host
+#   git:
+#     repo: "{{ remote_path}}"
+#     dest: "{{ install_path }}"
+#   ignore_errors: true
+#  when: not is_vagrant
+
+- name: check if docker assembly exists
+  stat:
+    path: /etc/docker/web
+#    state: directory
+  register: assembly_exists
+  tags: docker
+
+- name: install the docker component to the remote host
+  synchronize:
+    src: "{{ role_path }}/../../../docker"
+    dest: "/etc/docker"
+  tags: docker
+  when: not assembly_exists.stat.exists
+
+- name: move docker component to a more sensible location
+  command: "mv /etc/docker/docker {{ install_path }}"
+  creates: "{{ install_path }}"
+  when: not assembly_exists.stat.exists
+  tags: docker
+
+- name: install the ansible roles to the remote host (pretty optional really, its not like they get used once theyre there but the documentation could come in handy)
+  synchronize:
+    src: "{{ role_path }}/../../../ansible"
+    dest: "/etc"
+  tags: ansible
+
+- name: copy letsencrypts challenge-response directory
+  synchronize:
+    src: "{{ role_path }}/files/letsencrypt-challenge"
+    dest: /var/www/
+
+# - name: Create letsencrypt account key
+#   command: "openssl genrsa -out {{ letsencrypt_account_key }} 4096"
+#   args:
+#     creates: "{{ letsencrypt_account_key }}"
+
+# - name: Ensure letsencrypt key is root-only
+#   file:
+#     path: "{{ letsencrypt_account_key }}"
+#     owner: root
+#     group: root
+#     mode: 0640
+
+#- name: symlink ansible roles into the main ansible directory
+#  file: "src={{ install_path }}/ansible/roles/{{ item }} dest=/etc/ansible/roles/{{ item }} state=link"
+#  with_items:
+#    - common
+#    - system
+#    - configure
+
+- name: install a 'ghost' wordpress directory for nginx to test file existence against during requests
+  unarchive:
+    src: https://wordpress.org/latest.zip
+    dest: /var/lib
+    remote_src: true
+    creates: /var/lib/wordpress
+  tags:
+    - wordpress
+
+- name: install a 'ghost' d7 directory for nginx to test file existence against during requests
+  unarchive:
+    src: "https://ftp.drupal.org/files/projects/drupal-{{ d7version }}.zip"
+    dest: /var/lib
+    remote_src: true
+    creates: "/var/lib/drupal-{{ d7version }}"
+  tags:
+    - drupal
+
+- name: install a 'ghost' d8 directory for nginx to test file existence against during requests
+  unarchive:
+    src: "https://ftp.drupal.org/files/projects/drupal-{{ d8version }}.zip"
+    dest: /var/lib
+    remote_src: true
+    creates: "/var/lib/drupal-{{ d8version }}"
+  tags:
+    - drupal
+
+- name: Template out the best-matching MySQL configuration file
+  template: "src=sqlconf/my-{{ rigsize }}.cnf.j2 dest={{ install_path }}/sqldb/my.cnf"
+  tags:
+    - tweaks
+    - database
+
+- name: template out a new nginx.conf file with the appropriate number of workers for this host
+  template: "src=nginx.conf.j2 dest={{ install_path }}/switchboard/nginx.conf"
+  tags:
+    - tweaks
+    - nginx
+
+#    - name: Install pip
+#      apt:
+#        pkg: "{{ item }}"
+#        state: installed
+#      with_items:
+#        - python-dev
+#        - python-pip
+
+#    - name: Install Docker-py
+#      pip:
+#        name: docker-py
+#        version: 1.1.0
+
+#    - name:
+#    - name: Host should have docker.py
+#      become: true
+#      pip: state=present name="{{ item }}"
+#      with_items:
+#        - docker-py==1.2.3
+#        - six==1.10.0
+
+# - name: Install important utilities
+#   apt:
+#     name: "{{ item }}"
+#     state: present
+#   become: true
+#   with_items:
+#     - imagemagick

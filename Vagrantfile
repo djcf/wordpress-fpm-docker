@@ -7,10 +7,13 @@ Vagrant.configure("2") do |config|
   #config.vm.box = "ubuntu/ubuntu-16.04-server"
 
   # This Xenial box seems to work however
-  config.vm.box = "nrclark/xenial64-minimal-libvirt"
+  #config.vm.box = "nrclark/xenial64-minimal-libvirt"
 
-  config.vm.synced_folder ".", "/usr/local/web", type: "rsync",
-    rsync__exclude: ".git/"
+  # Update: its 2018, baby!
+  config.vm.box = "peru/ubuntu-18.04-server-amd64"
+
+  config.vm.synced_folder "docker", "/etc/docker/web", type: "rsync", rsync__exclude: ".git/"
+  config.vm.synced_folder "ansible", "/etc/ansible", type: "rsync", rsync__exclude: ".git/"
 
   # config.vm.provision "ansible" do |ansible|
   #   ansible.verbose = "v"
@@ -26,7 +29,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.verbose = "v"
-    ansible.playbook = "ansible/plays/system/install-web.yml"
+    ansible.playbook = "install.yml"
   end
 
 end

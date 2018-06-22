@@ -1,0 +1,38 @@
+---
+- include: install-nginx-configs.yml
+  tags:
+    - config
+    - nginx
+
+# - name: fix bug where ansible didnt load the default variable
+#   set_fact:
+#     sqldb: "sqldb.common.scot"
+#     mysql_host: "sqldb.common.scot"
+#   when:
+#     sqldb is not defined
+
+- name: Load MySQL root password from file
+  stat: path="{{ mysql_root_password_file }}"
+  register: mysql_pw_file
+  failed_when: not mysql_pw_file.stat.exists
+  ignore_errors: yes
+  tags: database
+
+- include: store-root-password.yml
+  when: mysql_pw_file is failed
+  tags: database
+
+- name: Allow root user to access from any host (drop root user first)
+  command: docker exec {{ sqldb }} mysql -u root -e "DROP USER 'root'@'%';"
+  ignore_errors: true
+  when: mysql_pw_file is failed
+  tags:
+    - database
+    - fixes
+
+- name: Allow root user to access from any host
+  command: docker exec {{ sqldb }} mysql -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY '{{ mysql_root_password }}'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+  when: mysql_pw_file is failed
+  tags:
+    - database
+    - fixes

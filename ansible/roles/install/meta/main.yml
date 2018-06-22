@@ -1,0 +1,12 @@
+galaxy_info:
+  author: danielle
+  description: See docs/1.1-Installation-And-Vagrant.md
+  company: CommonWeal
+  license: license (GPLv2, CC-BY, etc)
+  min_ansible_version: 1.2
+  galaxy_tags: []
+dependencies: []
+  # - { role: MichaelRigart.aliases, become: true }
+  # - { role: galexrt.cockpit, when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version < 18 }
+  # - { role: angstwad.docker_ubuntu, when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version < 18 }
+  # - { role: EHER.duplicity_backup, tags: backup, when: not basicbackups }

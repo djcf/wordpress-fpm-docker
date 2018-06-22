@@ -1,0 +1,19 @@
+# - name: Start the docker assembly
+#   docker_service:
+#     project_src: "{{ install_path }}/docker"
+#     build: true
+
+# This above code should work but doesnt.
+# So we need to run docker-compose manually for now.
+# This fixes two issues in to completely unrelated pieces of software
+## FOR FUCKS SAKE!!! 
+- name: Start docker assembly (work around for both vagrant plugin issue AND ansible docker-py issue)
+  shell: /usr/local/bin/docker-compose up -d
+  args:
+    chdir: "{{ install_path }}"
+
+#- assert:
+#  that:
+#    - dockergen.dockergen.running
+#    - "switchboard.{{ switchboard }}.running"
+#    - "database.{{ sqldb }}.running"

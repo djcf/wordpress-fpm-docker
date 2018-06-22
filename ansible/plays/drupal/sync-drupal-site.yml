@@ -1,40 +1,45 @@
 ---
 # Usage: ansible-playbook --extra-vars "domain=mydomain.org subdomain=mysubdomain.common.scot" add-wordpress-vhost.yml
-- hosts: all
-  vars_prompt:
-  - name: "primary_subdomain"
-    prompt: |
-      ** Primary subdomain ** ALL websites must have a primary subdomain associated with them and parked to the domain host.
-      This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
-      It will be used as a unique key to identify this user's domain.
-      For example, for 'example.common.scot', enter 'example'.
-    private: no
-  become: true
-  vars:
-    backup_dir: /var/backups/projects
-    source_dir: "{{ backup_dir }}/civi.common.scot/backups/latest/civicrm_app"
-    dest_dir: /var/import
-    db_name: "{{ primary_subdomain }}"
-    final_dest: "/var/www/{{ primary_subdomain }}/public_html"
+# - hosts: all
+#   vars_prompt:
+#   - name: "primary_subdomain"
+#     prompt: |
+#       ** Primary subdomain ** ALL websites must have a primary subdomain associated with them and parked to the domain host.
+#       This is to ensure the website is able to stay active even if control over the top-level domain is lost or expires.
+#       It will be used as a unique key to identify this user's domain.
+#       For example, for 'example.common.scot', enter 'example'.
+#     private: no
+#   become: true
 - hosts: master
+  vars:
+    backup_dir: /var/backups/projects/civi.common.scot/backups/latest/
+    dest_dir: /var/import
   tasks:
     - name: Synchronize directories
       synchronize:
-        src: "{{ source_dir }}"
+        src: "{{ backup_dir }}"
         dest: "{{ dest_dir }}"
         mode: pull
+        rsync_path: 'sudo rsync'
       delegate_to: default
-- hosts: default
-  roles:
-    - { role: sql-import-database, db_name: "{{ db_name }}_drupal", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/civicrm.sql" }
-    - { role: sql-import-database, db_name: "{{ db_name }}_civicrm", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/drupal.sql" }
-  tasks:
-    - name: move into position
-      synchronize:
-        src: "{{ dest_dir }}/civicrm_app/{{ item }}"
-        dest: "{{ final_dest }}/{{ item }}"
-      delegate_to: "{{ dest_host }}"
-      with_items:
-        - public_scripts
-        - sites
-        - private
+      become: true
+# - hosts: default
+#   vars:
+#     backup_dir: /var/backups/projects
+#     source_dir: "{{ backup_dir }}/civi.common.scot/backups/latest/civicrm_app"
+#     dest_dir: /var/import
+#     db_name: "{{ primary_subdomain }}"
+#     final_dest: "/var/www/{{ primary_subdomain }}/public_html"
+#   roles:
+#     - { role: sql-import-database, db_name: "{{ db_name }}_drupal", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/civicrm.sql" }
+#     - { role: sql-import-database, db_name: "{{ db_name }}_civicrm", import_file: "{{ dest_dir }}/civi.common.scot/backups/latest/civicrm_app/drupal.sql" }
+#   tasks:
+#     - name: move into position
+#       synchronize:
+#         src: "{{ dest_dir }}/civicrm_app/{{ item }}"
+#         dest: "{{ final_dest }}/{{ item }}"
+#       delegate_to: "{{ dest_host }}"
+#       with_items:
+#         - public_scripts
+#         - sites
+#         - private

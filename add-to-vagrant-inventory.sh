@@ -6,6 +6,6 @@ if [ $# -eq 0 ]; then
 else
 	host=$1
 fi
-if [ ! grep -q "$host" $INVENTORY ]; then
+if ! grep -q "$host" $INVENTORY; then
 	echo "master ansible_host=$host" >> $INVENTORY
 fi

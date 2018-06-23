@@ -10,19 +10,111 @@
 #       For example, for 'example.common.scot', enter 'example'.
 #     private: no
 #   become: true
-- hosts: master
+- hosts: default
   vars:
+    primary_subdomain: commonspace
     backup_dir: /var/backups/projects/civi.common.scot/backups/latest/
-    dest_dir: /var/import
-  tasks:
-    - name: Synchronize directories
-      synchronize:
-        src: "{{ backup_dir }}"
-        dest: "{{ dest_dir }}"
-        mode: pull
-        rsync_path: 'sudo rsync'
-      delegate_to: default
+    dest_dir: "/var/www/{{ primary_subdomain }}"
+    remote_user: daniel
+    remote_host: hume.common.scot
+    sync_paths:
+      - private
+      - public_scripts
+      - sites
+      # - name: private
+      #   src_path: "{{ backup_dir }}/civicrm_app/private"
+      #   dest_path: "{{ dest_dir }}/public_html/private"
+      # - name: scripts
+      #   src_path: "{{ backup_dir }}/civicrm_app/public_scripts"
+      #   dest_path: "{{ dest_dir }}/scripts"
+      # - name: sites
+      #   src_path: "{{ backup_dir }}/civicrm_app/sites"
+      #   dest_path: "{{ dest_dir }}/sites"
+      # - name: civicrm_sql
+      #   src_path: "{{ backup_dir }}/civicrm.sql"
+      #   dest_path: "{{ dest_dir }}/civicrm.sql"
+      # - name: drupal_sql
+      #   src_path: "{{ backup_dir }}/drupal.sql"
+      #   dest_path: "{{ dest_dir }}/drupal.sql"
+    databases:
+      - drupal
+      - civicrm
+      # - name: drupal
+      #   db_name: "{{ db_name_prefix }}_drupal"
+      #   file: "{{ dest_dir }}/drupal.sql"
+      # - name: civicrm
+      #   db_name: "{{ db_name_prefix }}_civicrm"
+      #   file: "{{ dest_dir }}/drupal.sql"
+  pre_tasks:
+    # - name: enable SSH forwarding for sudo
+    #   lineinfile:
+    #     dest: /etc/sudoers
+    #     insertafter: '^#?\s*Defaults\s+env_keep\b'
+    #     line: 'Defaults    env_keep += "SSH_AUTH_SOCK"'
+    #   become: true
+
+    #- name: "(ssh-agent hack: grant access)"
+      # SSH-agent socket is forwarded for the current user only (0700 file). Let's change it
+      # See: https://github.com/ansible/ansible/issues/7235#issuecomment-45842303
+      # See: http://serverfault.com/questions/107187/ssh-agent-forwarding-and-sudo-to-another-user
+      # become: true
+      # file:
+      #   group: "{{deploy_user}}"
+      #   mode: "g+rwx path={{item}}"
+      # with_items:
+      # - "{{ ansible_env.SSH_AUTH_SOCK|dirname }}"
+      # - "{{ ansible_env.SSH_AUTH_SOCK }}"
+    # - name: Synchronize directories
+    #   synchronize:
+    #     src: "{{ backup_dir }}"
+    #     dest: "{{ dest_dir }}"
+    #     mode: pull
+    #   delegate_to: default
+    #   become: false
+
+    - name: import directories should exist and be writable (bugfix)
+      file:
+        path: "{{ dest_dir }}/{{ item }}"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        state: directory
+        recurse: true
       become: true
+      with_items:
+        - sqlimport
+        - public_html
+        - ""
+
+    # rsync --rsync-path='sudo rsync' -avz -e ssh daniel@hume.common.scot:/var/backups/projects/civi.common.scot/backups/latest /var/www/commonspace
+    - name: Synchronize sql dbs (bugfix)
+      command: "rsync --rsync-path='sudo rsync' -avz -e ssh {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/{{ item }}.sql {{ dest_dir }}/sqlimport"
+      with_items: "{{ databases }}"
+
+    # - name: ensure dbs are zipped
+    #   command: "gzip -9 {{ dest_dir }}/sqlimport/{{ item }}"
+    #   with_items: "{{ databases }}"
+    #   when: '".gz" not in {{ item }}'
+
+    # rsync --rsync-path='sudo rsync' -avz -e ssh daniel@hume.common.scot:/var/backups/projects/civi.common.scot/backups/latest /var/www/commonspace
+    - name: Synchronize content directories (bugfix)
+      command: "rsync --rsync-path='sudo rsync' -avz -e ssh {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/civicrm_app/{{ item }} {{ dest_dir }}/public_html"
+      with_items: "{{ sync_paths }}"
+
+  roles:
+    - { role: sql-create-database, become: true, db_name: CiviCRMciv_jpaf9 }
+    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_drupal",  import_file: "{{ dest_dir }}/sqlimport/drupal.sql.gz" }
+#    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_civicrm",  import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz" }
+    - { role: sql-import-database, become: true, db_name: "CiviCRMciv_jpaf9", import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz"  }
+
+  post_tasks:
+    - name: web directory should not be world-readable
+      file:
+        path: "{{ dest_dir }}"
+        owner: root
+        group: root
+        state: directory
+      become: true
+
 # - hosts: default
 #   vars:
 #     backup_dir: /var/backups/projects

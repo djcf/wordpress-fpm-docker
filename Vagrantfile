@@ -12,8 +12,11 @@ Vagrant.configure("2") do |config|
   # Update: its 2018, baby!
   config.vm.box = "peru/ubuntu-18.04-server-amd64"
 
+  config.ssh.forward_agent = true
+
   config.vm.synced_folder "docker", "/etc/docker/web", type: "rsync", rsync__exclude: ".git/"
   config.vm.synced_folder "ansible", "/etc/ansible", type: "rsync", rsync__exclude: ".git/"
+
 
   # config.vm.provision "ansible" do |ansible|
   #   ansible.verbose = "v"

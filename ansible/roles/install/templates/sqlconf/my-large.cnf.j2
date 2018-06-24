@@ -34,6 +34,7 @@ socket		= {{ mysql_unix_port }}
 skip-external-locking
 key_buffer_size = 256M
 max_allowed_packet = 32M
+innodb_file_per_table          = true
 table_open_cache = 256
 sort_buffer_size = 1M
 read_buffer_size = 1M
@@ -43,6 +44,9 @@ thread_cache_size = 8
 query_cache_size= 16M
 # Try number of CPU's*2 for thread_concurrency
 thread_concurrency = 8
+
+innodb_large_prefix            = 1
+innodb_file_format             = Barracuda
 
 # Point the following paths to different dedicated disks
 #tmpdir		= /tmp/

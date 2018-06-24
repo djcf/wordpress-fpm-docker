@@ -101,10 +101,12 @@
       with_items: "{{ sync_paths }}"
 
   roles:
-    - { role: sql-create-database, become: true, db_name: CiviCRMciv_jpaf9 }
-    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_drupal",  import_file: "{{ dest_dir }}/sqlimport/drupal.sql.gz" }
-#    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_civicrm",  import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz" }
-    - { role: sql-import-database, become: true, db_name: "CiviCRMciv_jpaf9", import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz"  }
+    - { role: sql-create-database, become: true, db_name: "{{ primary_subdomain }}_civicrm", tags: sql }
+    - { role: sql-create-database, become: true, db_name: "{{ primary_subdomain }}_drupal", tags: sql }
+#    - { role: sql-import-database, become: true, db_name: "civi",  import_file: "{{ dest_dir }}/sqlimport/drupal.sql.gz" }
+    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_drupal",  import_file: "{{ dest_dir }}/sqlimport/drupal.sql.gz", tags: sql }
+    - { role: sql-import-database, become: true, db_name: "{{ primary_subdomain }}_civicrm",  import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz", tags: sql }
+#    - { role: sql-import-database, become: true, db_name: "CiviCRMciv_jpaf9", import_file: "{{ dest_dir }}/sqlimport/civicrm.sql.gz"  }
 
   post_tasks:
     - name: web directory should not be world-readable

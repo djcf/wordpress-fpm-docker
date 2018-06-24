@@ -1,3 +1,4 @@
 #!/bin/bash
 
 docker exec -it sqldb.common.scot mysql
+#docker run -it --net=docker_sqlnet --link sqldb.common.scot:mysql --rm --volumes-from sqldb.common.scot yobasystems/alpine-mariadb mysql

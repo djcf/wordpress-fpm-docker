@@ -23,13 +23,16 @@
     - docker
     - systemd-docker
     - python-pip
-    - etckeeper
     - logwatch
     - imagemagick
     - cockpit
     - gsutil
 #    - google-cloud-sdk
     - docker-compose
+    - iotop
+    - iftop
+    - net-tools
+    - etckeeper
 
 - name: install certain python modules for docker
   pip:

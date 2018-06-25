@@ -54,7 +54,7 @@
     log_options:
       max_size: 500k
     env_file: "{{ env_path }}"
-    hostname: "fpm.{{primary_subdomain}}.{{ primary_domain }}"
+    hostname: "fpm.{{ primary_subdomain }}.{{ primary_domain }}"
   tags:
     - docker
 
@@ -75,17 +75,20 @@
   changed_when: false
   tags:
     - database
+    - sql
 
 - include_role:
     name: sql-create-database
   when: db_exists is failed
-  tags: ['database']
+  tags:
+    - database
+    - sql
 
 - name: Install Drupal database
   docker_container:
     command: >
       drush site-install -y --db-url=mysql://{{ db_user }}:{{ mysql_pwd }}@{{ mysql_host }}:{{ mysql_tcp_port }}/{{ db_name }}
-    name: "{{ primary_subdomain }}-installer"
+    name: "installer.{{ primary_domain }}"
     image: "{{ docker_image }}"
     networks:
       - name: docker_sqlnet
@@ -96,6 +99,9 @@
     env_file: "{{ env_path }}"
     cleanup: yes
     detach: no
-    hostname: "installer.{{primary_subdomain}}.{{ primary_domain }}"
+    hostname: "installer.{{ primary_domain }}"
   when:
     db_exists is failed
+
+- include: cron.yml
+  tags: cron

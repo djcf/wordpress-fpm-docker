@@ -1,0 +1,76 @@
+---
+- name: "maintainance for {{ primary_domain }}"
+  cron:
+    name: "maintainance for {{ primary_domain }}"
+    minute: "*/5"
+    job: >
+      nice -n19
+      ionice -c2 -n7
+      docker run
+      -i --rm
+      --env-file {{ env_path }}
+      --net docker_sqlnet
+      --link {{ sqldb }}:{{ mysql_host }}
+      --volumes-from {{ parent_container }}
+      {{ docker_image }}
+      sh -c 'sudo -u www-data drush --quiet cron'
+
+- name: stop civicrm from filling up disk space with templates
+  cron:
+    name: "stop civicrm from filling up disk space with templates for {{ primary_domain }}"
+    special_time: weekly
+    job: >
+      nice -n19
+      ionice -c2 -n7 
+      docker run
+      -i --rm
+      --env-file {{ env_path }}
+      --net docker_sqlnet
+      --link {{ sqldb }}:{{ mysql_host }}
+      --volumes-from {{ parent_container }}
+      {{ docker_image }}
+      sh -c 'sudo -u www-data drush --quiet cc all'
+
+- name: use cron to backup SQL databases for which a known environment exists
+  cron:
+    name: "civicrm emails for {{ primary_domain }}"
+    minute: "*/2"
+    job: >
+      nice -n19
+      ionice -c2 -n7 
+      docker run
+      -i --rm
+      --env-file {{ env_path }}
+      --net docker_sqlnet
+      --link {{ sqldb }}:{{ mysql_host }}
+      --volumes-from {{ parent_container }}
+      {{ docker_image }}
+      sh -c 'sudo -u www-data drush --quiet civicrm-api -u 1 job.execute'
+    disabled: true
+
+- name: define a cron with a weburl to grab (fix for civicrm)
+  cron:
+    name: "fix for civicrm emails on {{ primary_domain }}"
+    minute: "*/3"
+    job: "curl '{{ cron_web_url }}' > /dev/null 2>&1"
+    disabled: false
+  when: cron_web_url is defined
+
+- name: install extra crons (when directed)
+  cron:
+    name: "extra cron for {{ primary_domain }}/{{ item }}"
+    special_time: daily
+    job: >
+      nice -n19
+      ionice -c2 -n7 
+      docker run
+      -i --rm
+      --env-file {{ env_path }}
+      --net docker_sqlnet
+      --link {{ sqldb }}:{{ mysql_host }}
+      --volumes-from {{ parent_container }}
+      {{ docker_image }}
+      sh -c 'sudo -u www-data drush --quiet scr {{ item }}'
+  with_items: "{{ extra_crons }}"
+  when: extra_crons is defined
+

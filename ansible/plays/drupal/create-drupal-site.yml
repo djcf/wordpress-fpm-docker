@@ -23,7 +23,8 @@
     group_fpm: false
     ssl_host: false
     lets_encrypt: false
-#    force_letsencrypt: false
+  vars_files:
+    - commonspace_extravars.yml
   become: true
   pre_tasks:
     - debug:

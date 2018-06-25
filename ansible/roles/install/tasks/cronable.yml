@@ -9,19 +9,19 @@
     minute: "*/5"
     job: "/usr/local/cron/pause-on-demand-containers.sh"
 
-- name: use cron to reduce image size in web directories
-  cron:
-    name: "recursively reduce image sizes"
-    minute: 0
-    hour: 1
-    job: "/usr/local/cron/shrink-in-place.sh"
+# - name: use cron to reduce image size in web directories
+#   cron:
+#     name: "recursively reduce image sizes"
+#     minute: 0
+#     hour: 1
+#     job: "nice -n19 ionice -c2 -n7 /usr/local/cron/shrink-in-place.sh"
 
 - name: use cron to backup SQL databases for which a known environment exists
   cron:
     name: "backup SQL databases"
     minute: 0
     hour: 2
-    job: "/usr/local/cron/backup-sql.sh"
+    job: "nice -n19 ionice -c2 -n7 /usr/local/cron/backup-sql.sh"
 
 - name: use cron to fully backup to a remote site
   cron:

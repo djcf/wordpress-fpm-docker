@@ -112,7 +112,7 @@ services:
     container_name: sqldb.common.scot
     volumes:
       - sqldata:/var/lib/mysql
-      #- ./sqldb/my.cnf:/etc/mysql/my.cnf:ro
+      - ./sqldb/my.cnf:/etc/mysql/my.cnf:ro
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
     networks:

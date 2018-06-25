@@ -16,7 +16,12 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder "docker", "/etc/docker/web", type: "rsync", rsync__exclude: ".git/"
   config.vm.synced_folder "ansible", "/etc/ansible", type: "rsync", rsync__exclude: ".git/"
+  config.vm.synced_folder "sqlimport", "/sqlimport", type: "rsync", rsync__exclude: ".git/"
 
+  config.vm.provider "libvirt" do |v|
+      v.memory = 5000
+      v.cpus = 4
+  end
 
   # config.vm.provision "ansible" do |ansible|
   #   ansible.verbose = "v"

@@ -32,8 +32,6 @@
     - iotop
     - iftop
     - net-tools
-    - nice
-    - ionice
     - etckeeper
 
 - name: install certain python modules for docker

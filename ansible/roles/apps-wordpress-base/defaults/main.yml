@@ -7,3 +7,8 @@ extra_nginx_configs:
   - inc/wordpress.conf
 salts_file: "{{ user_site_dir }}/public_html/salts.php"
 user_wp_content_dir: "{{ user_site_dir }}/public_html/wp-content" # this path exists on the host and also in the group-fpm container when group_fpm is true (on-demand containers not in use)
+server_block_extra: |
+  location ^~ /wp-content {
+    alias {{ user_wp_content_dir }};
+  }
+  

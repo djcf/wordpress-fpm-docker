@@ -5,7 +5,3 @@ volumes:
   - "{{ user_wp_content_dir }}:{{ phproot }}/wp-content"
   - "/etc/ssmtp:/etc/ssmtp:ro"
   - "{{ salts_file }}:{{ phproot }}/wordpress/salts.php:ro"
-server_block_extra: |
-  location ^~ /wp-content {
-    alias {{ user_wp_content_dir }};
-  }

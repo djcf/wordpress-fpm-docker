@@ -9,3 +9,12 @@ user_site_dir: "/var/www/{{ primary_subdomain }}"
 webroot: /usr/src/drupal7
 extra_nginx_configs:
   - inc/drupal.conf
+server_block_extra: |
+  location ^~ /scripts/common/ {
+    try_files $uri /index.php?$query_string;
+    alias /var/www/{{ primary_subdomain }}/public_html/scripts/;
+  }
+  location ^~ /sites/ {
+    try_files $uri /index.php?$query_string;
+    alias /var/www/{{ primary_subdomain }}/public_html/sites/;
+  }

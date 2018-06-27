@@ -17,7 +17,7 @@
   roles:
     - { role: site-export, when: backup != "no", dump_path: "/var/www/{{ primary_subdomain }}/database.sql.gz" }
     - vhost-remove
-    - sql-remove-database
+    - { role: sql-remove-database, ignore_errors: true }
     - { role: container-remove, container_name: "{{ primary_subdomain }}.fpm" }
   post_tasks:
     - name: fetch site export

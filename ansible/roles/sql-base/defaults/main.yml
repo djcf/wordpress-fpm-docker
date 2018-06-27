@@ -1,5 +1,5 @@
 ---
-mysql_image: gists/mariadb #yobasystems/alpine-mariadb
+mysql_image: gists/mariadb #yobasystems/alpine-mariadb (using the original image causes the playbook to crash for _some reason_)
 db_socket: /run/mysqld/mysqld.db_socket
 env_values: # what env values might we want to load from the environment file ?
   - db_name
@@ -8,4 +8,5 @@ env_values: # what env values might we want to load from the environment file ?
   - mysql_unix_port
   - mysql_host
   - mysql_tcp_port
+  - mysql_dsn
 mysql_root_password_file: /etc/mysql_root_password.txt

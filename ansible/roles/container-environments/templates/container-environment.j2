@@ -1,6 +1,7 @@
 DB_USER={{ db_user }}
 MYSQL_HOST={{ mysql_host }}
 MYSQL_TCP_PORT={{ mysql_tcp_port }}
+MYSQL_DSN=mysql://{{ db_user }}:{{ mysql_pwd }}@{{ mysql_host }}/{{ db_name }}
 DB_NAME={{ db_name }}
 MYSQL_PWD={{ mysql_pwd }}
 PRIMARY_SUBDOMAIN={{ primary_subdomain }}

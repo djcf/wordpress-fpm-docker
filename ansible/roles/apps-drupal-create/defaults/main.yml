@@ -3,9 +3,9 @@
 volumes:
   - "/var/run/docker-apps/{{ primary_subdomain }}:/var/run"
   - "/etc/ssmtp:/etc/ssmtp:ro"
-  - "{{ primary_subdomain }}_scripts:{{ phproot }}/scripts/common"
-  - "{{ primary_subdomain }}_sites:{{ phproot }}/sites"
-  - "{{ primary_subdomain }}_private:/buildkit/app/private"
+  - "/var/www/{{ primary_subdomain }}/public_html/scripts:{{ phproot }}/scripts/common"
+  - "/var/www/{{ primary_subdomain }}/public_html/sites:{{ phproot }}/sites"
+  - "/var/www/{{ primary_subdomain }}/public_html/private:/buildkit/app/private"
 server_block_extra: |
   location ^~ /scripts/common/ {
     alias /var/www/{{ primary_subdomain }}/public_html/scripts;

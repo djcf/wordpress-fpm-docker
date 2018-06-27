@@ -87,7 +87,7 @@
 
     # rsync --rsync-path='sudo rsync' -avz -e ssh daniel@hume.common.scot:/var/backups/projects/civi.common.scot/backups/latest /var/www/commonspace
     - name: Synchronize sql dbs (bugfix)
-      command: "rsync --rsync-path='sudo rsync' -avz -e ssh {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/{{ item }}.sql {{ dest_dir }}/sqlimport"
+      command: "rsync --rsync-path='sudo rsync' -avz -e 'ssh -o \"StrictHostKeyChecking no\"' {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/{{ item }}.sql {{ dest_dir }}/sqlimport"
       with_items: "{{ databases }}"
 
     # - name: ensure dbs are zipped
@@ -97,7 +97,7 @@
 
     # rsync --rsync-path='sudo rsync' -avz -e ssh daniel@hume.common.scot:/var/backups/projects/civi.common.scot/backups/latest /var/www/commonspace
     - name: Synchronize content directories (bugfix)
-      command: "rsync --rsync-path='sudo rsync' -avz -e ssh {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/civicrm_app/{{ item }} {{ dest_dir }}/public_html"
+      command: "rsync --rsync-path='sudo rsync' -avz -e 'ssh -o \"StrictHostKeyChecking no\"' {{ remote_user }}@{{ remote_host }}:{{ backup_dir }}/civicrm_app/{{ item }} {{ dest_dir }}/public_html"
       with_items: "{{ sync_paths }}"
 
   roles:

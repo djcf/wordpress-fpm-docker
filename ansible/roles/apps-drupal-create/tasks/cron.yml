@@ -18,7 +18,7 @@
 - name: stop civicrm from filling up disk space with templates
   cron:
     name: "stop civicrm from filling up disk space with templates for {{ primary_domain }}"
-    special_time: weekly
+    special_time: daily
     job: >
       nice -n19
       ionice -c2 -n7 

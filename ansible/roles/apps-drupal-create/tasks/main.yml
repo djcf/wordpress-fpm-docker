@@ -32,7 +32,7 @@
 #   changed_when: '"files transferred: 0" not in drupal_private_rsync.stdout'
 #   register: drupal_private_rsync
 
-- name: ensure wp-content directory has correct owner
+- name: ensure content directory has correct owner
   file:
     path: "{{ user_site_dir }}"
     mode: 0750
@@ -54,7 +54,7 @@
     log_options:
       max_size: 500k
     env_file: "{{ env_path }}"
-    hostname: "fpm.{{ primary_subdomain }}.{{ primary_domain }}"
+    hostname: "fpm.{{ primary_domain }}"
   tags:
     - docker
 
